@@ -1,0 +1,132 @@
+server:
+  port: 8890
+  servlet.context-path: /vigil
+spring:
+  jmx:
+    enabled: false
+  jackson:
+    time-zone: GMT+8
+  servlet:
+    multipart:
+      max-file-size: 2000MB
+      max-request-size: 2000MB
+  devtools:
+    restart:
+      enabled: true
+  freemarker:
+    check-template-location: false
+  mvc:
+    throw-exception-if-no-handler-found: true
+  #不要为我们工程中的资源文件建立映射
+  resources:
+    add-mappings: false
+  datasource:
+    url: jdbc:mysql://192.168.97.30:4007/vigil_keeper?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&noAccessToProcedureBodies=true&serverTimezone=Asia/Shanghai
+    username: vigil
+    password: MK]B{]VB}nz5gI
+    driver-class-name: com.mysql.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      max-active: 100
+      initial-size: 20
+      filters: stat
+      max-wait: 60000
+      min-idle: 20
+      time-between-eviction-runs-millis: 60000
+      min-evictable-idle-time-millis:  300000
+      validation-query: select 'x'
+      test-while-idle: true
+      test-on-borrow: false
+      test-on-return: false
+      pool-prepared-statements: true
+      max-open-prepared-statements: 20
+      stat-view-servlet:
+        enabled: false
+        login-username: admin
+        login-password: mess01tfd$
+  redis:
+#    password: afiweqd1
+    cluster:
+      nodes: 192.168.96.70:6379
+#      max-redirects: 3
+    lettuce:
+      pool:
+        max-idle: 10000
+        max-active: 1500
+        min-idle: 10
+        max-wait: 100
+    #    host: 192.168.92.141
+#    port: 6379
+#    password: tmL4dQgh
+    timeout: 30000
+#mybatis:
+#  mapper-locations: classpath:mapper/*.xml
+#  type-aliases-package: com.payegis.cloud.market.entity
+#  configuration:
+#    mapUnderscoreToCamelCase: true
+pagehelper:
+  helperDialect: mysql
+  reasonable: true
+  supportMethodsArguments: true
+  params: count=countSql
+  returnPageInfo: check
+#日志
+logging:
+  config: classpath:log/logback.xml
+  path: ${catalina.home}/logs/vigil-keeper
+
+dapp:
+  server: https://dapp.tongfudun.com
+  admin:
+    server: https://iam-admin.tongfudun.com
+#链上会议登录对接
+chain:
+  meet:
+    appId: aESveQke
+    appSecret: 7197a4d6c1be4a124c005439bc43cbd75d346ded
+    url: https://chatapi.tongfudun.com
+    audio: true
+    scanLogin:
+      # appId
+      appId: wl1tPY7Cwl1t
+      # 加解密私钥
+      rsaPrivateKey: MIICdgIBADANBgkqhkiG9w0BAQEFAASCAmAwggJcAgEAAoGBAKRCmh4n3lOifvn/xTGsrUQyeF0f1/xYvKSWW5dmaEv9O/20+7Rxw6B1w55NxsA1tTN8XMBOXsZgTbr4UyZtSgYbM3dkbnHEaDdEVCi1Nr/fNJf72nc8CB7eyDtOWQfbZqJ46TJuKPbFUFjCvVGVdYAbTMmj9S0Jkx2dK/5TGdePAgMBAAECgYAuuUtBnLGfNK/NyTV8hdPbfEfEpZQ4kb1HTAXNsTGlu+jeqCaZE2tEL3tvgkwwzJY4iP2RLjnDUA2MS6rLWXcehNbyLTV2+6E4hPBJyYDGhsBDXWiLQyJWntqr5uYStYHnwdt1d89fOxAkCsiRV9dMgFoKoGj/s2+IILQaykLJEQJBANJpVfcVTzgvYQSYtlj3yyTYLDVDJPSWD+ByCZco7HIde86CavFZhgZAvdI4eU50281swNzwjD6vpWBg8ox0xWMCQQDH2XEnz+PwtpGqwG9zsXTisjEynJXf4Yq00q6argLrGo2ieZMRMQI/zCLnxtdWgucokgVIfhqJzq9NIa1Yw4LlAkEAw6l+bkDbpQSx9ENKNhtfRcjb+z+QCv3Mj8ubzXwZu9hc++FdL0gvkHr9yZIIhAO5LiL2ib4KvHQ7lg8xHZmsvwJAcj/SuqnUa5ZTrEQa8w7t/XNVQNPXsoej3j/bZb45GOKzOcE63EciPAqdoddA38oyEDV6I7lDvqiT+wpXqTkMKQJAeFhhIK2ZR1LRh52FRLekNJzv9mm4GC8xTqyDs4nzNk9V+T/4WQy8i18KJ0y0CxGaygjwBYlNhXDY46AGOX846A==
+      # 签名私钥
+      signPrivateKey: 470e80f5fddb997682a881d667a7edcf6cf73d0970f7501dc6a54c894d37b929
+      # 签名公钥chain.meet.scanLogin.appId
+      signPublicKey: b737341c963f8f05dd8c80065f24ba7745d6a6e13ec3b633c0161cc0e9813bffa1d7671a22a41f93a1c16dd9ea99863a4b6701471b034f023ec3a2bdaf377509
+      # 场景id
+      scenId: login
+      # 认证接口,轮询接口调用
+      authUrl: https://chatapi.tongfudun.com/api/authentication/query
+
+cloud:
+  url: https://cloud.tongfudun.com
+  publicKey: MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCfWkqtQJIokCM3LAQRGv8ZPhAJTSsRTi2ZauH4MKVctM56HPiLBc38XRUYylEJSijADVUJ6FBu+bp0oXJSaunRiAc37C4a8pLBvWAcnZ9qZASo1E/SNqQlEN3AOlysjhnMzDHSxSfKqLjBkGkWWJeaKC1ISnMwT5WzWFydTarDPwIDAQAB
+  activity:
+    url: https://member.tongfudun.com
+
+token:
+  expired:
+    hour: 24
+
+legion:
+  url: https://chatapi.tongfudun.com
+  appId: aESveQke
+  appSecret: 7197a4d6c1be4a124c005439bc43cbd75d346ded
+  msg:
+    url: https://dapp-admin.tongfudun.com
+    from: 94ba6c83d22d41f7ad6249cc815d97af
+    fromCloud: 66214ff9282d11edaace000c296f40d4
+    mobile:
+    confirmPage: http://192.168.112.3:3000/confirm?mobile=%s&title=%s&content=%s&id=%s
+    imgUrl: https://www.tongfudun.com/favicon.ico
+
+file:
+  path: /data/file/
+
+dify:
+  url: https://hackathon-team2.tongfudun.com/v1
+  key: app-wEqXx2WgpBuvkwmLrwjL2HWv
+
+

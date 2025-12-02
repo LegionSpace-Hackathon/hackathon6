@@ -1,0 +1,17 @@
+spring:
+  profiles:
+    active: @profileActive@
+  jmx:
+    enabled: false
+  jackson:
+    time-zone: GMT+8
+  messages:
+    basename: i18n.messages
+
+mybatis:
+  mapper-locations: classpath:mapper/**/*.xml
+  type-aliases-package: com.payegis.cloud.vigil.entity
+  configuration:
+    mapUnderscoreToCamelCase: true
+
+
