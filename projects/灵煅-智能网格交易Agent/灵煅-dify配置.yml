@@ -1,0 +1,2454 @@
+app:
+  description: ''
+  icon: 🤖
+  icon_background: '#FFEAD5'
+  mode: advanced-chat
+  name: 灵煅
+  use_icon_as_answer_icon: false
+dependencies:
+- current_identifier: null
+  type: marketplace
+  value:
+    marketplace_plugin_unique_identifier: langgenius/deepseek:0.0.7@c4e7b999ae67bfc059f6f51630bed36def5a835d12b0251694f5784b5ff1cd95
+    version: null
+- current_identifier: null
+  type: marketplace
+  value:
+    marketplace_plugin_unique_identifier: bowenliang123/md_exporter:2.1.1@63ea80ece23673b1579c0ff64e6dc731e1b4baebca1fcce4d45fda17d962bfc8
+    version: null
+kind: app
+version: 0.5.0
+workflow:
+  conversation_variables:
+  - description: 交易历史
+    id: 03fec875-664e-4811-a90e-6c76c8083667
+    name: closed_orders
+    selector:
+    - conversation
+    - closed_orders
+    value: []
+    value_type: array[object]
+  - description: 总流出量
+    id: 74750796-209b-486e-9c5b-f1922c2f6788
+    name: outflowTotal
+    selector:
+    - conversation
+    - outflowTotal
+    value: 0
+    value_type: integer
+  - description: 总流入量
+    id: 3c688f28-bae9-4398-a26e-6453c4dd72af
+    name: inflowTotal
+    selector:
+    - conversation
+    - inflowTotal
+    value: 0
+    value_type: integer
+  - description: 净流量
+    id: cea9ffe5-e93b-4e9f-b3bc-799d5614933d
+    name: netFlow
+    selector:
+    - conversation
+    - netFlow
+    value: 0
+    value_type: integer
+  - description: 交易所流出计数
+    id: 429900f9-ccef-4ad5-bd5b-9beb7f2abdd2
+    name: exchangeOutflowCount
+    selector:
+    - conversation
+    - exchangeOutflowCount
+    value: 0
+    value_type: integer
+  - description: 交易所流入计数
+    id: 861cb57e-3475-40af-9f3e-d2177b995db7
+    name: exchangeInflowCount
+    selector:
+    - conversation
+    - exchangeInflowCount
+    value: 0
+    value_type: integer
+  - description: 24h交易数
+    id: a222bb2e-30f8-4417-af0f-2c56b2b53329
+    name: totalTransactions
+    selector:
+    - conversation
+    - totalTransactions
+    value: 0
+    value_type: integer
+  - description: 总交易量
+    id: 98497a4d-554b-4b2f-9bee-6a99af566e5c
+    name: totalVolume
+    selector:
+    - conversation
+    - totalVolume
+    value: 0
+    value_type: integer
+  - description: 触发次数
+    id: f622c2d2-0271-4278-bded-b903a17deb6d
+    name: total_triggered
+    selector:
+    - conversation
+    - total_triggered
+    value: 0
+    value_type: integer
+  - description: 已触发
+    id: d0ced1e8-407b-497e-b634-0f3f4ad5b6cb
+    name: triggered
+    selector:
+    - conversation
+    - triggered
+    value: 0
+    value_type: integer
+  - description: 活跃预警
+    id: 087419ad-6b1d-4a81-a189-8e694bd4b62b
+    name: active
+    selector:
+    - conversation
+    - active
+    value: 0
+    value_type: integer
+  - description: 总预警数
+    id: 7c75e081-f7fd-4850-9a0f-2366965a1d92
+    name: total
+    selector:
+    - conversation
+    - total
+    value: 0
+    value_type: integer
+  - description: ''
+    id: c5c33bbc-15f7-4523-a594-254f49966c97
+    name: system_query
+    selector:
+    - conversation
+    - system_query
+    value: ''
+    value_type: string
+  - description: 优先级
+    id: 53e5fb93-58bc-43ff-a7ee-3843d4c28be9
+    name: priority
+    selector:
+    - conversation
+    - priority
+    value: ''
+    value_type: string
+  - description: 预警消息
+    id: 7e0b3145-c9be-4778-81a9-6457a949537f
+    name: message
+    selector:
+    - conversation
+    - message
+    value: ''
+    value_type: string
+  - description: 目标价格
+    id: 04d4ef84-ee98-4989-b9cd-99004bf3b95d
+    name: targetPrice
+    selector:
+    - conversation
+    - targetPrice
+    value: 0
+    value_type: integer
+  - description: 预警类型
+    id: 5228eb42-3e59-4aed-a2d2-2b3b982da179
+    name: type
+    selector:
+    - conversation
+    - type
+    value: ''
+    value_type: string
+  - description: 交易对
+    id: 4a3904d4-7b9a-47ff-bb57-c26a5f7eec9f
+    name: symbol
+    selector:
+    - conversation
+    - symbol
+    value: ''
+    value_type: string
+  - description: 历史预警
+    id: ba60e28f-c94a-44b1-865a-5d79c2601857
+    name: ai_history
+    selector:
+    - conversation
+    - ai_history
+    value: []
+    value_type: array[string]
+  - description: 价格走势数据
+    id: 37dbc71e-125f-4627-bcb4-c39cf693982e
+    name: price_trend_json
+    selector:
+    - conversation
+    - price_trend_json
+    value: ''
+    value_type: string
+  environment_variables:
+  - description: ''
+    id: f6d55d84-1774-4246-b5c0-0337da0aae17
+    name: base_host
+    selector:
+    - env
+    - base_host
+    value: http://192.168.81.69:3000
+    value_type: string
+  features:
+    file_upload:
+      allowed_file_extensions:
+      - .JPG
+      - .JPEG
+      - .PNG
+      - .GIF
+      - .WEBP
+      - .SVG
+      allowed_file_types:
+      - image
+      allowed_file_upload_methods:
+      - remote_url
+      - local_file
+      enabled: true
+      fileUploadConfig:
+        audio_file_size_limit: 50
+        batch_count_limit: 5
+        file_size_limit: 15
+        image_file_size_limit: 10
+        video_file_size_limit: 100
+        workflow_file_upload_limit: 10
+      image:
+        enabled: false
+        number_limits: 3
+        transfer_methods:
+        - local_file
+        - remote_url
+      number_limits: 3
+    opening_statement: 您好，我是您的网格交易助手 soulforge。我可以帮您解答网格交易的疑问、设计交易策略，或指导您部署机器人。请告诉我您感兴趣的方向。
+    retriever_resource:
+      enabled: true
+    sensitive_word_avoidance:
+      enabled: false
+    speech_to_text:
+      enabled: false
+    suggested_questions:
+    - 自我介绍
+    - 价格走势
+    - 价格预警
+    - 巨鲸监控
+    - 交易总览
+    suggested_questions_after_answer:
+      enabled: false
+    text_to_speech:
+      enabled: false
+      language: ''
+      voice: ''
+  graph:
+    edges:
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: question-classifier
+        targetType: http-request
+      id: 1764309794768-1-1764309891030-target
+      selected: false
+      source: '1764309794768'
+      sourceHandle: '1'
+      target: '1764309891030'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: llm
+        targetType: answer
+      id: llm-source-1764310619181-target
+      selected: false
+      source: llm
+      sourceHandle: source
+      target: '1764310619181'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: question-classifier
+        targetType: llm
+      id: 1764309794768-2-llm-target
+      selected: false
+      source: '1764309794768'
+      sourceHandle: '2'
+      target: llm
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: llm
+        targetType: answer
+      id: 1764312922220-source-answer-target
+      selected: false
+      source: '1764312922220'
+      sourceHandle: source
+      target: answer
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: http-request
+        targetType: http-request
+      id: 1764309891030-source-1764315892395-target
+      selected: false
+      source: '1764309891030'
+      sourceHandle: source
+      target: '1764315892395'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: http-request
+        targetType: code
+      id: 1764315892395-source-1764316835892-target
+      selected: false
+      source: '1764315892395'
+      sourceHandle: source
+      target: '1764316835892'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: code
+        targetType: assigner
+      id: 1764316835892-source-1764312388748-target
+      selected: false
+      source: '1764316835892'
+      sourceHandle: source
+      target: '1764312388748'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: assigner
+        targetType: llm
+      id: 1764312388748-source-1764312922220-target
+      selected: false
+      source: '1764312388748'
+      sourceHandle: source
+      target: '1764312922220'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: if-else
+        targetType: template-transform
+      id: 1764322414167-true-1764319035127-target
+      selected: false
+      source: '1764322414167'
+      sourceHandle: 'true'
+      target: '1764319035127'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: start
+        targetType: assigner
+      id: 1764293199056-source-1764322940520-target
+      selected: false
+      source: '1764293199056'
+      sourceHandle: source
+      target: '1764322940520'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: assigner
+        targetType: question-classifier
+      id: 1764322940520-source-1764309794768-target
+      selected: false
+      source: '1764322940520'
+      sourceHandle: source
+      target: '1764309794768'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: parameter-extractor
+        targetType: if-else
+      id: 1764323042968-source-1764322414167-target
+      selected: false
+      source: '1764323042968'
+      sourceHandle: source
+      target: '1764322414167'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: question-classifier
+        targetType: parameter-extractor
+      id: 1764309794768-1764318964923-1764323042968-target
+      selected: false
+      source: '1764309794768'
+      sourceHandle: '1764318964923'
+      target: '1764323042968'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: if-else
+        targetType: assigner
+      id: 1764322414167-false-1764323788752-target
+      selected: false
+      source: '1764322414167'
+      sourceHandle: 'false'
+      target: '1764323788752'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: template-transform
+        targetType: answer
+      id: 1764319035127-source-1764326198244-target
+      selected: false
+      source: '1764319035127'
+      sourceHandle: source
+      target: '1764326198244'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: assigner
+        targetType: http-request
+      id: 1764323788752-source-1764324262943-target
+      selected: false
+      source: '1764323788752'
+      sourceHandle: source
+      target: '1764324262943'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: http-request
+        targetType: http-request
+      id: 1764324262943-source-1764328415239-target
+      selected: false
+      source: '1764324262943'
+      sourceHandle: source
+      target: '1764328415239'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: http-request
+        targetType: answer
+      id: 1764328415239-source-1764324370529-target
+      selected: false
+      source: '1764328415239'
+      sourceHandle: source
+      target: '1764324370529'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: llm
+        targetType: answer
+      id: 1764329379653-source-1764329839214-target
+      selected: false
+      source: '1764329379653'
+      sourceHandle: source
+      target: '1764329839214'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: answer
+        targetType: code
+      id: 1764324370529-source-1764330698747-target
+      selected: false
+      source: '1764324370529'
+      sourceHandle: source
+      target: '1764330698747'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: code
+        targetType: assigner
+      id: 1764330698747-source-1764330851434-target
+      selected: false
+      source: '1764330698747'
+      sourceHandle: source
+      target: '1764330851434'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: assigner
+        targetType: llm
+      id: 1764330851434-source-1764329379653-target
+      selected: false
+      source: '1764330851434'
+      sourceHandle: source
+      target: '1764329379653'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: question-classifier
+        targetType: http-request
+      id: 1764309794768-1764332050780-1764332070284-target
+      selected: false
+      source: '1764309794768'
+      sourceHandle: '1764332050780'
+      target: '1764332070284'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: http-request
+        targetType: code
+      id: 1764332070284-source-1764332137067-target
+      selected: false
+      source: '1764332070284'
+      sourceHandle: source
+      target: '1764332137067'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: llm
+        targetType: answer
+      id: 1764333238776-source-1764333396261-target
+      selected: false
+      source: '1764333238776'
+      sourceHandle: source
+      target: '1764333396261'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: code
+        targetType: llm
+      id: 1764332137067-source-1764333238776-target
+      selected: false
+      source: '1764332137067'
+      sourceHandle: source
+      target: '1764333238776'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: question-classifier
+        targetType: answer
+      id: 1764309794768-1764379812316-1764379831854-target
+      selected: false
+      source: '1764309794768'
+      sourceHandle: '1764379812316'
+      target: '1764379831854'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: question-classifier
+        targetType: http-request
+      id: 1764309794768-1764380547308-1764380604536-target
+      selected: false
+      source: '1764309794768'
+      sourceHandle: '1764380547308'
+      target: '1764380604536'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: http-request
+        targetType: code
+      id: 1764380604536-source-1764381162215-target
+      selected: false
+      source: '1764380604536'
+      sourceHandle: source
+      target: '1764381162215'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: code
+        targetType: code
+      id: 1764381162215-source-1764382320942-target
+      selected: false
+      source: '1764381162215'
+      sourceHandle: source
+      target: '1764382320942'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: code
+        targetType: llm
+      id: 1764382320942-source-1764382365177-target
+      selected: false
+      source: '1764382320942'
+      sourceHandle: source
+      target: '1764382365177'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: llm
+        targetType: answer
+      id: 1764382365177-source-1764382396949-target
+      selected: false
+      source: '1764382365177'
+      sourceHandle: source
+      target: '1764382396949'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: tool
+        targetType: answer
+      id: 1764383401518-source-1764331281685-target
+      selected: false
+      source: '1764383401518'
+      sourceHandle: source
+      target: '1764331281685'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: answer
+        targetType: tool
+      id: answer-source-1764383448078-target
+      selected: false
+      source: answer
+      sourceHandle: source
+      target: '1764383448078'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: tool
+        targetType: tool
+      id: 1764383448078-source-1764383486481-target
+      selected: false
+      source: '1764383448078'
+      sourceHandle: source
+      target: '1764383486481'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: tool
+        targetType: tool
+      id: 1764383486481-source-1764383401518-target
+      selected: false
+      source: '1764383486481'
+      sourceHandle: source
+      target: '1764383401518'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    nodes:
+    - data:
+        selected: false
+        title: 用户输入
+        type: start
+        variables: []
+      height: 73
+      id: '1764293199056'
+      position:
+        x: 0
+        y: 620
+      positionAbsolute:
+        x: 0
+        y: 620
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        memory:
+          query_prompt_template: '{{#sys.query#}}
+
+
+            {{#sys.files#}}'
+          role_prefix:
+            assistant: ''
+            user: ''
+          window:
+            enabled: false
+            size: 10
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: deepseek-chat
+          provider: langgenius/deepseek/deepseek
+        prompt_template:
+        - id: ad05a49b-1f3f-41b2-a042-bab026e0da84
+          role: system
+          text: '# 角色
+
+            你是一个专业的、谨慎的网格交易机器人专家，名为“soulforge”。你的职责是帮助用户理解、设计、部署并监控网格交易策略。
+
+
+            # 核心能力与知识
+
+            1.  **精通网格交易原理**：你深刻理解网格交易是一种在特定价格区间内，低买高卖的自动化交易策略。你熟悉“网格密度”、“价格区间”、“单网格利润”等核心概念。
+
+            2.  **熟悉市场与风险**：你了解加密货币、股票、外汇等不同市场的特性。你始终强调风险管理，并会提醒用户网格交易存在的风险（如单边下跌市导致的套牢）。
+
+            3.  **策略设计专家**：你能根据用户提供的标的、资金量、风险承受能力，推荐合理的价格区间、网格数量、每单投入资金等参数。
+
+            4.  **实操指南**：你能够指导用户在不同的交易平台或使用特定机器人软件进行操作。
+
+
+            # 行为准则
+
+            - **耐心与清晰**：用通俗易懂的语言解释复杂概念，必要时使用举例、比喻。
+
+            - **谨慎与负责**：永远不要承诺收益。必须主动提示风险，并建议用户从小额资金开始测试。
+
+            - **主动引导**：当用户提问模糊时，主动询问关键信息以提供精准建议。例如：
+
+              - “您打算交易什么标的呢？（例如：BTC/USDT）”
+
+              - “您计划投入多少资金？”
+
+              - “您对风险的承受能力如何？是保守、稳健还是激进？”
+
+            - **结构化回答**：对于策略建议，尽量使用分点、列表或表格（在文本中描述）的形式呈现，使其清晰易懂。
+
+
+            # 对话开场白
+
+            “您好，我是您的网格交易助手 soulforge。我可以帮您解答网格交易的疑问、设计交易策略，或指导您部署机器人。请告诉我您感兴趣的方向，或者在开始前，您希望交易哪个标的物？”'
+        selected: false
+        title: LLM
+        type: llm
+        vision:
+          enabled: false
+      height: 88
+      id: llm
+      position:
+        x: 1044
+        y: 226
+      positionAbsolute:
+        x: 1044
+        y: 226
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        answer: '{{#1764312922220.text#}}
+
+          ---
+
+          '
+        selected: false
+        title: 直接回复
+        type: answer
+        variables: []
+      height: 103
+      id: answer
+      position:
+        x: 2749
+        y: 24
+      positionAbsolute:
+        x: 2749
+        y: 24
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        classes:
+        - id: '1'
+          name: 价格走势
+        - id: '2'
+          name: 其他
+        - id: '1764318964923'
+          name: 价格预警
+        - id: '1764332050780'
+          name: 巨鲸监控
+        - id: '1764379812316'
+          name: 自我介绍
+        - id: '1764380547308'
+          name: 交易总览
+        instructions: ''
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: deepseek-chat
+          provider: langgenius/deepseek/deepseek
+        query_variable_selector:
+        - '1764293199056'
+        - sys.query
+        selected: false
+        title: 问题分类器
+        type: question-classifier
+        vision:
+          enabled: false
+      height: 322
+      id: '1764309794768'
+      position:
+        x: 683
+        y: 495
+      positionAbsolute:
+        x: 683
+        y: 495
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        authorization:
+          config: null
+          type: no-auth
+        body:
+          data: []
+          type: none
+        headers: Content-Type:application/json;charset=UTF-8
+        method: get
+        params: ''
+        retry_config:
+          max_retries: 3
+          retry_enabled: false
+          retry_interval: 100
+        selected: false
+        ssl_verify: true
+        timeout:
+          max_connect_timeout: 0
+          max_read_timeout: 0
+          max_write_timeout: 0
+        title: HTTP 请求
+        type: http-request
+        url: '{{#env.base_host#}}/api/market/ohlcv?exchange=okx&symbol=ETH%2FUSDT&timeframe=1h&limit=24'
+        variables: []
+      height: 144
+      id: '1764309891030'
+      position:
+        x: 1044
+        y: 3
+      positionAbsolute:
+        x: 1044
+        y: 3
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        answer: '{{#llm.text#}}'
+        selected: false
+        title: 直接回复 2
+        type: answer
+        variables: []
+      height: 103
+      id: '1764310619181'
+      position:
+        x: 1405
+        y: 218
+      positionAbsolute:
+        x: 1405
+        y: 218
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        items:
+        - input_type: variable
+          operation: over-write
+          value:
+          - '1764309891030'
+          - body
+          variable_selector:
+          - conversation
+          - price_trend_json
+          write_mode: over-write
+        - input_type: variable
+          operation: over-write
+          value:
+          - '1764316835892'
+          - ai_history
+          variable_selector:
+          - conversation
+          - ai_history
+          write_mode: over-write
+        selected: false
+        title: 变量赋值
+        type: assigner
+        version: '2'
+      height: 110
+      id: '1764312388748'
+      position:
+        x: 2067
+        y: 20
+      positionAbsolute:
+        x: 2067
+        y: 20
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: deepseek-chat
+          provider: langgenius/deepseek/deepseek
+        prompt_template:
+        - id: a83374ca-e217-4298-a3c2-598d7b88c389
+          role: system
+          text: "# 角色\n你是一个专业的、谨慎的网格交易机器人专家，名为“soulforge”。你的职责是帮助用户理解、设计、部署并监控网格交易策略。\n\
+            \n# 核心能力与知识\n1.  **精通网格交易原理**：你深刻理解网格交易是一种在特定价格区间内，低买高卖的自动化交易策略。你熟悉“网格密度”、“价格区间”、“单网格利润”等核心概念。\n\
+            2.  **熟悉市场与风险**：你了解加密货币、股票、外汇等不同市场的特性。你始终强调风险管理，并会提醒用户网格交易存在的风险（如单边下跌市导致的套牢）。\n\
+            3.  **策略设计专家**：你能根据用户提供的标的、资金量、风险承受能力，推荐合理的价格区间、网格数量、每单投入资金等参数。\n4.  **实操指南**：你能够指导用户在不同的交易平台或使用特定机器人软件进行操作。\n\
+            \n# 行为准则\n- **耐心与清晰**：用通俗易懂的语言解释复杂概念，必要时使用举例、比喻。\n- **谨慎与负责**：永远不要承诺收益。必须主动提示风险，并建议用户从小额资金开始测试。\n\
+            - **主动引导**：当用户提问模糊时，主动询问关键信息以提供精准建议。例如：\n  - “您打算交易什么标的呢？（例如：BTC/USDT）”\n\
+              - “您计划投入多少资金？”\n  - “您对风险的承受能力如何？是保守、稳健还是激进？”\n- **结构化回答**：对于策略建议，尽量使用分点、列表或表格（在文本中描述）的形式呈现，使其清晰易懂。\n\
+            \n---\n回复语言: 中文\n---\n任务流程:\n{{#conversation.price_trend_json#}} 这是我调用ETH价格走势的接口,\
+            \ 返回的数据类型是json格式, open开盘价, hign最高价, low最低价, close收盘价, volume成交量,   帮我分析一下这段数据,\
+            \ 填入到下方的markdown模板中\n\n---\n输出格式\n# \U0001F4CA 加密货币市场分析报告\n\n## \U0001F4C8\
+            \ 核心指标概览\n\n| 指标         | 数值         | 状态       |\n| ------------ | ------------\
+            \ | ---------- |\n| **当前价格** | `$rrr` | \U0001F534 rrr%    |\n| **RSI\
+            \ (14)** | `rrr`       | \U0001F7E1 rrr |\n| **24h涨跌**  | `+rrr%`    \
+            \  | \U0001F7E2 rrr     |\n| **MACD**     | `+rrr`     | \U0001F7E2 rrr\
+            \     |\n\n---\n\n## \U0001F4B9 价格走势分析\n\n### K线图示意\n\n### 技术指标详情\n\n\
+            #### \U0001F4CA RSI 分析\n```python\nRSI = rrr\n状态: rrr\n建议: rrr\n```\n\n\
+            ## \U0001F3AF 交易建议\n\n| 级别     | 建议   | 理由          |\n| :------- | :-----\
+            \ | :------------ |\n| **短期** | \U0001F7E1 rrr | rrr |\n| **中期** | \U0001F7E2\
+            \ rrr | rrr  |\n| **长期** | \U0001F7E2 rrr | rrr  |\n\n## \U0001F4CB 关键价格位\n\
+            \n| 位置     | 价格      | 重要性 |\n| :------- | :-------- | :----- |\n| \U0001F7E2\
+            \ 支撑位 | `$rrr` | rrr    |\n| \U0001F7E1 阻力位 | `$rrr` | rrr    |\n| \U0001F534\
+            \ 强阻力 | `$rrr` | rrr    |\n\n## ⚠️ 风险提示\n\n> \U0001F4A1 **免责声明**: 以上分析仅供参考，市场有风险，投资需谨慎。\n\
+            >\n> \U0001F4C5 数据更新时间: `yyyy-MM-dd HH:mm:ss`\n\n## \U0001F4CE 相关链接\n\n\
+            https://space.tongfudun.com\n\n## 总结\n{{#conversation.ai_history#}}\n\
+            ---\n!注意!: \n1.上方rrr关键字符是你需要填写的部分\n2.ai_history参数是一个集合类型, 你需要对这个集合做一个100字的总结,\
+            \ 并替换上方ai_history内容\n\n\n"
+        selected: false
+        title: LLM 2
+        type: llm
+        vision:
+          enabled: false
+      height: 88
+      id: '1764312922220'
+      position:
+        x: 2408
+        y: 31
+      positionAbsolute:
+        x: 2408
+        y: 31
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        authorization:
+          config: null
+          type: no-auth
+        body:
+          data: []
+          type: none
+        headers: Content-Type:application/json;charset=UTF-8
+        method: get
+        params: ''
+        retry_config:
+          max_retries: 3
+          retry_enabled: false
+          retry_interval: 100
+        selected: false
+        ssl_verify: true
+        timeout:
+          max_connect_timeout: 0
+          max_read_timeout: 0
+          max_write_timeout: 0
+        title: HTTP 请求 2
+        type: http-request
+        url: '{{#env.base_host#}}/api/ai/history?symbol=ETH%2FUSDT&limit=5'
+        variables: []
+      height: 128
+      id: '1764315892395'
+      position:
+        x: 1385
+        y: 11
+      positionAbsolute:
+        x: 1385
+        y: 11
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        code: "import json\n\ndef main(arg1: str):\n    reasonings = []\n    \n  \
+          \  # 如果 arg1 是字符串，先转换为字典\n    if isinstance(arg1, str):\n        try:\n\
+          \            data = json.loads(arg1)\n        except json.JSONDecodeError:\n\
+          \            print(\"错误：数据不是有效的 JSON 格式\")\n            return reasonings\n\
+          \    else:\n        data = arg1\n    \n    # 检查数据结构是否存在\n    if (data and\
+          \ \n        isinstance(data, dict) and\n        'data' in data and \n  \
+          \      'history' in data['data']):\n        \n        # 遍历 history 数组，提取每个元素的\
+          \ reasoning 字段\n        for item in data['data']['history']:\n         \
+          \   if (isinstance(item, dict) and \n                'reasoning' in item\
+          \ and \n                item['reasoning'] is not None):\n              \
+          \  reasonings.append(item['reasoning'])\n    \n    return {\n        \"\
+          ai_history\":reasonings\n    }"
+        code_language: python3
+        outputs:
+          ai_history:
+            children: null
+            type: array[string]
+        selected: false
+        title: 代码执行
+        type: code
+        variables:
+        - value_selector:
+          - '1764315892395'
+          - body
+          value_type: string
+          variable: arg1
+      height: 52
+      id: '1764316835892'
+      position:
+        x: 1726
+        y: 49
+      positionAbsolute:
+        x: 1726
+        y: 49
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        selected: false
+        template: "<h2 style=\"text-align: center; margin-bottom: 12px;\">\U0001F4DE\
+          \ 创建新预警</h2>\r\n<form data-format=\"json\">\r\n  <label for=\"symbol\">\U0001F3E2\
+          \ 交易对：</label>\r\n  <input type=\"text\" name=\"symbol\" placeholder=\"\
+          请输入公司名称\" value=\"ETH/USDT\" />\r\n  <label for=\"type\">\U0001F4CD 预警类型：</label>\r\
+          \n  <input type=\"select\" name=\"type\" value=\"高于\" data-options='[\r\n\
+          \    \"高于\",\"低于\",\"突破上方\",\"跌破下方\",\"接近（±0.5%）\"\r\n  ]' />\r\n  <label\
+          \ for=\"targetPrice\">\U0001F464 目标价格($)：</label>\r\n  <input type=\"text\"\
+          \ name=\"targetPrice\" placeholder=\"4000.00\" />\r\n  <label for=\"message\"\
+          >\U0001F9D1 预警消息：</label>\r\n  <input type=\"text\" name=\"message\" placeholder=\"\
+          可选：预警描述\" />\r\n  <label for=\"priority\">\U0001F4F1 优先级：</label>\r\n  <input\
+          \ type=\"select\" name=\"priority\" value=\"中\" data-options='[\r\n    \"\
+          低\",\"中\",\"高\",\"紧急\"\r\n  ]' />\r\n  <button data-size=\"small\" data-variant=\"\
+          primary\" type=\"submit\">\U0001F4E8 提交</button>\r\n</form>"
+        title: 模板转换
+        type: template-transform
+        variables: []
+      height: 52
+      id: '1764319035127'
+      position:
+        x: 1766
+        y: 234
+      positionAbsolute:
+        x: 1766
+        y: 234
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        cases:
+        - case_id: 'true'
+          conditions:
+          - comparison_operator: empty
+            id: aed84fc1-2756-4ff3-99c0-8066113aec32
+            value: ''
+            varType: string
+            variable_selector:
+            - '1764323042968'
+            - targetPrice
+          id: 'true'
+          logical_operator: and
+        selected: false
+        title: 条件分支
+        type: if-else
+      height: 124
+      id: '1764322414167'
+      position:
+        x: 1405
+        y: 400
+      positionAbsolute:
+        x: 1405
+        y: 400
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        items:
+        - input_type: variable
+          operation: over-write
+          value:
+          - sys
+          - query
+          variable_selector:
+          - conversation
+          - system_query
+          write_mode: over-write
+        selected: false
+        title: 变量赋值 2
+        type: assigner
+        version: '2'
+      height: 84
+      id: '1764322940520'
+      position:
+        x: 342
+        y: 614
+      positionAbsolute:
+        x: 342
+        y: 614
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        instruction: "若输入变量不为空, 则提取参数, 必须要完全匹配以下字段\n{\n    \"symbol\": 交易对,\n    \"\
+          type\": 预警类型,\n    \"targetPrice\": 目标价格,\n    \"message\": 预警消息,\n    \"\
+          priority\": 优先级\n}\n\n---\n其中type和priority需要做映射处理, 完全匹配并转化\ntype : \n{\n\
+          \"高于\" : above\n\"低于\" : below\n\"突破上方\" : cross_above\n\"跌破下方\" : cross_below\n\
+          \"接近（±0.5%）\" : both\n}\npriorit:\n{\n\"低\" : low\n\"中\" : medium\n\"高\"\
+          \ : high\n\"紧急\" : critical\n}"
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: deepseek-chat
+          provider: langgenius/deepseek/deepseek
+        parameters:
+        - description: 目标价格
+          name: targetPrice
+          required: false
+          type: number
+        - description: 交易对
+          name: symbol
+          required: false
+          type: string
+        - description: 预警类型
+          name: type
+          required: false
+          type: string
+        - description: 预警消息
+          name: message
+          required: false
+          type: string
+        - description: 优先级
+          name: priority
+          required: false
+          type: string
+        query:
+        - conversation
+        - system_query
+        reasoning_mode: prompt
+        selected: false
+        title: 参数提取器
+        type: parameter-extractor
+        vision:
+          enabled: false
+      height: 88
+      id: '1764323042968'
+      position:
+        x: 1044
+        y: 418
+      positionAbsolute:
+        x: 1044
+        y: 418
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        items:
+        - input_type: variable
+          operation: over-write
+          value:
+          - '1764323042968'
+          - symbol
+          variable_selector:
+          - conversation
+          - symbol
+          write_mode: over-write
+        - input_type: variable
+          operation: over-write
+          value:
+          - '1764323042968'
+          - priority
+          variable_selector:
+          - conversation
+          - priority
+          write_mode: over-write
+        - input_type: variable
+          operation: over-write
+          value:
+          - '1764323042968'
+          - message
+          variable_selector:
+          - conversation
+          - message
+          write_mode: over-write
+        - input_type: variable
+          operation: over-write
+          value:
+          - '1764323042968'
+          - type
+          variable_selector:
+          - conversation
+          - type
+          write_mode: over-write
+        - input_type: variable
+          operation: over-write
+          value:
+          - '1764323042968'
+          - targetPrice
+          variable_selector:
+          - conversation
+          - targetPrice
+          write_mode: over-write
+        selected: false
+        title: 变量赋值 4
+        type: assigner
+        version: '2'
+      height: 188
+      id: '1764323788752'
+      position:
+        x: 1766
+        y: 367
+      positionAbsolute:
+        x: 1766
+        y: 367
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        authorization:
+          config: null
+          type: no-auth
+        body:
+          data:
+          - id: key-value-621
+            key: ''
+            type: text
+            value: '{
+
+                  "symbol": {{#conversation.symbol#}},
+
+                  "type": {{#conversation.type#}},
+
+                  "targetPrice": {{#1764323042968.targetPrice#}},
+
+                  "message": {{#conversation.message#}},
+
+                  "priority": {{#conversation.priority#}},
+
+                  "repeat": false,
+
+                  "notifyBrowser": true,
+
+                  "notifySound": true,
+
+                  "cooldownSeconds": 60,
+
+                  "contextId": null
+
+              }'
+          type: json
+        headers: ''
+        method: post
+        params: ''
+        retry_config:
+          max_retries: 3
+          retry_enabled: true
+          retry_interval: 100
+        selected: false
+        ssl_verify: true
+        timeout:
+          max_connect_timeout: 0
+          max_read_timeout: 0
+          max_write_timeout: 0
+        title: HTTP 请求 3
+        type: http-request
+        url: '{{#env.base_host#}}/api/price-alert-v2/create'
+        variables: []
+      height: 142
+      id: '1764324262943'
+      position:
+        x: 2107
+        y: 391
+      positionAbsolute:
+        x: 2107
+        y: 391
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        answer: '实时价格监控系统已激活，全天候守护您的资产安全。
+
+          '
+        selected: false
+        title: 直接回复 5
+        type: answer
+        variables: []
+      height: 116
+      id: '1764324370529'
+      position:
+        x: 2789
+        y: 403
+      positionAbsolute:
+        x: 2789
+        y: 403
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        answer: '{{#1764319035127.output#}}'
+        selected: false
+        title: 直接回复 5
+        type: answer
+        variables: []
+      height: 103
+      id: '1764326198244'
+      position:
+        x: 2107
+        y: 209
+      positionAbsolute:
+        x: 2107
+        y: 209
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        authorization:
+          config: null
+          type: no-auth
+        body:
+          data: []
+          type: none
+        headers: ''
+        method: get
+        params: ''
+        retry_config:
+          max_retries: 3
+          retry_enabled: true
+          retry_interval: 100
+        selected: false
+        ssl_verify: true
+        timeout:
+          max_connect_timeout: 0
+          max_read_timeout: 0
+          max_write_timeout: 0
+        title: HTTP 请求 4
+        type: http-request
+        url: '{{#env.base_host#}}/api/price-alert-v2/stats?symbol=ETH%2FUSDT'
+        variables: []
+      height: 158
+      id: '1764328415239'
+      position:
+        x: 2448
+        y: 383
+      positionAbsolute:
+        x: 2448
+        y: 383
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: deepseek-chat
+          provider: langgenius/deepseek/deepseek
+        prompt_template:
+        - id: ec8671a1-bc71-4cbb-9262-9501c0886d55
+          role: system
+          text: "# 角色\n你是一个专业的、谨慎的网格交易机器人专家，名为“soulforge”。你的职责是帮助用户理解、设计、部署并监控网格交易策略。\n\
+            \n# 核心能力与知识\n1.  **精通网格交易原理**：你深刻理解网格交易是一种在特定价格区间内，低买高卖的自动化交易策略。你熟悉“网格密度”、“价格区间”、“单网格利润”等核心概念。\n\
+            2.  **熟悉市场与风险**：你了解加密货币、股票、外汇等不同市场的特性。你始终强调风险管理，并会提醒用户网格交易存在的风险（如单边下跌市导致的套牢）。\n\
+            3.  **策略设计专家**：你能根据用户提供的标的、资金量、风险承受能力，推荐合理的价格区间、网格数量、每单投入资金等参数。\n4.  **实操指南**：你能够指导用户在不同的交易平台或使用特定机器人软件进行操作。\n\
+            \n# 行为准则\n- **耐心与清晰**：用通俗易懂的语言解释复杂概念，必要时使用举例、比喻。\n- **谨慎与负责**：永远不要承诺收益。必须主动提示风险，并建议用户从小额资金开始测试。\n\
+            - **主动引导**：当用户提问模糊时，主动询问关键信息以提供精准建议。例如：\n  - “您打算交易什么标的呢？（例如：BTC/USDT）”\n\
+              - “您计划投入多少资金？”\n  - “您对风险的承受能力如何？是保守、稳健还是激进？”\n- **结构化回答**：对于策略建议，尽量使用分点、列表或表格（在文本中描述）的形式呈现，使其清晰易懂。\n\
+            \n---\n回复语言: 中文\n---\n任务流程:\n只需要输出下方markdown文档, 按照会话变量进行替换, 严格按照下方映射关系做替换\n\
+            total  总预警数\nactive 活跃预警\ntriggered 已触发\ntotal_triggers 触发次数\n\n---\n\
+            输出格式\n## 预警统计概览\n\n- **总预警数**: {{#conversation.total#}} 个\n- **活跃预警**:\
+            \ {{#conversation.active#}}个预警正在监控中\n- **已触发**: {{#conversation.triggered#}}\
+            \ 个预警已被触发\n- **触发次数**: 共发生 {{#conversation.total_triggered#}} 次触发事件\n\n\
+            ## 数据分析\n\n- 活跃预警占比: **rrr%** ({{#conversation.active#}}/{{#conversation.total#}})\n\
+            - 已触发预警占比: **rrr%** ({{#conversation.triggered#}}/{{#conversation.total#}})\n\
+            - 平均每个触发预警的触发次数: **rrr 次** ({{#conversation.total_triggered#}}/{{#conversation.triggered#}})\n\
+            \n\n---\n!注意!: \n1.上方rrr关键字符是你需要填写的部分"
+        selected: false
+        title: LLM 3
+        type: llm
+        vision:
+          enabled: false
+      height: 88
+      id: '1764329379653'
+      position:
+        x: 3812
+        y: 417
+      positionAbsolute:
+        x: 3812
+        y: 417
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        answer: '{{#1764329379653.text#}}'
+        selected: false
+        title: 直接回复 5
+        type: answer
+        variables: []
+      height: 103
+      id: '1764329839214'
+      position:
+        x: 4153
+        y: 410
+      positionAbsolute:
+        x: 4153
+        y: 410
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        code: "import json\n\ndef main(json_str):\n    \"\"\"\n    解析预警统计JSON数据\n\
+          \    \n    Args:\n        json_str (str): JSON格式的字符串\n        \n    Returns:\n\
+          \        dict: 包含统计数据的字典\n    \"\"\"\n    try:\n        # 解析JSON字符串\n  \
+          \      data = json.loads(json_str)\n        \n        # 检查success字段\n  \
+          \      if data.get('success'):\n            stats = data.get('data', {}).get('stats',\
+          \ {})\n            return {\n                'total': stats.get('total',\
+          \ 0),\n                'active': stats.get('active', 0),\n             \
+          \   'triggered': stats.get('triggered', 0),\n                'total_triggers':\
+          \ stats.get('total_triggers', 0)\n            }\n        else:\n       \
+          \     print(\"请求未成功\")\n            return {}\n            \n    except\
+          \ json.JSONDecodeError as e:\n        print(f\"JSON解析错误: {e}\")\n      \
+          \  return {}\n    except Exception as e:\n        print(f\"解析过程中发生错误: {e}\"\
+          )\n        return {}\n"
+        code_language: python3
+        outputs:
+          active:
+            children: null
+            type: number
+          total:
+            children: null
+            type: number
+          total_triggers:
+            children: null
+            type: number
+          triggered:
+            children: null
+            type: number
+        selected: false
+        title: 代码执行 2
+        type: code
+        variables:
+        - value_selector:
+          - '1764328415239'
+          - body
+          value_type: string
+          variable: json_str
+      height: 52
+      id: '1764330698747'
+      position:
+        x: 3130
+        y: 435
+      positionAbsolute:
+        x: 3130
+        y: 435
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        items:
+        - input_type: variable
+          operation: over-write
+          value:
+          - '1764330698747'
+          - total
+          variable_selector:
+          - conversation
+          - total
+          write_mode: over-write
+        - input_type: variable
+          operation: over-write
+          value:
+          - '1764330698747'
+          - active
+          variable_selector:
+          - conversation
+          - active
+          write_mode: over-write
+        - input_type: variable
+          operation: over-write
+          value:
+          - '1764330698747'
+          - total_triggers
+          variable_selector:
+          - conversation
+          - total_triggered
+          write_mode: over-write
+        - input_type: variable
+          operation: over-write
+          value:
+          - '1764330698747'
+          - triggered
+          variable_selector:
+          - conversation
+          - triggered
+          write_mode: over-write
+        selected: false
+        title: 变量赋值 4
+        type: assigner
+        version: '2'
+      height: 162
+      id: '1764330851434'
+      position:
+        x: 3471
+        y: 380
+      positionAbsolute:
+        x: 3471
+        y: 380
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        answer: '为实施精准的市场价格监控与风险管理，请启用专业级「价格预警」系统，实现自动化阈值告警与实时行情追踪。
+
+          ---
+
+          {{#1764383401518.files#}}'
+        selected: false
+        title: 直接回复 6
+        type: answer
+        variables: []
+      height: 151
+      id: '1764331281685'
+      position:
+        x: 4113
+        y: 0
+      positionAbsolute:
+        x: 4113
+        y: 0
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        authorization:
+          config: null
+          type: no-auth
+        body:
+          data: []
+          type: none
+        headers: ''
+        method: get
+        params: ''
+        retry_config:
+          max_retries: 3
+          retry_enabled: true
+          retry_interval: 100
+        selected: false
+        ssl_verify: true
+        timeout:
+          max_connect_timeout: 0
+          max_read_timeout: 0
+          max_write_timeout: 0
+        title: HTTP 请求 5
+        type: http-request
+        url: '{{#env.base_host#}}/api/whale-tracking/report?asset=ETH'
+        variables: []
+      height: 142
+      id: '1764332070284'
+      position:
+        x: 1044
+        y: 608
+      positionAbsolute:
+        x: 1044
+        y: 608
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        code: "import json\n\ndef main(json_data):\n    \"\"\"\n    解析交易数据JSON，提取所需的参数\n\
+          \    \n    Args:\n        json_data: JSON字符串或字典格式的数据\n        \n    Returns:\n\
+          \        dict: 包含所需参数的字典\n    \"\"\"\n    # 如果输入是字符串，先解析为字典\n    if isinstance(json_data,\
+          \ str):\n        data = json.loads(json_data)\n    else:\n        data =\
+          \ json_data\n    \n    # 提取所需的参数，如果值为0则设置默认值0\n    result = {\n        'totalVolume':\
+          \ round(data['data']['stats']['totalVolume'], 2) if data['data']['stats']['totalVolume']\
+          \ != 0 else 0,\n        'totalTransactions': data['data']['stats']['totalTransactions']\
+          \ if data['data']['stats']['totalTransactions'] != 0 else 0,\n        'exchangeInflowCount':\
+          \ data['data']['stats']['exchangeInflowCount'] if data['data']['stats']['exchangeInflowCount']\
+          \ != 0 else 0,\n        'exchangeOutflowCount': data['data']['stats']['exchangeOutflowCount']\
+          \ if data['data']['stats']['exchangeOutflowCount'] != 0 else 0,\n      \
+          \  'netFlow': data['data']['netFlow']['netFlow'] if data['data']['netFlow']['netFlow']\
+          \ != 0 else 0,\n        'inflowTotal': data['data']['netFlow']['inflowTotal']\
+          \ if data['data']['netFlow']['inflowTotal'] != 0 else 0,\n        'outflowTotal':\
+          \ data['data']['netFlow']['outflowTotal'] if data['data']['netFlow']['outflowTotal']\
+          \ != 0 else 0\n    }\n    \n    return result"
+        code_language: python3
+        outputs:
+          exchangeInflowCount:
+            children: null
+            type: number
+          exchangeOutflowCount:
+            children: null
+            type: number
+          inflowTotal:
+            children: null
+            type: number
+          netFlow:
+            children: null
+            type: number
+          outflowTotal:
+            children: null
+            type: number
+          totalTransactions:
+            children: null
+            type: number
+          totalVolume:
+            children: null
+            type: number
+        selected: false
+        title: 代码执行 3
+        type: code
+        variables:
+        - value_selector:
+          - '1764332070284'
+          - body
+          value_type: string
+          variable: json_data
+      height: 52
+      id: '1764332137067'
+      position:
+        x: 1385
+        y: 652
+      positionAbsolute:
+        x: 1385
+        y: 652
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: deepseek-chat
+          provider: langgenius/deepseek/deepseek
+        prompt_template:
+        - id: 8e178db6-4bc8-4570-bc48-f4bf3d2ce45a
+          role: system
+          text: '# 角色
+
+            你是一个专业的、谨慎的网格交易机器人专家，名为“soulforge”。你的职责是帮助用户理解、设计、部署并监控网格交易策略。
+
+
+            # 核心能力与知识
+
+            1.  **精通网格交易原理**：你深刻理解网格交易是一种在特定价格区间内，低买高卖的自动化交易策略。你熟悉“网格密度”、“价格区间”、“单网格利润”等核心概念。
+
+            2.  **熟悉市场与风险**：你了解加密货币、股票、外汇等不同市场的特性。你始终强调风险管理，并会提醒用户网格交易存在的风险（如单边下跌市导致的套牢）。
+
+            3.  **策略设计专家**：你能根据用户提供的标的、资金量、风险承受能力，推荐合理的价格区间、网格数量、每单投入资金等参数。
+
+            4.  **实操指南**：你能够指导用户在不同的交易平台或使用特定机器人软件进行操作。
+
+
+            # 行为准则
+
+            - **耐心与清晰**：用通俗易懂的语言解释复杂概念，必要时使用举例、比喻。
+
+            - **谨慎与负责**：永远不要承诺收益。必须主动提示风险，并建议用户从小额资金开始测试。
+
+            - **主动引导**：当用户提问模糊时，主动询问关键信息以提供精准建议。例如：
+
+              - “您打算交易什么标的呢？（例如：BTC/USDT）”
+
+              - “您计划投入多少资金？”
+
+              - “您对风险的承受能力如何？是保守、稳健还是激进？”
+
+            - **结构化回答**：对于策略建议，尽量使用分点、列表或表格（在文本中描述）的形式呈现，使其清晰易懂。
+
+
+            ---
+
+            回复语言: 中文
+
+            ---
+
+            任务流程:
+
+            只需要输出下方markdown文档, 按照会话变量进行替换, 严格按照下方映射关系做替换
+
+            totalVolume: 总交易量
+
+            totalTransactions: 总交易数
+
+            exchangeInflowCount: 交易所流入计数
+
+            exchangeOutflowCount: 交易所流出计数
+
+            netFlow: 净流量
+
+            inflowTotal: 总流入量
+
+            outflowTotal: 总流出量
+
+
+            ---
+
+            输出格式
+
+            # 链上资金流量统计
+
+
+            | 指标名称 | 数值 |
+
+            |---------|------|
+
+            | 总交易量 |  {{#1764332137067.totalVolume#}}  |
+
+            | 总交易数 |  {{#1764332137067.totalTransactions#}}   |
+
+            | 交易所流入计数 |  {{#1764332137067.exchangeInflowCount#}}  |
+
+            | 交易所流出计数 |  {{#1764332137067.exchangeOutflowCount#}}  |
+
+            | 净流量 |  {{#1764332137067.netFlow#}}  |
+
+            | 总流入量 |  {{#1764332137067.inflowTotal#}}  |
+
+            | 总流出量 |  {{#1764332137067.outflowTotal#}}  |
+
+
+
+            '
+        selected: false
+        title: LLM 4
+        type: llm
+        vision:
+          enabled: false
+      height: 88
+      id: '1764333238776'
+      position:
+        x: 1726
+        y: 634
+      positionAbsolute:
+        x: 1726
+        y: 634
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        answer: '{{#1764333238776.text#}}'
+        selected: false
+        title: 直接回复 7
+        type: answer
+        variables: []
+      height: 103
+      id: '1764333396261'
+      position:
+        x: 2067
+        y: 627
+      positionAbsolute:
+        x: 2067
+        y: 627
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        answer: "您好！我是您的网格交易助手 **soulforge**，很高兴为您服务。以下是我的详细定位和能力说明，帮助您了解如何与我高效协作：\n\
+          \n---\n\n### \U0001F50D **我的核心定位**\n- **专业领域**：专注于**网格交易策略**的设计、优化与风险解析。\n\
+          - **角色目标**：作为您的自动化交易顾问，我会结合市场逻辑与数学建模，提供**理性、可执行**的解决方案。\n- **原则立场**：**不承诺收益、不诱导操作**，始终将风险提示放在首位。\n\
+          \n---\n\n### ⚙️ **我能为您做什么？**\n1. **策略设计与优化**  \n   - 根据标的物特性、资金量、风险偏好，计算合理的**价格区间、网格数量、单网格利润率**。\
+          \  \n   - 示例：若您交易波动率较高的加密货币（如ETH），我会建议更密集的网格以捕捉短期波动。\n\n2. **风险解析与对冲建议**\
+          \  \n   - 揭示网格策略的潜在风险（如单边暴跌导致的“破网”、流动性不足）。  \n   - 提供补充方案（例如：结合趋势判断动态调整区间，或设置止损条件）。\n\
+          \n3. **实操指导**  \n   - 逐步说明如何在主流平台（如币安、Pionex、Bybit）部署网格机器人。  \n   - 解析参数含义（如“网格触发范围”、“再投资模式”对复利的影响）。\n\
+          \n4. **策略回溯与调整**  \n   - 帮助分析历史回测数据，优化参数（例如：通过波动率指标（ATR）动态调整网格间距）。\n\n---\n\
+          \n### \U0001F4DD **协作流程建议**\n1. **信息收集**（您需提供）：  \n   - **交易标的**（如：BTC/USDT）\
+          \  \n   - **资金规模与风险承受等级**（保守/稳健/激进）  \n   - **特殊需求**（如：高频套利、长周期定投式网格）\n\n\
+          2. **策略生成**（我的输出）：  \n   - 参数表格（区间上限/下限、网格数、预期年化波动率捕获）  \n   - 风险模拟（如：“若价格下跌20%，最大浮亏约X%”）\n\
+          \n3. **持续迭代**：  \n   - 根据实盘表现共同调整策略，例如在趋势市中收缩网格范围。\n\n---\n\n### ⚠️ **重要风险提示**\n\
+          - 网格交易在**震荡市**中收益显著，但在**单边牛市**中可能跑输持有，在**单边熊市**中可能持续补仓导致深套。  \n- 建议初始用**≤10%仓位**试运行，并设置总资金止损线。\
+          \  \n- 极端行情（如闪崩、交易所宕机）可能触发意外风险。\n\n---\n\n### \U0001F3AF **现在，我们可以这样开始：**\n\
+          请告诉我：  \n1. 您关注的**交易标的**是什么？  \n2. 您当前的**核心目标**（例如：稳健增值、高频套利、还是学习策略逻辑）？\
+          \  \n3. 是否有已选定的**交易平台**？\n\n我会根据您的回答，提供定制化建议。期待与您共同打磨策略！"
+        selected: false
+        title: 直接回复 8
+        type: answer
+        variables: []
+      height: 980
+      id: '1764379831854'
+      position:
+        x: 1044
+        y: 828
+      positionAbsolute:
+        x: 1044
+        y: 828
+      selected: true
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        authorization:
+          config: null
+          type: no-auth
+        body:
+          data: []
+          type: none
+        headers: ''
+        method: get
+        params: ''
+        retry_config:
+          max_retries: 3
+          retry_enabled: true
+          retry_interval: 100
+        selected: false
+        ssl_verify: true
+        timeout:
+          max_connect_timeout: 0
+          max_read_timeout: 0
+          max_write_timeout: 0
+        title: HTTP 请求 6
+        type: http-request
+        url: '{{#env.base_host#}}/api/okx/trade/closed-orders?limit=10&mode=demo'
+        variables: []
+      height: 158
+      id: '1764380604536'
+      position:
+        x: 1044
+        y: 1887
+      positionAbsolute:
+        x: 1044
+        y: 1887
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        code: "def main(order_data):\n    import json\n    from datetime import datetime\n\
+          \    \n    # 如果输入是字符串，先解析为字典\n    if isinstance(order_data, str):\n    \
+          \    try:\n            order_data = json.loads(order_data)\n        except\
+          \ json.JSONDecodeError:\n            return {\"error\": \"无效的JSON格式\"}\n\
+          \    \n    parsed_data = []\n    \n    # 检查数据有效性\n    if not isinstance(order_data,\
+          \ dict):\n        return {\"error\": \"输入数据格式不正确\"}\n    \n    if order_data.get(\"\
+          success\") and \"data\" in order_data:\n        for order in order_data[\"\
+          data\"]:\n            # 格式化时间\n            timestamp = order.get(\"timestamp\"\
+          )\n            datetime_str = \"\"\n            if timestamp:\n        \
+          \        dt = datetime.fromtimestamp(timestamp / 1000)\n               \
+          \ datetime_str = dt.strftime(\"%Y-%m-%d %H:%M:%S\")\n            \n    \
+          \        parsed_order = {\n                \"datetime\": datetime_str,\n\
+          \                \"symbol\": order.get(\"symbol\", \"\"),\n            \
+          \    \"side\": order.get(\"side\", \"\"),\n                \"status\": order.get(\"\
+          status\", \"\"),\n                \"amount\": float(order.get(\"amount\"\
+          , 0))\n            }\n            parsed_data.append(parsed_order)\n   \
+          \ \n    return {\n        \"parsed_data\": parsed_data\n    }"
+        code_language: python3
+        outputs:
+          parsed_data:
+            children: null
+            type: array[object]
+        selected: false
+        title: 代码执行 4
+        type: code
+        variables:
+        - value_selector:
+          - '1764380604536'
+          - body
+          value_type: string
+          variable: order_data
+      height: 52
+      id: '1764381162215'
+      position:
+        x: 1385
+        y: 1939
+      positionAbsolute:
+        x: 1385
+        y: 1939
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        code: "# 表格生成节点\ndef main(parsed_data):\n    if not parsed_data:\n       \
+          \ return \"暂无数据\"\n    \n    # 创建Markdown表格\n    table = \"| 时间 | 交易对 |\
+          \ 方向 | 状态 | 金额 |\\n\"\n    table += \"|------|--------|------|------|------|\\\
+          n\"\n    \n    for order in parsed_data:\n        table += f\"| {order['datetime']}\
+          \ | {order['symbol']} | {order['side']} | {order['status']} | {order['amount']:.8f}\
+          \ |\\n\"\n    \n    return {\n        \"table_data\" : table\n    }"
+        code_language: python3
+        outputs:
+          table_data:
+            children: null
+            type: string
+        selected: false
+        title: 代码执行 5
+        type: code
+        variables:
+        - value_selector:
+          - '1764381162215'
+          - parsed_data
+          value_type: array[object]
+          variable: parsed_data
+      height: 52
+      id: '1764382320942'
+      position:
+        x: 1726
+        y: 1939
+      positionAbsolute:
+        x: 1726
+        y: 1939
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: deepseek-chat
+          provider: langgenius/deepseek/deepseek
+        prompt_template:
+        - id: 510e4443-fa93-4bb0-93cd-93d252dc4da3
+          role: system
+          text: '你是一个专业的数据分析师。请将提供的交易数据表格进行以下处理：
+
+
+            1. 美化表格格式，使其更易读
+
+            2. 添加简要的数据分析总结
+
+            3. 用中文输出最终结果
+
+            4. 保持专业但友好的语气
+
+
+            表格数据：
+
+            {{#1764382320942.table_data#}}'
+        selected: false
+        title: LLM 5
+        type: llm
+        vision:
+          enabled: false
+      height: 88
+      id: '1764382365177'
+      position:
+        x: 2067
+        y: 1921
+      positionAbsolute:
+        x: 2067
+        y: 1921
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        answer: '{{#1764382365177.text#}}'
+        selected: false
+        title: 直接回复 9
+        type: answer
+        variables: []
+      height: 103
+      id: '1764382396949'
+      position:
+        x: 2408
+        y: 1914
+      positionAbsolute:
+        x: 2408
+        y: 1914
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        is_team_authorization: true
+        paramSchemas:
+        - auto_generate: null
+          default: null
+          form: llm
+          human_description:
+            en_US: Markdown text
+            ja_JP: Markdown text
+            pt_BR: Markdown text
+            zh_Hans: Markdown格式文本
+          label:
+            en_US: Markdown text
+            ja_JP: Markdown text
+            pt_BR: Markdown text
+            zh_Hans: Markdown格式文本
+          llm_description: ''
+          max: null
+          min: null
+          name: md_text
+          options: []
+          placeholder: null
+          precision: null
+          required: true
+          scope: null
+          template: null
+          type: string
+        - auto_generate: null
+          default: null
+          form: llm
+          human_description:
+            en_US: Optional custom output file name, and the filename suffix is not
+              required.
+            ja_JP: Optional custom output file name, and the filename suffix is not
+              required.
+            pt_BR: Optional custom output file name, and the filename suffix is not
+              required.
+            zh_Hans: 可选的自定义输出文件名，后缀名无需指定
+          label:
+            en_US: Output Filename
+            ja_JP: Output Filename
+            pt_BR: Output Filename
+            zh_Hans: 输出文件名
+          llm_description: ''
+          max: null
+          min: null
+          name: output_filename
+          options: []
+          placeholder: null
+          precision: null
+          required: false
+          scope: null
+          template: null
+          type: string
+        params:
+          md_text: ''
+          output_filename: ''
+        plugin_id: bowenliang123/md_exporter
+        plugin_unique_identifier: bowenliang123/md_exporter:2.1.1@63ea80ece23673b1579c0ff64e6dc731e1b4baebca1fcce4d45fda17d962bfc8
+        provider_icon: /console/api/workspaces/current/plugin/icon?tenant_id=b40af857-a9e0-4642-a8e2-6eacd82924cd&filename=f0bad95cda1671b4e49f0e05df6122ef9ec5d554e138f128795d11d3806c00ef.svg
+        provider_id: bowenliang123/md_exporter/md_exporter
+        provider_name: bowenliang123/md_exporter/md_exporter
+        provider_type: builtin
+        selected: false
+        title: Markdown 转 md 文件
+        tool_configurations: {}
+        tool_description: 将 Markdown 转换为 .md 文件的工具
+        tool_label: Markdown 转 md 文件
+        tool_name: md_to_md
+        tool_node_version: '2'
+        tool_parameters:
+          md_text:
+            type: mixed
+            value: '{{#1764312922220.text#}}'
+          output_filename:
+            type: mixed
+            value: 价格走势_{{#1764383486481.text#}}
+        type: tool
+      height: 52
+      id: '1764383401518'
+      position:
+        x: 3772
+        y: 49
+      positionAbsolute:
+        x: 3772
+        y: 49
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        is_team_authorization: true
+        paramSchemas:
+        - auto_generate: null
+          default: '%Y-%m-%d %H:%M:%S'
+          form: form
+          human_description:
+            en_US: Time format in strftime standard.
+            ja_JP: Time format in strftime standard.
+            pt_BR: Time format in strftime standard.
+            zh_Hans: strftime 标准的时间格式。
+          label:
+            en_US: Format
+            ja_JP: Format
+            pt_BR: Format
+            zh_Hans: 格式
+          llm_description: null
+          max: null
+          min: null
+          name: format
+          options: []
+          placeholder: null
+          precision: null
+          required: false
+          scope: null
+          template: null
+          type: string
+        - auto_generate: null
+          default: UTC
+          form: form
+          human_description:
+            en_US: Timezone
+            ja_JP: Timezone
+            pt_BR: Timezone
+            zh_Hans: 时区
+          label:
+            en_US: Timezone
+            ja_JP: Timezone
+            pt_BR: Timezone
+            zh_Hans: 时区
+          llm_description: null
+          max: null
+          min: null
+          name: timezone
+          options:
+          - icon: null
+            label:
+              en_US: UTC
+              ja_JP: UTC
+              pt_BR: UTC
+              zh_Hans: UTC
+            value: UTC
+          - icon: null
+            label:
+              en_US: America/New_York
+              ja_JP: America/New_York
+              pt_BR: America/New_York
+              zh_Hans: 美洲/纽约
+            value: America/New_York
+          - icon: null
+            label:
+              en_US: America/Los_Angeles
+              ja_JP: America/Los_Angeles
+              pt_BR: America/Los_Angeles
+              zh_Hans: 美洲/洛杉矶
+            value: America/Los_Angeles
+          - icon: null
+            label:
+              en_US: America/Chicago
+              ja_JP: America/Chicago
+              pt_BR: America/Chicago
+              zh_Hans: 美洲/芝加哥
+            value: America/Chicago
+          - icon: null
+            label:
+              en_US: America/Sao_Paulo
+              ja_JP: America/Sao_Paulo
+              pt_BR: América/São Paulo
+              zh_Hans: 美洲/圣保罗
+            value: America/Sao_Paulo
+          - icon: null
+            label:
+              en_US: Asia/Shanghai
+              ja_JP: Asia/Shanghai
+              pt_BR: Asia/Shanghai
+              zh_Hans: 亚洲/上海
+            value: Asia/Shanghai
+          - icon: null
+            label:
+              en_US: Asia/Ho_Chi_Minh
+              ja_JP: Asia/Ho_Chi_Minh
+              pt_BR: Ásia/Ho Chi Minh
+              zh_Hans: 亚洲/胡志明市
+            value: Asia/Ho_Chi_Minh
+          - icon: null
+            label:
+              en_US: Asia/Tokyo
+              ja_JP: Asia/Tokyo
+              pt_BR: Asia/Tokyo
+              zh_Hans: 亚洲/东京
+            value: Asia/Tokyo
+          - icon: null
+            label:
+              en_US: Asia/Dubai
+              ja_JP: Asia/Dubai
+              pt_BR: Asia/Dubai
+              zh_Hans: 亚洲/迪拜
+            value: Asia/Dubai
+          - icon: null
+            label:
+              en_US: Asia/Kolkata
+              ja_JP: Asia/Kolkata
+              pt_BR: Asia/Kolkata
+              zh_Hans: 亚洲/加尔各答
+            value: Asia/Kolkata
+          - icon: null
+            label:
+              en_US: Asia/Seoul
+              ja_JP: Asia/Seoul
+              pt_BR: Asia/Seoul
+              zh_Hans: 亚洲/首尔
+            value: Asia/Seoul
+          - icon: null
+            label:
+              en_US: Asia/Singapore
+              ja_JP: Asia/Singapore
+              pt_BR: Asia/Singapore
+              zh_Hans: 亚洲/新加坡
+            value: Asia/Singapore
+          - icon: null
+            label:
+              en_US: Europe/London
+              ja_JP: Europe/London
+              pt_BR: Europe/London
+              zh_Hans: 欧洲/伦敦
+            value: Europe/London
+          - icon: null
+            label:
+              en_US: Europe/Berlin
+              ja_JP: Europe/Berlin
+              pt_BR: Europe/Berlin
+              zh_Hans: 欧洲/柏林
+            value: Europe/Berlin
+          - icon: null
+            label:
+              en_US: Europe/Moscow
+              ja_JP: Europe/Moscow
+              pt_BR: Europe/Moscow
+              zh_Hans: 欧洲/莫斯科
+            value: Europe/Moscow
+          - icon: null
+            label:
+              en_US: Australia/Sydney
+              ja_JP: Australia/Sydney
+              pt_BR: Australia/Sydney
+              zh_Hans: 澳大利亚/悉尼
+            value: Australia/Sydney
+          - icon: null
+            label:
+              en_US: Pacific/Auckland
+              ja_JP: Pacific/Auckland
+              pt_BR: Pacific/Auckland
+              zh_Hans: 太平洋/奥克兰
+            value: Pacific/Auckland
+          - icon: null
+            label:
+              en_US: Africa/Cairo
+              ja_JP: Africa/Cairo
+              pt_BR: Africa/Cairo
+              zh_Hans: 非洲/开罗
+            value: Africa/Cairo
+          placeholder: null
+          precision: null
+          required: false
+          scope: null
+          template: null
+          type: select
+        params:
+          format: ''
+          timezone: ''
+        plugin_id: null
+        plugin_unique_identifier: ''
+        provider_icon: /console/api/workspaces/current/tool-provider/builtin/time/icon
+        provider_id: time
+        provider_name: time
+        provider_type: builtin
+        selected: false
+        title: 获取当前时间
+        tool_configurations:
+          format:
+            type: mixed
+            value: '%Y-%m-%d %H:%M:%S'
+          timezone:
+            type: constant
+            value: Asia/Shanghai
+        tool_description: 一个用于获取当前时间的工具。
+        tool_label: 获取当前时间
+        tool_name: current_time
+        tool_node_version: '2'
+        tool_parameters: {}
+        type: tool
+      height: 114
+      id: '1764383448078'
+      position:
+        x: 3090
+        y: 18
+      positionAbsolute:
+        x: 3090
+        y: 18
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        is_team_authorization: true
+        paramSchemas:
+        - auto_generate: null
+          default: null
+          form: llm
+          human_description:
+            en_US: localtime, such as 2024-1-1 0:0:0
+            ja_JP: localtime, such as 2024-1-1 0:0:0
+            pt_BR: localtime, such as 2024-1-1 0:0:0
+            zh_Hans: 本地时间，比如 2024-1-1 0:0:0
+          label:
+            en_US: localtime
+            ja_JP: localtime
+            pt_BR: localtime
+            zh_Hans: 本地时间
+          llm_description: null
+          max: null
+          min: null
+          name: localtime
+          options: []
+          placeholder: null
+          precision: null
+          required: true
+          scope: null
+          template: null
+          type: string
+        - auto_generate: null
+          default: Asia/Shanghai
+          form: llm
+          human_description:
+            en_US: Timezone, such as Asia/Shanghai
+            ja_JP: Timezone, such as Asia/Shanghai
+            pt_BR: Timezone, such as Asia/Shanghai
+            zh_Hans: 时区，比如 Asia/Shanghai
+          label:
+            en_US: Timezone
+            ja_JP: Timezone
+            pt_BR: Timezone
+            zh_Hans: 时区
+          llm_description: null
+          max: null
+          min: null
+          name: timezone
+          options: []
+          placeholder: null
+          precision: null
+          required: false
+          scope: null
+          template: null
+          type: string
+        params:
+          localtime: ''
+          timezone: ''
+        plugin_id: null
+        plugin_unique_identifier: ''
+        provider_icon: /console/api/workspaces/current/tool-provider/builtin/time/icon
+        provider_id: time
+        provider_name: time
+        provider_type: builtin
+        selected: false
+        title: 获取时间戳
+        tool_configurations: {}
+        tool_description: 获取时间戳
+        tool_label: 获取时间戳
+        tool_name: localtime_to_timestamp
+        tool_node_version: '2'
+        tool_parameters:
+          localtime:
+            type: mixed
+            value: '{{#1764383448078.text#}}'
+          timezone:
+            type: mixed
+            value: Asia/Shanghai
+        type: tool
+      height: 52
+      id: '1764383486481'
+      position:
+        x: 3431
+        y: 49
+      positionAbsolute:
+        x: 3431
+        y: 49
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    viewport:
+      x: -457.5330570381582
+      y: 100.11686728243978
+      zoom: 0.7000000000000002
+  rag_pipeline_variables: []
