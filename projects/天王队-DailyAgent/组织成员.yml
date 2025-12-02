@@ -1,0 +1,207 @@
+app:
+  description: 用于查询组织成员基本信息并输出YAML格式结果，后续可扩展工作内容、人格等画像信息
+  icon: 👥
+  icon_background: '#E6F7FF'
+  mode: advanced-chat
+  name: 组织成员信息查询
+  use_icon_as_answer_icon: false
+dependencies:
+- current_identifier: null
+  type: marketplace
+  value:
+    marketplace_plugin_unique_identifier: langgenius/openai:0.2.7@9031bbf9b37d9f6341a20c78a8bd18d686afd3ff627545496c3557705419d084
+    version: null
+kind: app
+version: 0.5.0
+workflow:
+  conversation_variables: []
+  environment_variables: []
+  features:
+    file_upload:
+      allowed_file_extensions:
+      - .JPG
+      - .JPEG
+      - .PNG
+      - .GIF
+      - .WEBP
+      - .SVG
+      allowed_file_types:
+      - image
+      allowed_file_upload_methods:
+      - local_file
+      - remote_url
+      enabled: false
+      fileUploadConfig:
+        audio_file_size_limit: 50
+        batch_count_limit: 5
+        file_size_limit: 15
+        image_file_size_limit: 10
+        video_file_size_limit: 100
+        workflow_file_upload_limit: 10
+      image:
+        enabled: false
+        number_limits: 3
+        transfer_methods:
+        - local_file
+        - remote_url
+      number_limits: 3
+    opening_statement: 请输入需要查询的成员姓名，将为您返回该成员的基本信息（YAML格式）
+    retriever_resource:
+      enabled: true
+      resource_ids:
+      - your_knowledge_base_id
+    sensitive_word_avoidance:
+      enabled: false
+    speech_to_text:
+      enabled: false
+    suggested_questions:
+    - 查询张磊的信息
+    - 李明属于哪个部门
+    - 研发二部有哪些成员
+    suggested_questions_after_answer:
+      enabled: true
+    text_to_speech:
+      enabled: false
+      language: ''
+      voice: ''
+  # 补充工具定义（解决name和inputSchema缺失问题）
+  tools:
+  - name: 组织成员信息查询工具
+    inputSchema:
+      type: object
+      properties:
+        member_name:
+          type: string
+          description: 待查询的成员姓名（必填）
+        query_scope:
+          type: string
+          enum: [basic_info]
+          default: basic_info
+          description: 查询范围（当前仅支持basic_info）
+        strict_mode:
+          type: boolean
+          default: true
+          description: 严格模式（信息不全时是否返回空结果）
+      required:
+      - member_name
+  graph:
+    edges:
+    - data:
+        sourceType: start
+        targetType: llm
+      id: input-llm
+      source: user_input
+      sourceHandle: source
+      target: llm_node
+      targetHandle: target
+      type: custom
+    - data:
+        sourceType: llm
+        targetType: answer
+      id: llm-answer
+      source: llm_node
+      sourceHandle: source
+      target: answer_node
+      targetHandle: target
+      type: custom
+    nodes:
+    - data:
+        selected: true
+        title: 用户输入
+        type: start
+        variables: []
+      height: 73
+      id: user_input
+      position:
+        x: 100
+        y: 300
+      positionAbsolute:
+        x: 100
+        y: 300
+      selected: true
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        context:
+          enabled: true
+          variable_selector:
+          - sys
+          - query
+        memory:
+          query_prompt_template: '{{#sys.query#}}{{#sys.files#}}'
+          role_prefix:
+            assistant: ''
+            user: ''
+          window:
+            enabled: false
+            size: 10
+        model:
+          completion_params:
+            temperature: 0.3
+          mode: chat
+          name: gpt-3.5-turbo
+          provider: langgenius/openai/openai
+        prompt_template:
+        - id: 4535dd51-e2fd-4921-8984-21615d9f13f6
+          role: system
+          text: '【系统指令】
+
+            你需要从知识库中提取组织成员信息，入参规则：
+
+            1. 待查询成员：{{member_name}}
+
+            2. 查询范围：{{query_scope}}（当前仅处理basic_info）
+
+            3. 严格模式：{{strict_mode}}
+
+            输出要求：
+
+            - 仅使用知识库内容，严格模式为true时，信息不全则返回空YAML
+
+            - 输出格式为YAML，包含name/big_org/department/position字段
+
+            - 多成员查询时，以YAML列表形式返回'
+        selected: false
+        title: LLM处理
+        type: llm
+        vision:
+          enabled: false
+      height: 88
+      id: llm_node
+      position:
+        x: 400
+        y: 300
+      positionAbsolute:
+        x: 400
+        y: 300
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        answer: '{{#llm_node.text#}}'
+        selected: false
+        title: 结果输出
+        type: answer
+        variables: []
+      height: 103
+      id: answer_node
+      position:
+        x: 700
+        y: 300
+      positionAbsolute:
+        x: 700
+        y: 300
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    viewport:
+      x: 47.903055161511475
+      y: 175.50620030395837
+      zoom: 0.7557232090931448
+  rag_pipeline_variables: []

@@ -1,0 +1,327 @@
+@use "../../theme/scss/_variables" as *;
+@use "../../theme/scss/_mixins" as *;
+
+.container {
+  position: absolute;
+  z-index: 10;
+}
+.containerShow {
+  height: 0 !important;
+}
+
+// 微信提示样式
+.header-tip-wrap {
+  background: linear-gradient(322.91deg, var(--primary-color) 5.8%, var(--info-color) 95.3%);
+  position: fixed;
+  right: 10px;
+  top: 20px;
+  border-radius: 10px;
+  padding: 10px 14px;
+  color: #ffffff;
+  z-index: 9999;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  font-size: 14px;
+  max-width: 280px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  animation: slideInRight 0.3s ease-out;
+
+  .header-tip {
+    text-align: center;
+    line-height: 20px;
+    position: relative;
+    padding-right: 20px;
+
+    &::before {
+      content: "";
+      width: 0;
+      height: 0;
+      border: 12px solid transparent;
+      border-bottom-color: var(--primary-color);
+      position: absolute;
+      right: 0px;
+      top: -32px;
+    }
+  }
+
+  .close-btn {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: none;
+    border: none;
+    color: #ffffff;
+    font-size: 16px;
+    cursor: pointer;
+    padding: 0;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: background-color 0.2s;
+
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.2);
+    }
+  }
+}
+
+// 移动端下载提示样式
+.download-tip-wrap {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  animation: fadeIn 0.3s ease-out;
+
+  .download-tip {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 24px;
+    max-width: 320px;
+    width: 100%;
+    text-align: center;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+    animation: scaleIn 0.3s ease-out;
+
+    .app-info {
+      display: flex;
+      align-items: center;
+      margin-bottom: 20px;
+      text-align: left;
+
+      .app-logo {
+        width: 60px;
+        height: 60px;
+        border-radius: 12px;
+        margin-right: 16px;
+        flex-shrink: 0;
+      }
+
+      .app-details {
+        flex: 1;
+
+        h3 {
+          margin: 0 0 8px 0;
+          font-size: 18px;
+          font-weight: 600;
+          color: var(--text-color);
+        }
+
+        p {
+          margin: 0;
+          font-size: 14px;
+          color: var(--text-secondary);
+          line-height: 1.4;
+        }
+      }
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 12px;
+
+      .download-btn {
+        flex: 1;
+        background: var(--primary-color);
+        color: #ffffff;
+        border: none;
+        border-radius: 8px;
+        padding: 12px 16px;
+        font-size: 16px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background-color 0.2s;
+
+        &:hover {
+          background: var(--primary-color-hover);
+        }
+      }
+
+      .close-btn {
+        flex: 1;
+        background: var(--component-background);
+        color: var(--text-color);
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        padding: 12px 16px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background-color 0.2s;
+
+        &:hover {
+          background: var(--item-hover-bg);
+        }
+      }
+    }
+  }
+}
+
+// PC端下载提示样式
+.pc-tip-wrap {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  animation: fadeIn 0.3s ease-out;
+
+  .pc-tip {
+    background: #ffffff;
+    border-radius: 8px;
+    padding: 24px;
+    max-width: 400px;
+    width: 100%;
+    text-align: center;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+    animation: scaleIn 0.3s ease-out;
+
+    .pc-tip-content {
+      margin-bottom: 24px;
+      font-size: 16px;
+      line-height: 1.5;
+      color: var(--text-color);
+    }
+
+    .pc-action-buttons {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+
+      .pc-download-btn {
+        background: var(--primary-color);
+        color: #ffffff;
+        border: none;
+        border-radius: 6px;
+        padding: 10px 24px;
+        font-size: 14px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background-color 0.2s;
+
+        &:hover {
+          background: var(--primary-color-hover);
+        }
+      }
+
+      .pc-cancel-btn {
+        background: var(--component-background);
+        color: var(--text-color);
+        border: 1px solid var(--border-color);
+        border-radius: 6px;
+        padding: 10px 24px;
+        font-size: 14px;
+        cursor: pointer;
+        transition: background-color 0.2s;
+
+        &:hover {
+          background: var(--item-hover-bg);
+        }
+      }
+    }
+  }
+}
+
+// 主要操作按钮样式
+.open-in-app-btn {
+  background: var(--primary-color);
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+
+  &:hover {
+    background: var(--primary-color-hover);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+// 动画效果
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+// 响应式设计
+@include mobile {
+  .header-tip-wrap {
+    right: 8px;
+    top: 16px;
+    max-width: 260px;
+    font-size: 13px;
+  }
+
+  .download-tip-wrap .download-tip {
+    margin: 16px;
+    padding: 20px;
+  }
+
+  .pc-tip-wrap .pc-tip {
+    margin: 16px;
+    padding: 20px;
+  }
+}
+
+@include tablet {
+  .header-tip-wrap {
+    right: 12px;
+    top: 18px;
+  }
+}
+
+@include desktop {
+  .header-tip-wrap {
+    right: 16px;
+    top: 20px;
+  }
+}

@@ -1,0 +1,74 @@
+// 响应式设计mixins
+@mixin mobile {
+  @media (max-width: 767px) {
+    @content;
+  }
+}
+
+@mixin tablet {
+  @media (min-width: 768px) and (max-width: 1023px) {
+    @content;
+  }
+}
+
+@mixin desktop {
+  @media (min-width: 1024px) {
+    @content;
+  }
+}
+
+// 排版mixins
+@mixin text-ellipsis {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@mixin multi-line-ellipsis($lines: 2) {
+  display: -webkit-box;
+  -webkit-line-clamp: $lines;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+// Flex布局mixins
+@mixin flex($direction: row, $justify: flex-start, $align: stretch) {
+  display: flex;
+  flex-direction: $direction;
+  justify-content: $justify;
+  align-items: $align;
+}
+
+@mixin flex-center {
+  @include flex(row, center, center);
+}
+
+@mixin flex-column {
+  @include flex(column, flex-start, stretch);
+}
+
+// 动画mixins
+@mixin transition($property: all, $duration: 0.3s, $timing: ease-in-out) {
+  transition: $property $duration $timing;
+}
+
+// 阴影mixins
+@mixin box-shadow($level: 'base') {
+  @if $level == 'base' {
+    box-shadow: var(--box-shadow-base);
+  } @else if $level == 'hover' {
+    box-shadow: 0 6px 16px 0 rgba(0, 0, 0, 0.08), 0 3px 6px -4px rgba(0, 0, 0, 0.12), 0 9px 28px 8px rgba(0, 0, 0, 0.05);
+  } @else if $level == 'active' {
+    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.08), 0 1px 2px -2px rgba(0, 0, 0, 0.12), 0 3px 10px 4px rgba(0, 0, 0, 0.05);
+  }
+}
+
+// 边框mixins
+@mixin border($direction: all, $width: 1px, $style: solid, $color: var(--border-color)) {
+  @if $direction == 'all' {
+    border: $width $style $color;
+  } @else {
+    border-#{$direction}: $width $style $color;
+  }
+} 

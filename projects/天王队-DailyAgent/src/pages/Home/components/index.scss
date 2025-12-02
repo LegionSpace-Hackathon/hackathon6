@@ -1,0 +1,158 @@
+#scenarios{
+    background-image: url('../../../assets/images/agent/footer-gradient.webp');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center bottom;
+    opacity: 1;
+}
+
+// 粒子边框效果
+.scenario-card-wrapper {
+    position: relative;
+    overflow: visible; // 允许粒子稍微溢出
+    
+    .particle-border {
+        position: absolute;
+        inset: -2px; // 稍微扩展以容纳粒子
+        pointer-events: none;
+        z-index: 1;
+        border-radius: 1rem;
+    }
+    
+    .particle {
+        position: absolute;
+        width: 4px;
+        height: 4px;
+        background: linear-gradient(135deg, #15D69C 0%, #0ea5e9 100%);
+        border-radius: 50%;
+        box-shadow: 
+            0 0 6px rgba(21, 214, 156, 0.8),
+            0 0 12px rgba(21, 214, 156, 0.4),
+            0 0 20px rgba(21, 214, 156, 0.2);
+        animation: particle-rotate 8s linear infinite;
+        opacity: 0.9;
+        filter: blur(0.5px); // 轻微模糊让粒子更柔和
+        transform: translate(-50%, -50%);
+    }
+    
+    // 粒子沿着边框路径移动的动画（考虑圆角）
+    @keyframes particle-rotate {
+        // 左上角 -> 右上角
+        0% {
+            top: 0;
+            left: 0;
+            transform: translate(-50%, -50%) scale(1);
+            opacity: 0.9;
+        }
+        12% {
+            transform: translate(-50%, -50%) scale(1.15);
+            opacity: 1;
+        }
+        24% {
+            top: 0;
+            left: 100%;
+            transform: translate(-50%, -50%) scale(1);
+            opacity: 0.9;
+        }
+        // 右上角 -> 右下角
+        25% {
+            top: 0;
+            left: 100%;
+            transform: translate(-50%, -50%) scale(1);
+            opacity: 0.9;
+        }
+        37% {
+            transform: translate(-50%, -50%) scale(1.15);
+            opacity: 1;
+        }
+        49% {
+            top: 100%;
+            left: 100%;
+            transform: translate(-50%, -50%) scale(1);
+            opacity: 0.9;
+        }
+        // 右下角 -> 左下角
+        50% {
+            top: 100%;
+            left: 100%;
+            transform: translate(-50%, -50%) scale(1);
+            opacity: 0.9;
+        }
+        62% {
+            transform: translate(-50%, -50%) scale(1.15);
+            opacity: 1;
+        }
+        74% {
+            top: 100%;
+            left: 0;
+            transform: translate(-50%, -50%) scale(1);
+            opacity: 0.9;
+        }
+        // 左下角 -> 左上角
+        75% {
+            top: 100%;
+            left: 0;
+            transform: translate(-50%, -50%) scale(1);
+            opacity: 0.9;
+        }
+        87% {
+            transform: translate(-50%, -50%) scale(1.15);
+            opacity: 1;
+        }
+        100% {
+            top: 0;
+            left: 0;
+            transform: translate(-50%, -50%) scale(1);
+            opacity: 0.9;
+        }
+    }
+    
+    // 为不同粒子添加不同的轨迹偏移，形成更自然的流动效果
+    .particle:nth-child(odd) {
+        animation-duration: 10s;
+        width: 3px;
+        height: 3px;
+        filter: blur(0.3px);
+    }
+    
+    .particle:nth-child(even) {
+        animation-duration: 12s;
+        width: 5px;
+        height: 5px;
+        filter: blur(0.6px);
+    }
+    
+    // 添加额外的发光粒子
+    .particle:nth-child(3n) {
+        background: linear-gradient(135deg, #0ea5e9 0%, #15D69C 100%);
+        animation-duration: 9s;
+        box-shadow: 
+            0 0 8px rgba(14, 165, 233, 0.9),
+            0 0 16px rgba(14, 165, 233, 0.5),
+            0 0 24px rgba(14, 165, 233, 0.3);
+    }
+    
+    // 添加更小的快速粒子
+    .particle:nth-child(4n) {
+        animation-duration: 7s;
+        width: 2px;
+        height: 2px;
+        opacity: 0.6;
+        filter: blur(0.2px);
+    }
+    
+    // 添加更大的慢速粒子
+    .particle:nth-child(5n) {
+        animation-duration: 15s;
+        width: 6px;
+        height: 6px;
+        opacity: 0.8;
+        filter: blur(0.8px);
+    }
+    
+    // 确保内容在粒子上方
+    > *:not(.particle-border) {
+        position: relative;
+        z-index: 2;
+    }
+}

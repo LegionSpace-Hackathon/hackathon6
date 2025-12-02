@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <!-- <meta name=referrer content=no-referrer> -->
+  <meta name="theme-color" content="#ffffff" />
+  <!-- <title id="dynamic-title">大群空间 - 多智能体协同平台</title> -->
+  <meta name="description" content="大群空间是让你和AI Agent 协作的可信智能体社区。在大群空间中，你可以灵活组合各种专业智能体，团队协同迅速完成任务，最终促成一个开放的价值交换网络。" />
+  <!-- 预加载字体，防止闪烁 -->
+  <!-- <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin> -->
+  <!-- CSP安全策略 -->
+  <meta http-equiv="Content-Security-Policy" content="
+  default-src *;font-src * data:;
+  img-src * 'self' blob: data:;
+  script-src 'self' blob: 'unsafe-inline' 'unsafe-eval' *;
+  style-src 'self' blob: 'unsafe-inline' *;
+  ">
+  <meta name="referrer" content="no-referrer-when-downgrade">
+
+  <style>
+    html {
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    /* 防止双击缩放 */
+    * {
+      touch-action: manipulation;
+    }
+  </style>
+
+  <!-- 预先定义React全局对象和createContext函数，确保i18n初始化不会报错 -->
+  <script>
+    // 预先定义React全局对象和createContext函数，确保i18n初始化不会报错
+    window.React = window.React || {};
+    if (!window.React.createContext) {
+      window.React.createContext = function (defaultValue) {
+        console.log('使用预定义的createContext');
+        return {
+          Provider: function (props) { return props.children; },
+          Consumer: function (props) {
+            if (typeof props.children === 'function') {
+              return props.children(defaultValue);
+            }
+            return props.children;
+          },
+          displayName: 'Prefilled_Context',
+          _currentValue: defaultValue,
+          _currentValue2: defaultValue
+        };
+      };
+    }
+
+    // 根据URL参数立即设置正确的页面标题，避免title闪烁
+    (function () {
+      try {
+        const urlParams = new URLSearchParams(window.location.search);
+        const agentId = urlParams.get('id');
+        console.log(location.href)
+        if (agentId) {
+          let title = '大群空间 - 多智能体协同平台';
+          let lang = 'zh-CN'
+          if (location.href.indexOf('lang=') == -1) {
+            let ua = window.navigator.userAgent
+            lang = ua.indexOf('en-US') > -1 ? 'en'
+              : 'zh-CN'
+          } else {
+            lang = location.href.split('lang=')[1].split('&')[0]
+          }
+          if (lang == 'en') {
+            title = 'LegionSpace - Multi-agent collaboration platform';
+            if (agentId === 'customer-service') {
+              title = 'Customer Service Agent - Respond efficiently and enhance the service experience';
+            } else if (agentId === 'sales-assistant') {
+              title = 'Sales Agent - Facilitating the intelligence of the entire sales process';
+            }
+          } else {
+            if (agentId === 'customer-service') {
+              title = 'DailyAgent';
+            } else if (agentId === 'sales-assistant') {
+              title = '销售智能体 - 助力销售全流程智能化';
+            }
+          }
+
+          // 立即更新title
+          document.title = title;
+          const titleElement = document.getElementById('dynamic-title');
+          if (titleElement) {
+            titleElement.textContent = title;
+          }
+        }
+      } catch (error) {
+        console.warn('设置初始title时出错:', error);
+      }
+    })();
+  </script>
+</head>
+
+<body>
+  <div id="root"></div>
+  <!-- 强制预先加载React库 -->
+  <script type="module">
+    // 预加载React，确保在i18n初始化前可用
+    import React from 'react';
+    import ReactDOM from 'react-dom';
+
+    // 将React设置为全局对象
+    window.React = React;
+    window.ReactDOM = ReactDOM;
+
+    console.log('React预加载完成:', React.version);
+  </script>
+  <script type="module" src="/src/main.tsx"></script>
+  <noscript>您需要启用JavaScript才能运行此应用程序。</noscript>
+  <!-- <script src="https://unpkg.com/vconsole@3.15.1/dist/vconsole.min.js"></script>
+  <script>
+    // init vConsole
+    var vConsole = new VConsole()
+    console.log(window.navigator.userAgent)
+    console.log('Hello world')
+  </script> -->
+</body>
+
+</html>

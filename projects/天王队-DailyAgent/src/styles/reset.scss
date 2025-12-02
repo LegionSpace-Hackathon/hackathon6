@@ -1,0 +1,100 @@
+// SCSS模块导入
+@use '../theme/scss/_forward' as *;
+
+/* reset */
+html,
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+p,
+nav,
+menu,
+figure,
+figcaption,
+ul,
+ol,
+li {
+    margin: 0;
+    padding: 0;
+}
+html {
+    font-size: 18px;
+    line-height: 30px;
+    font-weight: 400;
+}
+body,
+select,
+textarea,
+input {
+    font: 13px/1.5 Roboto, -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica Neue, Arial, sans-serif;
+}
+body,
+a {
+    color: #333;
+}
+ol,
+ul {
+    list-style: none;
+}
+var,
+em,
+i {
+    font-style: normal;
+}
+a img {
+    border: 0 none;
+}
+img {
+    -webkit-user-drag: none;
+}
+a:link,
+a:visited {
+    text-decoration: none;
+}
+select,
+textarea,
+input[type='submit'],
+input[type='button'] {
+    -webkit-appearance: none;
+    -o-border-image: none;
+    border-image: none;
+    border-radius: 0;
+    border: 0 none;
+}
+img {
+    width: 100%;
+    vertical-align: middle;
+}
+input {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+input:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0px 1000px white inset;
+    -webkit-text-fill-color: #17181a;
+}
+body {
+    margin: 0;
+    font-family: Roboto, -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica Neue, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-text-size-adjust: none;
+    box-sizing: border-box;
+    -webkit-app-region: no-drag;
+    outline: none;
+    -webkit-focus-ring-color: rgba(0, 0, 0, 0);
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    background-color: #0F0F1B;
+}
+body,
+html,
+#root {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+} 

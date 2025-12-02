@@ -1,0 +1,82 @@
+.share-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
+  border: 1px solid var(--border-color);
+  border-radius: 20px;
+  background-color: var(--component-background);
+  color: var(--text-color);
+  font-size: 13px;
+  font-weight: 400;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+
+  
+
+  &:active:not(.disabled) {
+    transform: scale(0.98);
+  }
+
+  &.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  &.success {
+    border-color: var(--success-500);
+    background-color: var(--success-50);
+    color: var(--success-600);
+  }
+
+  .share-loading {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+
+    .loading-spinner {
+      width: 12px;
+      height: 12px;
+      border: 2px solid var(--border-color);
+      border-top: 2px solid var(--primary-500);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+  }
+
+  .share-success,
+  .share-normal {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  svg {
+    flex-shrink: 0;
+  }
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* 移动端适配 */
+@media (max-width: 768px) {
+  .share-button {
+    padding: 4px 8px;
+    font-size: 12px;
+    border: none;
+    
+    svg {
+      width: 18px;
+      height: 18px;
+    }
+  }
+}
+

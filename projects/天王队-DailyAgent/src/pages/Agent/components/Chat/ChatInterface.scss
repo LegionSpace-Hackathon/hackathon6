@@ -1,0 +1,1691 @@
+@use '../../../../theme/scss/mixins' as *;
+@use '../../../../theme/scss/variables' as *;
+
+.chat-interface {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 60px);
+  background-color: var(--component-background);
+  overflow: hidden;
+  position: relative;
+
+  @media (max-width: 768px) {
+    background-color: rgb(246, 246, 247);
+  }
+
+  /* 移动端适配 - 修复iOS输入框被遮挡问题 */
+  @supports (-webkit-touch-callout: none) {
+    /* iOS设备专用样式 */
+    padding-bottom: env(safe-area-inset-bottom, 0);
+    padding-bottom: constant(safe-area-inset-bottom, 0);
+  }
+
+  .chat-messages-container {
+    display: flex;
+    padding: 20px 20px 0;
+    box-sizing: border-box;
+    height: 100%;
+    width: 90%;
+    margin: 0 auto;
+    height: fit-content;
+    flex-direction: column-reverse;
+    flex: 1;
+    overflow: auto;
+    // 性能优化：开启GPU加速
+    will-change: scroll-position;
+    // 使用transform而不是scroll-behavior来避免老设备性能问题
+    // scroll-behavior: smooth;
+    // 优化滚动性能
+    -webkit-overflow-scrolling: touch;
+    // 减少重绘
+    contain: layout style;
+
+    @media (max-width: 768px) {
+      background-color: var(--component-background, #f5f5f5);
+    }
+
+    // scrollbar-width: thin;
+    // scrollbar-color: var(--scroll-thumb) transparent;
+
+    // &::-webkit-scrollbar {
+    //   width: 6px;
+    //   background: transparent;
+    // }
+
+    &::-webkit-scrollbar-thumb {
+      background: var(--scroll-thumb);
+      border-radius: 3px;
+    }
+
+    .chat-messages {
+      display: flex;
+      flex-direction: column;
+      box-sizing: border-box;
+      flex: 1;
+      gap: 24px;
+      padding-bottom: 0px;
+
+      .message-bubble-container {
+        &.user-message {
+          align-self: flex-end;
+        }
+
+        &.assistant-message {
+          align-self: flex-start;
+        }
+      }
+    }
+
+    @media (max-width: 768px) {
+      & {
+        width: 100%;
+      }
+    }
+  }
+
+  .message-bubble-container {
+    // 根据设备性能条件性添加动画
+    // 使用媒体查询检测是否支持动画
+    @media (prefers-reduced-motion: no-preference) {
+      animation: fade-in 0.2s ease-out;
+    }
+    
+    // 性能优化：减少重绘
+    contain: layout style;
+    // GPU加速
+    transform: translateZ(0);
+    will-change: opacity, transform;
+  }
+
+  // 优化动画性能，使用transform和opacity
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+      transform: translateY(8px) translateZ(0);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0) translateZ(0);
+    }
+  }
+
+  // 针对老设备的优化：禁用某些动画
+  @media (max-width: 768px) and (max-device-pixel-ratio: 1.5) {
+    .message-bubble-container {
+      // 低分辨率设备不使用动画
+      animation: none !important;
+    }
+  }
+
+  .new-message-indicator {
+    position: absolute;
+    bottom: 110px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background-color: var(--primary-color, #4a89dc);
+    color: white;
+    border: none;
+    border-radius: 20px;
+    padding: 8px 16px;
+    font-size: 14px;
+    cursor: pointer;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+    transition: all 0.2s ease;
+    z-index: 5;
+    animation: bounce 1s ease infinite;
+
+    &:hover {
+      background-color: var(--primary-hover, #3679cd);
+      transform: translateX(-50%) translateY(-3px);
+    }
+
+    svg {
+      stroke: currentColor;
+    }
+  }
+
+  @keyframes bounce {
+
+    0%,
+    100% {
+      transform: translateX(-50%);
+    }
+
+    50% {
+      transform: translateX(-50%) translateY(-5px);
+    }
+  }
+
+  .chat-input-container {
+    display: flex;
+    flex-direction: column;
+    width: calc(100% - 16px) ;
+    margin: 0 auto;
+    border-radius: 16px;
+    background: var(--input-background, #fff);
+    box-shadow: 0 -3px 12px 1px var(--box-shadow-color, #e3e3e3);
+    padding: 16px 10px;
+    position: relative;
+    border: 1px solid var(--border-color, #e3e3e3);
+    // iOS安全区域适配
+    @supports (-webkit-touch-callout: none) {
+      padding-bottom: calc(0px + env(safe-area-inset-bottom, 0));
+      padding-bottom: calc(0px + constant(safe-area-inset-bottom, 0));
+    }
+
+    &.mobile-input {
+      padding: 12px 10px;
+
+      // iOS安全区域适配
+      // @supports (-webkit-touch-callout: none) {
+      //   padding-bottom: calc(0px + env(safe-area-inset-bottom, 0));
+      //   padding-bottom: calc(0px + constant(safe-area-inset-bottom, 0));
+      // }
+
+      .input-wrapper {
+        min-height: 44px; // 增加移动端点击区域高度
+        border-radius: 20px; // 更圆润的输入框
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); // 轻微阴影增强立体感
+        -webkit-tap-highlight-color: transparent; // 移除iOS点击高亮
+
+        // 点击状态反馈
+        &:active {
+          background-color: var(--input-active-bg, #eaeaea);
+        }
+      }
+
+      .chat-input {
+        font-size: 16px; // iOS上小于16px的字体会导致缩放问题
+        padding: 12px 16px;
+        min-height: 44px;
+        border-radius: 20px;
+        -webkit-appearance: none; // 移除iOS默认样式
+        appearance: none; // 移除iOS默认样式
+
+        &:focus {
+          outline: none;
+          // box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.3);
+        }
+      }
+
+      .chat-actions {
+        padding: 8px 0;
+      }
+
+      .chat-attach-button,
+      .chat-send-button {
+        width: 44px;
+        height: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        -webkit-tap-highlight-color: transparent; // 移除iOS点击高亮
+
+        &:active {
+          opacity: 0.7;
+          transform: scale(0.95);
+        }
+      }
+    }
+  }
+
+ 
+
+  .chat-form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 12px;
+    position: relative;
+  }
+
+  .input-wrapper {
+    position: relative;
+    width: 100%;
+    border-radius: 8px;
+    background: var(--input-background-inner, #f5f5f5);
+    border: 1px solid var(--input-border, #e0e0e0);
+    transition:
+      border 0.2s,
+      box-shadow 0.2s;
+
+    &:focus-within {
+      border-color: var(--primary-color, #4a90e2);
+      box-shadow: 0 0 0 1px rgba(74, 144, 226, 0.2);
+    }
+  }
+
+  .chat-input {
+    width: 100%;
+    resize: none;
+    border: none;
+    background: transparent;
+    font-size: 14px;
+    line-height: 1.5;
+    padding: 10px 12px;
+    max-height: 150px;
+    outline: none;
+
+    &::placeholder {
+      color: var(--placeholder-color, #aaa);
+    }
+  }
+
+  .chat-actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .action-buttons,
+    .chat-actions-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+
+      .shortcut-hint {
+        font-size: 12px;
+        color: var(--text-secondary, #999);
+        margin-right: 5px;
+        white-space: nowrap;
+      }
+
+      .chat-attach-button,
+      .chat-send-button,
+      .chat-stop-button {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: none;
+        cursor: pointer;
+        background-color: var(--button-bg, #f0f0f0);
+        color: var(--button-color, #666);
+        transition: all 0.2s;
+
+        &:disabled {
+          opacity: 1;
+          cursor: not-allowed;
+        }
+      }
+
+      .chat-send-button {
+        background-color: var(--primary-color, #4a89dc);
+        color: white;
+      }
+
+      .chat-stop-button {
+        background-color: #ff4757 !important;
+        color: white !important;
+
+        &:hover {
+          background-color: var(--error-hover, #ff3838);
+        }
+      }
+
+      .file-input {
+        display: none;
+      }
+    }
+  }
+
+  .empty-chat-message {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    max-width: 100%; // Allow full width for background
+    width: 100%;
+    margin: 0;
+    padding: 40px 20px;
+    text-align: center;
+    color: #e0e0e0;
+
+    .workspace-title {
+      font-size: 48px;
+      font-weight: 800;
+      background: linear-gradient(to bottom right, #ffffff, #a1a1aa);
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 48px;
+      letter-spacing: -1px;
+      
+      @media (max-width: 768px) {
+        font-size: 32px;
+        margin-bottom: 32px;
+      }
+    }
+
+    .centered-input-container {
+      width: 100%;
+      max-width: 786px;
+      margin: 0 auto 60px;
+      
+      @media (max-width: 768px) {
+        margin-bottom: 40px;
+      }
+    }
+
+    .agent-grid-small {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 16px;
+      width: 100%;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 0 20px;
+      
+      .agent-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+        width: 80px;
+        transition: all 0.3s ease;
+        
+        .agent-icon-wrapper {
+          width: 48px;
+          height: 48px;
+          border-radius: 16px; // Squircle shape
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 24px;
+          transition: all 0.3s ease;
+          border: 1px solid transparent;
+        }
+
+        .agent-label {
+          font-size: 12px;
+          color: var(--text-color, #253456);
+          text-align: center;
+          transition: color 0.3s ease;
+        }
+
+        &.interactive {
+          cursor: pointer;
+
+          &:hover {
+            transform: translateY(-2px);
+
+            .agent-icon-wrapper {
+              transform: scale(1.1);
+              box-shadow: 0 8px 16px -4px rgba(0, 0, 0, 0.5);
+              border-color: var(--agent-color);
+              // background-color: var(--agent-color) !important; // Fill on hover? Or keep tint? Let's keep tint but stronger or fill.
+              // Let's try filling with some opacity or just brighter tint.
+              // Actually, let's keep it simple: just brighter border/glow.
+            }
+
+            .agent-label {
+              color: #fff;
+            }
+          }
+        }
+
+        &.visual {
+          cursor: default;
+          opacity: 0.8; // Slightly dimmed to differentiate? Or keep same visibility.
+          
+          &:hover {
+            // No movement for visual only
+            .agent-label {
+              color: rgba(255, 255, 255, 0.8);
+            }
+          }
+        }
+      }
+      
+      @media (max-width: 768px) {
+        gap: 12px;
+        .agent-item {
+          width: 70px;
+          .agent-icon-wrapper {
+            width: 40px;
+            height: 40px;
+        font-size: 20px;
+      }
+        }
+      }
+    }
+
+    @media (max-width: 768px) {
+      padding: 20px 0px;
+
+      .centered-input-container {
+        width: 100%;
+      }
+    }
+  }
+
+  // H5版本的空聊天状态样式
+  .empty-chat-message-mobile {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+    padding: 0;
+    position: relative;
+
+
+  }
+
+  // 中心欢迎区域
+  .welcome-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    padding: 0px 20px 80px;
+    text-align: center;
+
+    .agent-avatar-mobile {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      top: 30px;
+      position: relative;
+      z-index: 10;
+      overflow: hidden;
+      background: linear-gradient(145deg, #f0f0f0, #ffffff);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+
+      .agent-avatar-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    }
+
+
+    .agent-name-empty-container {
+      font-size: 13px;
+      color: var(--text-color, #253456);
+      font-weight: 500;
+      min-height: 20px; // 确保容器有最小高度
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid var(--border-color, #e3e3e3);
+      background-color: var(--background-color, #fff);
+      border-radius: 10px;
+      padding: 48px 16px 24px;
+      //  padding: 12px 16px;
+      //  border-radius: 12px;
+      //  width: 100%;
+      //  text-align: left;
+    }
+
+  }
+
+
+  // 底部输入框容器
+  .mobile-input-container {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    // background-color: var(--component-background);
+    background-color: var(--component-background, #f5f5f5);
+    padding: 16px;
+    z-index: 100;
+
+    // iOS安全区域适配
+    @supports (-webkit-touch-callout: none) {
+      padding-bottom: calc(0px + env(safe-area-inset-bottom, 0));
+      padding-bottom: calc(0px + constant(safe-area-inset-bottom, 0));
+    }
+
+    // 移动端输入框特殊样式
+    .chat-input-container.mobile-centered {
+      background: transparent;
+      box-shadow: none;
+      padding: 0;
+      border-radius: 0;
+
+      .chat-form {
+        gap: 0;
+      }
+
+      .editable-input-wrapper {
+        background-color: var(--input-background, #fff);
+        border: 0;
+        box-shadow: 0 0 10px 2px rgba(0, 0, 0, 0.1);
+        border-radius: 12px;
+        padding: 12px 10px;
+        min-height: 48px;
+        display: flex;
+        align-items: center;
+
+        .chat-editable-input {
+          font-size: 16px;
+          line-height: 1.4;
+          min-height: 24px;
+          max-height: 60px;
+          max-width: calc(100% - 60px);
+          padding: 0;
+          margin: 0;
+
+          &::placeholder {
+            color: var(--text-placeholder, #999);
+          }
+        }
+      }
+
+      .chat-actions {
+        position: absolute;
+        right: 8px;
+        top: 50%;
+        transform: translateY(-50%);
+        gap: 8px;
+
+        .chat-actions-left {
+          gap: 0px;
+
+          .chat-attach-button,
+          .chat-voice {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background-color: transparent;
+            border: none;
+            color: var(--text-secondary, #666);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+
+            &:hover {
+              background-color: var(--hover-background, #f5f5f5);
+            }
+
+            svg {
+              width: 18px;
+              height: 18px;
+            }
+          }
+        }
+
+        .action-buttons {
+          .chat-send-button {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background-color: var(--primary-color, #4a89dc);
+            border: none;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+
+            &:hover {
+              background-color: var(--primary-hover, #3679cd);
+            }
+
+            &:disabled {
+              background-color: var(--disabled-bg, #ccc);
+              cursor: not-allowed;
+            }
+
+            svg {
+              width: 16px;
+              height: 16px;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  // 只读模式提示
+  .readonly-empty-tip-mobile {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: var(--text-secondary, #999);
+    font-size: 14px;
+    text-align: center;
+    padding: 12px 20px;
+    background-color: var(--background-secondary, #f5f5f5);
+    border-radius: 20px;
+    border: 1px solid var(--border-color, #e0e0e0);
+  }
+
+}
+
+// 媒体查询：移动设备适配
+@media (max-width: 768px) {
+  .chat-input-container {
+    width: 100% !important;
+    margin: 0;
+
+    .chat-form {
+      gap: 8px;
+    }
+
+    .input-wrapper {
+      // 改善移动端触摸体验
+      touch-action: manipulation;
+    }
+
+    .chat-input {
+      // 防止iOS输入时网页弹跳
+      position: relative;
+      z-index: 2;
+      // 缩放相关
+      touch-action: manipulation;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    .chat-actions {
+
+      .action-buttons,
+      .chat-actions-left {
+        gap: 0px;
+      }
+
+      .chat-attach-button,
+      .chat-send-button {
+        width: 40px;
+        height: 40px;
+        // 触摸反馈
+        touch-action: manipulation;
+      }
+    }
+  }
+
+  /* 修复安卓和iOS键盘弹出时的布局问题 */
+  .chat-interface {
+    height: calc(100% - 60px);
+    /* 适应可视区域 */
+    height: calc(var(--vh, 1vh) * 100 - 160px);
+  }
+
+  .readonly-mode {
+    @media (max-width: 768px) {
+      /* 适应可视区域 */
+      height: calc(var(--vh, 1vh) * 100 - 60px);
+    }
+  }
+
+  .chat-interface {
+    .new-message-indicator {
+      bottom: 80px;
+      padding: 6px 12px;
+      font-size: 12px;
+    }
+  }
+}
+
+// 深色模式
+.dark-mode {
+  .chat-interface {
+    --bg-color: #1a1a1a;
+    --text-color: #e0e0e0;
+    --input-bg: #2a2a2a;
+    --input-border: #444;
+    --border-color: #444;
+    --button-bg: #333;
+    --button-color: #ccc;
+    --button-hover-bg: #444;
+    --primary-color: #15D69C;
+    --primary-hover: #4a89dc;
+    --disabled-bg: #333;
+    --disabled-text: #777;
+    --text-primary: #e0e0e0;
+    --text-secondary: #aaaaaa;
+    --chip-bg: #333333;
+    --chip-hover-bg: #444444;
+    --scroll-thumb: #555;
+
+    .new-message-indicator {
+      background-color: var(--primary-color, #5a99ec);
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    .empty-chat-message {
+      .agent-avatar-container {
+        border-color: rgba(50, 50, 50, 0.8);
+        background: linear-gradient(145deg, #2a2a2a, #333333);
+      }
+
+      .suggestion-chip {
+        background-color: #333333;
+        color: #e0e0e0;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+
+        &:hover {
+          background-color: #444444;
+        }
+      }
+    }
+
+    // H5版本深色模式样式
+    .empty-chat-message-mobile {
+      .ai-generated-tip {
+        color: var(--text-secondary-dark, #aaa);
+      }
+
+      .welcome-section {
+        .agent-avatar-mobile {
+          background: linear-gradient(145deg, #2a2a2a, #333333);
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .welcome-text {
+          color: var(--text-secondary-dark, #aaa);
+        }
+      }
+
+      .quick-actions {
+        .quick-action-item {
+          background-color: var(--component-background-dark, #2a2a2a);
+          border-color: var(--border-color-dark, #444);
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+
+          &:hover {
+            background-color: var(--hover-background-dark, #333);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+          }
+
+          span {
+            color: var(--text-color-dark, #e0e0e0);
+          }
+        }
+      }
+
+      .mobile-input-container {
+        background-color: var(--component-background-dark, #1a1a1a);
+        border-top-color: var(--border-color-dark, #444);
+
+        .chat-input-container.mobile-centered {
+          .editable-input-wrapper {
+            background-color: var(--input-background-dark, #2a2a2a);
+            // border-color: var(--border-color-dark, #444);
+
+            .chat-editable-input {
+              color: var(--text-color-dark, #e0e0e0);
+
+              &::placeholder {
+                color: var(--text-placeholder-dark, #666);
+              }
+            }
+          }
+
+          .chat-actions {
+            .chat-actions-left {
+
+              .chat-attach-button,
+              .chat-voice {
+                color: var(--text-secondary-dark, #aaa);
+
+                &:hover {
+                  background-color: var(--hover-background-dark, #333);
+                }
+              }
+            }
+          }
+        }
+      }
+
+      .readonly-empty-tip-mobile {
+        color: var(--text-secondary-dark, #aaa);
+        background-color: var(--background-secondary-dark, #2a2a2a);
+        border-color: var(--border-color-dark, #444);
+      }
+    }
+  }
+  
+  // 深色模式下的AI生成内容提示语
+  .ai-generated-disclaimer {
+    color: #ffffff80;
+  }
+}
+
+// 底部输入区域样式
+.bottom-input-section {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--component-background);
+  // padding: 16px 0 0;
+
+  @media (max-width: 768px) {
+    // background-color: transparent;
+  }
+
+  .suggested-questions-container {
+    padding: 0 20px;
+    margin-bottom: 16px;
+
+    @media (max-width: 768px) {
+      padding: 0 16px;
+      margin-bottom: 8px;
+    }
+
+    .suggested-questions {
+      margin-bottom: 0;
+      flex-direction: row;
+
+      .suggested-question-item {
+        padding: 6px 20px;
+        text-align: center;
+      }
+
+      @media (max-width: 768px) {
+        .suggested-question-item {
+          padding: 6px 20px;
+          font-size: 12px;
+        }
+      }
+    }
+  }
+
+}
+
+// 添加问题推荐容器和标题样式
+.suggested-questions-container {
+  width: 100%;
+  // max-width: 600px;
+  margin-top: 24px;
+
+  @media (max-width: 768px) {
+    margin-top: 4px;
+  }
+}
+
+.suggested-questions-container-mobile {
+  margin-bottom: 0px;
+  margin-top: 0px;
+}
+
+.suggested-questions-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12px;
+  gap: 8px;
+  padding: 0 4px;
+
+  .header-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary-color, #4a8df6);
+  }
+
+  span {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-secondary, #666);
+  }
+}
+
+// 添加随机问题推荐的样式
+.suggested-questions {
+  display: flex;
+  justify-content: flex-start;
+  gap: 10px;
+  width: 100%;
+  margin-bottom: 12px;
+
+  @media (max-width: 768px) {
+    margin-bottom: 8px;
+    // flex-direction: column;
+    gap: 8px;
+    // margin-bottom: 16px;
+    padding: 0;
+  }
+}
+
+.attachment-wrapper {
+  margin-bottom: 8px;
+
+  @media (max-width: 768px) {
+    background-color: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 0px;
+  }
+}
+
+.suggested-question-item {
+  max-width: 33%;
+  // width: 30%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 24px;
+  background-color: var(--component-background, rgba(27, 17, 17, 0.1));
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 1px solid var(--border-color, rgba(0, 0, 0, 0.1));
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+
+  // &:hover {
+  //   background-color: var(--hover-background, rgba(0, 0, 0, 0.05));
+  //   transform: translateY(-2px);
+  //   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  //   // border-color: var(--primary-color);
+  //   border: 1px solid var(--primary-color);
+  // }
+
+  &:active {
+    transform: translateY(0);
+  }
+
+  // 选中状态的样式
+  &.selected {
+    background: linear-gradient(135deg, rgba(34, 197, 94, 0.15) 0%, rgba(34, 197, 94, 0.08) 100%);
+    border: 1px solid rgba(34, 197, 94, 0.4);
+    transform: translateY(-1px);
+    box-shadow: 0 3px 8px rgba(34, 197, 94, 0.2);
+
+    span {
+      color: var(--success-color, #22c55e);
+      font-weight: 600;
+    }
+
+    &:hover {
+      background: linear-gradient(135deg, rgba(34, 197, 94, 0.2) 0%, rgba(34, 197, 94, 0.1) 100%);
+      border-color: rgba(34, 197, 94, 0.5);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(34, 197, 94, 0.25);
+    }
+  }
+
+  // 模板类型问题的特殊样式
+  &.template-type {
+    background: linear-gradient(135deg, rgba(74, 141, 246, 0.1) 0%, rgba(74, 141, 246, 0.05) 100%);
+    border: 1px solid rgba(74, 141, 246, 0.2);
+    position: relative;
+
+    &::after {
+      content: '✏️';
+      position: absolute;
+      top: 4px;
+      right: 8px;
+      font-size: 12px;
+      opacity: 0.7;
+    }
+
+    &:hover {
+      background: linear-gradient(135deg,
+          rgba(74, 141, 246, 0.15) 0%,
+          rgba(74, 141, 246, 0.08) 100%);
+      border-color: rgba(74, 141, 246, 0.3);
+    }
+
+    span {
+      color: var(--primary-color, #4a8df6);
+      font-weight: 500;
+    }
+  }
+
+  // placeholder类型问题的特殊样式
+  &.placeholder-type {
+    background: linear-gradient(135deg, rgba(34, 197, 94, 0.1) 0%, rgba(34, 197, 94, 0.05) 100%);
+    border: 1px solid rgba(34, 197, 94, 0.2);
+    position: relative;
+
+    &::after {
+      content: '💬';
+      position: absolute;
+      top: 4px;
+      right: 8px;
+      font-size: 12px;
+      opacity: 0.7;
+    }
+
+    &:hover {
+      background: linear-gradient(135deg, rgba(34, 197, 94, 0.15) 0%, rgba(34, 197, 94, 0.08) 100%);
+      border-color: rgba(34, 197, 94, 0.3);
+    }
+
+    span {
+      color: var(--success-color, #22c55e);
+      font-weight: 500;
+      font-size: 16px;
+      letter-spacing: 0.5px;
+    }
+  }
+
+  // 禁用状态的样式
+  &.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+    background-color: var(--disabled-bg, #f5f5f5);
+    border-color: var(--disabled-border, #e0e0e0);
+    transform: none !important;
+    box-shadow: none !important;
+
+    &:hover {
+      background-color: var(--disabled-bg, #f5f5f5);
+      transform: none !important;
+      box-shadow: none !important;
+    }
+
+    span {
+      color: var(--disabled-text, #999);
+    }
+
+    // 禁用状态下的特殊类型样式
+    &.template-type {
+      background-color: var(--disabled-bg, #f5f5f5);
+      border-color: var(--disabled-border, #e0e0e0);
+
+      span {
+        color: var(--disabled-text, #999);
+      }
+    }
+
+    &.placeholder-type {
+      background-color: var(--disabled-bg, #f5f5f5);
+      border-color: var(--disabled-border, #e0e0e0);
+
+      span {
+        color: var(--disabled-text, #999);
+      }
+    }
+  }
+
+  .question-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary-color, #4a8df6);
+    min-width: 16px;
+  }
+
+  span {
+    white-space: nowrap;
+    color: var(--text-color, #333);
+    flex: 1;
+    font-size: 14px;
+    line-height: 1.5;
+    word-break: break-word;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  @media (max-width: 768px) {
+    max-width: 100%;
+    width: 100%;
+  }
+}
+
+// 响应式样式调整
+@media (max-width: 768px) {
+  .suggested-questions {
+    gap: 8px;
+    display: flex;
+    overflow-x: auto;
+    padding: 2px;
+    // flex-wrap: wrap;
+    // margin-bottom: 16px;
+    // padding: 0 8px;
+  }
+
+  .suggested-question-item {
+    padding: 6px 20px;
+    font-size: 13px;
+    width: fit-content;
+
+    .question-icon {
+      min-width: 14px;
+
+      svg {
+        width: 14px;
+        height: 14px;
+      }
+    }
+
+    span {
+      font-size: 13px;
+    }
+  }
+}
+
+// 深色模式适配
+.dark-mode,
+[data-theme='dark'] {
+  .suggested-question-item {
+    background-color: var(--component-background, rgba(40, 40, 45, 0.5));
+    border-color: var(--border-color, rgba(255, 255, 255, 0.1));
+
+    &:hover {
+      background-color: var(--hover-background, rgba(50, 50, 55, 0.7));
+    }
+
+    span {
+      color: var(--text-color, #e0e0e0);
+    }
+
+    // 深色模式下的template类型样式
+    &.template-type {
+      background: linear-gradient(135deg,
+          rgba(74, 141, 246, 0.15) 0%,
+          rgba(74, 141, 246, 0.08) 100%);
+      border-color: rgba(74, 141, 246, 0.3);
+
+      &:hover {
+        background: linear-gradient(135deg,
+            rgba(74, 141, 246, 0.2) 0%,
+            rgba(74, 141, 246, 0.12) 100%);
+      }
+
+      span {
+        color: var(--primary-color, #4a8df6);
+      }
+    }
+
+    // 深色模式下的placeholder类型样式
+    &.placeholder-type {
+      background: linear-gradient(135deg, rgba(34, 197, 94, 0.15) 0%, rgba(34, 197, 94, 0.08) 100%);
+      border-color: rgba(34, 197, 94, 0.3);
+
+      &:hover {
+        background: linear-gradient(135deg,
+            rgba(34, 197, 94, 0.2) 0%,
+            rgba(34, 197, 94, 0.12) 100%);
+      }
+
+      span {
+        color: var(--success-color, #22c55e);
+      }
+    }
+
+    // 深色模式下的禁用状态样式
+    &.disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      pointer-events: none;
+      background-color: var(--disabled-bg-dark, #333);
+      border-color: var(--disabled-border-dark, #555);
+      transform: none !important;
+      box-shadow: none !important;
+
+      &:hover {
+        background-color: var(--disabled-bg-dark, #333);
+        transform: none !important;
+        box-shadow: none !important;
+      }
+
+      span {
+        color: var(--disabled-text-dark, #666);
+      }
+
+      // 深色模式下禁用状态的特殊类型样式
+      &.template-type {
+        background-color: var(--disabled-bg-dark, #333);
+        border-color: var(--disabled-border-dark, #555);
+
+        span {
+          color: var(--disabled-text-dark, #666);
+        }
+      }
+
+      &.placeholder-type {
+        background-color: var(--disabled-bg-dark, #333);
+        border-color: var(--disabled-border-dark, #555);
+
+        span {
+          color: var(--disabled-text-dark, #666);
+        }
+      }
+    }
+  }
+}
+
+textarea {
+  caret-color: #15d69c;
+  /* 完全透明 */
+}
+
+// 可编辑输入框容器样式
+.editable-input-wrapper {
+  position: relative;
+  display: flex;
+  // flex-direction: column; // 改回列布局以适应多行内容
+  align-items: stretch; // 拉伸子项填满宽度
+  min-height: 70px;
+  height: fit-content;
+  // max-height: 72px; // 设置最大高度以适应两行
+  // border: 1px solid var(--border-color, #e5e5e5);
+  border-radius: 12px;
+  background-color: var(--input-background, #ffffff);
+  padding: 8px 12px;
+  transition: all 0.2s ease;
+  overflow: hidden; // 隐藏溢出内容
+
+  &:hover {
+    border-color: var(--primary-color, #4a8df6);
+  }
+
+  &:focus-within {
+    border-color: var(--primary-color, #4a8df6);
+    box-shadow: 0 0 0 2px rgba(74, 141, 246, 0.1);
+  }
+
+  // 问题前缀容器样式
+  .question-prefix-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 0px;
+    padding: 0px 0;
+
+    .question-prefix {
+      display: inline-flex;
+      align-items: center;
+      padding: 2px 8px;
+      background: linear-gradient(135deg, rgba(34, 197, 94, 0.1) 0%, rgba(34, 197, 94, 0.05) 100%);
+      border: 1px solid rgba(34, 197, 94, 0.2);
+      border-radius: 12px;
+      color: var(--success-color, #22c55e);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+
+    .remove-prefix-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      top: -6px;
+      left: -9px;
+      width: 16px;
+      height: 16px;
+      border: none;
+      background: rgba(239, 68, 68, 0.1);
+      color: #ef4444;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 12px;
+      line-height: 1;
+      transition: all 0.2s ease;
+
+      &:hover {
+        background: rgba(239, 68, 68, 0.2);
+        transform: scale(1.1);
+      }
+
+      &:active {
+        transform: scale(0.95);
+      }
+    }
+  }
+
+  .chat-editable-input {
+    // 允许换行，但防止单词分割
+    white-space: normal;
+    word-break: normal;
+    word-wrap: break-word;
+    display: block; // 使用block布局而不是flex
+    width: 100%;
+    height: fit-content !important;
+    flex: 1;
+    min-height: 20px;
+    max-height: 78px; // 限制最大高度约为两行
+    outline: none;
+    font-size: 14px;
+    line-height: 1.8;
+    color: var(--text-color, #333);
+    background: transparent;
+    border: none;
+    resize: none;
+    font-family: inherit;
+    text-align: left; // 确保文本左对齐
+    overflow-x: hidden; // 隐藏水平滚动
+    overflow-y: auto; // 允许垂直滚动
+
+    &:empty::before {
+      content: attr(data-placeholder);
+      color: var(--text-placeholder, #999);
+      pointer-events: none;
+      font-style: italic;
+    }
+
+    // 问题前缀元素的基础样式
+    .question-prefix-element {
+      display: inline-block;
+      vertical-align: top;
+      margin-right: 8px;
+      user-select: none;
+    }
+
+    // 样式化的问题前缀元素（嵌套在主编辑区域内）
+    .question-prefix-styled {
+      height: 24px;
+      display: inline-block;
+      align-items: center;
+      // float: left;
+      width: fit-content;
+      position: relative;
+      background: linear-gradient(135deg, #22c55e1a, #22c55e0d);
+      color: #22c55e;
+      padding: 0px 8px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 500;
+      margin-right: 8px;
+      line-height: 24px;
+      user-select: none; // 防止选中
+
+      .remove-prefix-btn-inline {
+        position: absolute;
+        top: -5px;
+        right: -10px;
+        // left:calc(100% - 10px);
+        background: transparent;
+        border: none;
+        color: red;
+        cursor: pointer;
+        font-size: 14px;
+        line-height: 1;
+        padding: 0;
+        // margin-left: 4px;
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background-color 0.2s ease;
+
+        &:hover {
+          background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        &:active {
+          background-color: rgba(255, 255, 255, 0.3);
+        }
+      }
+    }
+
+    // 可编辑内容区域样式
+    .editable-content {
+      display: inline !important;
+      width: 100%;
+      min-height: 20px;
+      outline: none;
+      word-wrap: break-word;
+      white-space: pre-wrap;
+      position: relative;
+      padding-left: 8px;
+
+      &.empty-content:empty::before {
+        content: attr(data-placeholder);
+        color: var(--text-placeholder, #999);
+        pointer-events: none;
+        font-style: italic;
+        opacity: 0.8;
+      }
+
+      &:focus.empty-content:empty::before {
+        opacity: 0.6;
+      }
+    }
+
+    .empty-content-container {
+      &.empty-content:empty::after {
+        //  展示光标，最前面
+        position: absolute;
+        top: 0;
+        left: 6px;
+        content: '';
+        display: inline-block;
+        width: 1px;
+        height: 1.2em;
+        background-color: var(--text-color, #333);
+        vertical-align: middle;
+        margin-left: 2px;
+        // 光标闪动
+        animation: blink 1s infinite;
+      }
+    }
+
+    // 占位符编辑div样式（嵌套在主编辑区域内）
+    .placeholder-editable {
+      min-height: 26px;
+      display: inline-block;
+      vertical-align: top;
+      min-width: 80px; // 设置最小宽度，防止内容为空时消失
+      padding: 2px 6px;
+      margin: 1px 2px; // 稍微增加垂直间距
+      border: 1px solid var(--primary-color, #4a8df6);
+      border-radius: 4px;
+      background-color: rgba(74, 141, 246, 0.1);
+      color: var(--primary-color, #4a8df6);
+      font-weight: 500;
+      outline: none;
+      cursor: text;
+      transition: all 0.2s ease;
+      position: relative; // 为提示文本定位
+      font-size: 12px;
+      white-space: nowrap; // 确保占位符内容不换行
+
+      // 空状态时显示placeholder
+      &:empty::before {
+        content: attr(data-placeholder);
+        color: #999;
+        opacity: 0.7;
+        font-style: italic;
+        pointer-events: none;
+        white-space: nowrap; // 确保placeholder文本不换行
+      }
+
+      &:hover {
+        background-color: rgba(74, 141, 246, 0.15);
+        border-color: var(--primary-color, #4a8df6);
+      }
+
+      &:focus,
+      &.focused {
+        background-color: rgba(74, 141, 246, 0.2);
+        border-color: var(--primary-color, #4a8df6);
+        box-shadow: 0 0 0 2px rgba(74, 141, 246, 0.1);
+      }
+
+      // 提示文本样式（类似input placeholder）
+      .placeholder-hint {
+        color: var(--primary-color, #4a8df6);
+        opacity: 0.7;
+        font-style: italic;
+        pointer-events: none;
+        user-select: none;
+        transition: opacity 0.2s ease;
+        position: absolute;
+        top: 0;
+        left: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        // 隐藏状态
+        &.hidden {
+          opacity: 0;
+          position: absolute;
+          visibility: hidden;
+        }
+      }
+
+      // 确保有最小高度和宽度
+      &:empty {
+        min-width: 80px;
+        min-height: 1.2em;
+      }
+
+      // 确保有最小高度和宽度
+      &:empty {
+        min-width: 80px;
+        min-height: 1.2em;
+      }
+    }
+  }
+
+  // 移动端适配
+  @media (max-width: 768px) {
+    padding: 10px;
+    min-height: 40px;
+
+    .chat-editable-input {
+      font-size: 16px; // 防止iOS缩放
+
+      .placeholder-editable {
+        padding: 4px 8px;
+        margin: 0 1px;
+        min-width: 100px; // 移动端适当增大最小宽度
+      }
+    }
+  }
+}
+
+// 暗色主题支持
+.dark-mode {
+  .chat-input-container {
+    background-color: var(--input-background-dark, #2c2c2c);
+  }
+  .editable-input-wrapper {
+    background-color: transparent;
+    
+    // border-color: var(--border-color-dark, #444);
+
+    &:hover {
+      border-color: var(--primary-color, #4a8df6);
+    }
+
+    // 深色模式下的问题前缀样式
+    .question-prefix-container {
+      .question-prefix {
+        background: linear-gradient(135deg,
+            rgba(34, 197, 94, 0.15) 0%,
+            rgba(34, 197, 94, 0.08) 100%);
+        border-color: rgba(34, 197, 94, 0.3);
+        color: var(--success-color, #22c55e);
+      }
+
+      .remove-prefix-btn {
+        background: rgba(239, 68, 68, 0.15);
+        color: #ff6b6b;
+
+        &:hover {
+          background: rgba(239, 68, 68, 0.25);
+        }
+      }
+    }
+
+    .chat-editable-input {
+      color: var(--text-color-dark, #e5e5e5);
+
+      .placeholder-editable {
+        background-color: rgba(74, 141, 246, 0.15);
+        border-color: var(--primary-color, #4a8df6);
+        color: var(--primary-color, #4a8df6);
+
+        &:hover {
+          background-color: rgba(74, 141, 246, 0.2);
+        }
+
+        &:focus,
+        &.focused {
+          background-color: rgba(74, 141, 246, 0.25);
+        }
+      }
+    }
+  }
+}
+
+@keyframes blink {
+  0% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0;
+  }
+}
+
+/* 分享模式样式 */
+.chat-interface.readonly-mode {
+  .readonly-bottom-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    border-top: 1px solid var(--border-color);
+    background-color: var(--component-background);
+    gap: 15px;
+
+    .readonly-tip {
+      color: var(--text-secondary);
+      font-size: 14px;
+      text-align: center;
+      line-height: 1.5;
+    }
+
+    .start-new-chat-button {
+      background: linear-gradient(135deg, var(--primary-500) 0%, var(--primary-600) 100%);
+      color: #15d69c;
+      border: none;
+      border-radius: 25px;
+      padding: 12px 24px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 12px rgba(0, 123, 255, 0.2);
+
+      &:hover {
+        background: linear-gradient(135deg, var(--primary-600) 0%, var(--primary-700) 100%);
+        transform: translateY(-1px);
+        box-shadow: 0 6px 16px rgba(0, 123, 255, 0.3);
+      }
+
+      &:active {
+        transform: translateY(0);
+        box-shadow: 0 2px 8px rgba(0, 123, 255, 0.2);
+      }
+    }
+  }
+
+  .readonly-empty-tip {
+    color: var(--text-secondary);
+    font-size: 14px;
+    text-align: center;
+    margin-top: 20px;
+    padding: 20px;
+    background-color: var(--background-secondary);
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+  }
+}
+
+// AI生成内容提示语样式
+.ai-generated-disclaimer {
+  text-align: center;
+  font-size: 12px;
+  color: #00000080;
+  padding: 8px 16px;
+  margin-top: 8px;
+  
+  @media (max-width: 768px) {
+    padding: 0;
+    margin-top: 8px;
+  }
+}

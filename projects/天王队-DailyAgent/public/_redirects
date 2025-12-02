@@ -1,0 +1,11 @@
+# 静态资源优先，然后是 SPA 路由
+# 注意：路由路径保持 /docs/ 不变，但重定向到 /dcs/ 文件夹
+/docs/*/res/* /dcs/$1/res/$2 200
+/docs/*/res/*/* /dcs/$1/res/$2/$3 200
+/docs/*/res/*/*/* /dcs/$1/res/$2/$3/$4 200
+
+# Markdown 文件
+/docs/*/*.md /dcs/$1/$2.md 200
+
+# 所有其他路由都重定向到 index.html (SPA 路由)
+/* /index.html 200

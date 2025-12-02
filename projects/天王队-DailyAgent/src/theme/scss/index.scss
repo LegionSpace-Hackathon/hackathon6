@@ -1,0 +1,66 @@
+// 主题入口文件 - 使用统一转发模块
+@use './_forward' as *;
+@import "tailwindcss"; 
+
+// 主题全局样式
+body {
+  color: var(--text-color);
+  background-color: var(--background-color);
+  @include transition(all, 0.3s);
+}
+
+a {
+  color: var(--primary-color);
+  @include transition(color, 0.3s);
+  
+  &:hover {
+    color: var(--primary-color-hover);
+  }
+}
+
+// 按钮样式更新
+.btn {
+  &-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    
+    &:hover, &:focus {
+      background-color: var(--primary-color-hover);
+      border-color: var(--primary-color-hover);
+    }
+    
+    &:active {
+      background-color: var(--primary-color-active);
+      border-color: var(--primary-color-active);
+    }
+  }
+}
+
+// 表单样式更新
+.form-control {
+  color: var(--text-color);
+  background-color: var(--component-background);
+  border-color: var(--border-color);
+  
+  &:hover {
+    border-color: var(--primary-color-hover);
+  }
+  
+  &:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px var(--primary-color-opacity);
+  }
+}
+
+// 卡片和容器
+.card, .login-form-wrapper, .dashboard-welcome {
+  background-color: var(--component-background);
+  @include box-shadow('base');
+}
+
+// 导航栏和头部
+.dashboard-header, .app-header {
+  background-color: var(--component-background);
+  @include border(bottom);
+}
+

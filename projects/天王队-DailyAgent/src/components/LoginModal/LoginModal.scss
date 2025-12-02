@@ -1,0 +1,118 @@
+// SCSS模块导入
+@use '../../theme/scss/_forward' as *;
+
+.login-modal {
+  .ant-modal-header {
+    text-align: center;
+    border-bottom: none;
+    padding-bottom: 8px;
+  }
+  .ant-modal-body {
+    padding: 16px 24px 24px;
+  }
+  .ant-tabs-content-holder {
+    padding-top: 16px;
+  }
+  // 扫码登录样式
+  .qr-login-content {
+    text-align: center;
+    .qr-description {
+      margin-bottom: 4px;
+      p {
+        color: rgba(0, 0, 0, 0.65);
+        font-size: 14px;
+        margin: 0;
+      }
+    }
+    .qr-code-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 200px;
+      margin-bottom: 16px;
+      .qr-loading {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 200px;
+        height: 200px;
+      }
+      .qr-error {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: 200px;
+        height: 200px;
+        background-color: #f5f5f5;
+        border-radius: 8px;
+        p {
+          color: rgba(0, 0, 0, 0.45);
+          margin-bottom: 16px;
+        }
+      }
+      .qr-code {
+        position: relative;
+        canvas {
+          border-radius: 8px;
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        .qr-refresh {
+          position: absolute;
+          bottom: -30px;
+          left: 50%;
+          transform: translateX(-50%);
+        }
+      }
+    }
+    .qr-tips {
+      p {
+        color: rgba(0, 0, 0, 0.45);
+        font-size: 12px;
+        margin: 0;
+      }
+    }
+  }
+  // 密码登录样式
+  .password-login-form {
+    .ant-form-item-label {
+      padding: 0;
+      label {
+        color: rgba(0, 0, 0, 0.85);
+        font-weight: 500;
+      }
+    }
+    .ant-input-affix-wrapper {
+      border-radius: 6px;
+    }
+    .ant-btn {
+      border-radius: 6px;
+      height: 40px;
+      font-size: 16px;
+      font-weight: 500;
+    }
+  }
+}
+// 响应式设计
+@media (max-width: 768px) {
+  .login-modal {
+    .ant-modal {
+      margin: 0;
+      max-width: none;
+      width: 100vw !important;
+      height: 100vh;
+    }
+    .ant-modal-content {
+      // height: 100vh;
+      border-radius: 0;
+    }
+    .qr-login-content {
+      .qr-code-container {
+        .qr-code canvas {
+          width: 160px !important;
+          height: 160px !important;
+        }
+      }
+    }
+  }
+} 

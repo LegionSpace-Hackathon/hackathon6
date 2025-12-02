@@ -1,0 +1,190 @@
+pipeline {
+    agent any
+    environment {
+	    //服务器列表
+	    Server_list =  "${Servers}"
+
+    }
+    parameters {
+        choice(
+            name: 'Type', 
+            choices: ['Build', 'Deploy'],  // 可选值列表
+            description: '选择操作类型'
+        )
+    }
+    stages {
+        //设置标题备注
+        stage ('Note') {
+            steps {
+                script {
+                    //设置buildName
+                    wrap([$class: 'BuildUser']) {
+                        def deploylog = "${env.BUILD_USER_ID} 触发 '${JOB_BASE_NAME}(${BUILD_NUMBER})' "
+                        println deploylog
+                        buildName "#${BUILD_NUMBER}-${env.BUILD_USER_ID}-${Git_Tag}"
+                        //commit
+                        def HTTPD_LOCATION= sh( returnStdout: true, script: "git rev-parse --short HEAD" )
+                        //修改Description"
+                        buildDescription "${HTTPD_LOCATION} ${Type}"
+
+                        //全局变量
+                        env['Do_user'] = "${env.BUILD_USER_ID}"
+                        env['Commit'] = sh( returnStdout: true, script: "git rev-parse HEAD|cut -c1-20" )
+                        env['Git_des'] = getAllChangeResults()
+                        
+                        
+                    }
+
+                    
+                }
+            }
+           
+
+        }
+    	//清空旧文件
+        stage ('Prepare'){
+            when { expression { return params.Type == 'Build' } }
+            steps {
+                sh"""
+                    rm -fr ${WORKSPACE}/build
+                    rm -fr ${WORKSPACE}/build.tar.gz
+                """
+            }
+        }
+    	        //拉取代码
+        stage('CheckGit') {
+            when { expression { return params.Type == 'Build' } }
+            steps {
+                checkout scm: ([
+                    $class: 'GitSCM',
+                    userRemoteConfigs: [[credentialsId: '5e211aed-6c3d-42b4-b2dd-718a6f258955',url: "${GIT_URL}"]],
+                    branches: [[name: "refs/tags/${env.Git_Tag}"]]
+                ])
+            }
+        }
+        //打包
+        stage('Build'){
+            when { expression { return params.Type == 'Build' } }
+            steps {
+                sh"""
+                cd ${WORKSPACE}
+                n v22.16.0
+                sudo npm install --registry=https://registry.npmmirror.com
+                #Treating warnings as errors because process.env.CI = true
+                CI='' && npm run build
+                tar -czvf build.tar.gz dist
+                """
+            }
+        }
+        //部署
+        stage('Deploy') {
+            when { expression { return params.Type == 'Deploy' } }
+            
+            steps {
+                script{
+                    def A = ""
+                    def B = ""
+                    def C = ""
+                    
+                    for (Server in env.Server_list.tokenize(',')) {
+                        //推送文件
+                        A = A + "\n ansible $Server -m synchronize -a \"delete=no src=/tmp/${JOB_BASE_NAME}/build.tar.gz dest=/tmp/\""
+                        //删除文件
+                        B = B + " \n ansible $Server -m shell -a \"executable=/bin/bash chdir=/data source /etc/profile && rm -rf /data/legion/space && mkdir -p /data/legion/space \""
+                        //解压文件
+                        C = C + "\n ansible $Server -m raw -a \"tar -xzf /tmp/build.tar.gz -C /data/legion/space --strip-components 1 && rm -f /tmp/build.tar.gz\""
+                    }
+                    def result = sh(returnStdout:true, script: "ssh root@ansible.tongfudun.com 'mkdir -p /tmp/${JOB_BASE_NAME}' \n"
+                        + "scp -r ${WORKSPACE}/build.tar.gz root@ansible.tongfudun.com:/tmp/${JOB_BASE_NAME}/ \n"
+                        + 'ssh root@ansible.tongfudun.com -tt << remotessh \n'
+                        + "$A && $B && $C && echo Finished! \n"
+                        + "rm -fr /tmp/${JOB_BASE_NAME} \n"
+                        + 'exit \n'
+                        + 'remotessh'
+                    )
+                    result = result.trim()
+                    println result
+                }
+            }
+        }
+
+    }
+    
+    //post运行后处理
+    post {
+        //总是
+        always {
+            echo ''
+        }
+        //只有当流水线或者阶段完成状态与之前不同时。
+        changed {
+            echo ''
+        }
+
+        fixed {
+            echo ''
+        }
+
+        regression {
+            echo ''
+        }
+
+ 
+        unsuccessful {
+            echo ''
+        }
+
+        unstable {
+            echo ''
+        }
+
+ 
+
+        notBuilt {
+            echo ''
+        }
+
+        cleanup {
+            echo ''
+        }
+    }
+
+}
+
+@NonCPS
+def getAllChangeResults() {
+	def result = getChangeStringForBuild(currentBuild)
+	def buildToCheck = currentBuild.getPreviousBuild()
+	while (buildToCheck != null && buildToCheck.result != 'SUCCESS') {
+		//result += "\nBuild #${buildToCheck.number} [${buildToCheck.result}]\n"
+		result += getChangeStringForBuild(buildToCheck)
+		buildToCheck = buildToCheck.previousBuild
+	}
+	return result
+}
+
+/**
+* 获取变动日志
+*/
+@NonCPS
+def getChangeStringForBuild(build) {
+    MAX_MSG_LEN = 60
+    def changeLogSets = build.changeSets
+	def changeString = ""
+    for (int i = 0; i < changeLogSets.size(); i++) {
+        def entries = changeLogSets[i].items
+        for (int j = 0; j < entries.length; j++) {
+            def entry = entries[j]
+            def truncated_msg = entry.msg.take(MAX_MSG_LEN)
+			if (entry.msg.length() > MAX_MSG_LEN) {
+				truncated_msg += "..."
+			}
+            //changeString += "> - [@${entry.author.getFullName().toLowerCase()}][${entry.commitId.take(6)}]: ${truncated_msg} \n"
+            changeString += "> ###### - ${truncated_msg} \n"
+        }
+    }
+    if (!changeString) {
+        //changeString = "> ###### - No New Changes \n"
+    }
+    return changeString
+}

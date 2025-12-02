@@ -1,0 +1,70 @@
+// 主题颜色变量
+// 浅色主题
+:root {
+  // 主题色
+  --primary-color: #15D69C;
+  --primary-color-hover: #4CDDB1;
+  --primary-color-active: #0EB583;
+  --primary-color-opacity: rgba(21, 214, 156, 0.2);
+  --primary-hover: #4CDDB1;
+  --primary-color-dark: #0EB583;
+  --hover-background: #4CDDB1;
+  --success-color-dark: #0EB583;
+  --component1-background: #15D69C;
+  // 辅助色
+  --success-color: #52c41a;
+  --warning-color: #faad14;
+  --error-color: #f5222d;
+  --info-color: #15D69C;
+
+  // 中性色
+  --text-color: rgba(0, 0, 0, 0.85);
+  --text-color-secondary: rgba(0, 0, 0, 0.65);
+  --text-color-tertiary: rgba(0, 0, 0, 0.45);
+  --border-color: #d9d9d9;
+  --border-color-split: #f0f0f0;
+  --background-color: #f0f2f5;
+  --component-background: #ffffff;
+  --item-hover-bg: rgba(0, 0, 0, 0.02);
+  --disabled-color: rgba(0, 0, 0, 0.25);
+  --disabled-bg: #f5f5f5;
+  --selected-item-bg: #4CDDB1;
+  --box-shadow-color : rgba(21, 214, 156, 0.15);
+
+  // 阴影
+  --shadow-color: rgba(0, 0, 0, 0.15);
+  --box-shadow-base: 0 3px 6px -4px rgba(0, 0, 0, 0.12), 0 6px 16px 0 rgba(0, 0, 0, 0.08), 0 9px 28px 8px rgba(0, 0, 0, 0.05);
+}
+
+// 深色主题
+.dark-mode {
+  // 主题色 - 深色模式下稍微亮一点
+  --primary-color: #15D69C;
+  --box-shadow-color : rgba(21, 214, 156, 0.15);
+  --primary-color-hover: #4CDDB1;
+  --primary-color-active: #0EB583;
+  --primary-color-opacity: rgba(21, 214, 156, 0.2);
+  --input-background: #1f1f1f;
+  --component1-background: #2c2c2e;
+  // 辅助色
+  --success-color: #49aa19;
+  --warning-color: #d89614;
+  --error-color: #d32029;
+  --info-color: #15D69C;
+
+  // 中性色
+  --text-color: rgba(255, 255, 255, 0.85);
+  --text-color-secondary: rgba(255, 255, 255, 0.65);
+  --text-color-tertiary: rgba(255, 255, 255, 0.45);
+  --border-color: #434343;
+  --border-color-split: #303030;
+  --background-color: #141414;
+  --component-background: #1f1f1f;
+  --item-hover-bg: rgba(255, 255, 255, 0.08);
+  --disabled-color: rgba(255, 255, 255, 0.3);
+  --disabled-bg: rgba(255, 255, 255, 0.08);
+
+  // 阴影
+  --shadow-color: rgba(0, 0, 0, 0.65);
+  --box-shadow-base: 0 3px 6px -4px rgba(0, 0, 0, 0.48), 0 6px 16px 0 rgba(0, 0, 0, 0.32), 0 9px 28px 8px rgba(0, 0, 0, 0.2);
+} 

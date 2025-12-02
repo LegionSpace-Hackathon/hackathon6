@@ -1,0 +1,1373 @@
+app:
+  description: 日报总结与行动
+  icon: 🤖
+  icon_background: '#FFEAD5'
+  mode: advanced-chat
+  name: dailyAgent
+  use_icon_as_answer_icon: false
+dependencies:
+- current_identifier: null
+  type: marketplace
+  value:
+    marketplace_plugin_unique_identifier: langgenius/deepseek:0.0.7@c4e7b999ae67bfc059f6f51630bed36def5a835d12b0251694f5784b5ff1cd95
+    version: null
+- current_identifier: null
+  type: marketplace
+  value:
+    marketplace_plugin_unique_identifier: langgenius/tongyi:0.0.39@f339a0a0bb3eed0c569f5555f46fa0f0437427586385bc404a3a29c073767ef9
+    version: null
+- current_identifier: null
+  type: marketplace
+  value:
+    marketplace_plugin_unique_identifier: langgenius/echarts:0.0.1@e390de4320a5ab32ef24899983f84c31aa39e4690c7b294be11f2c10268c3a68
+    version: null
+kind: app
+version: 0.5.0
+workflow:
+  conversation_variables:
+  - description: ''
+    id: af5302de-1735-4285-b80d-6a27308a50f4
+    name: data
+    selector:
+    - conversation
+    - data
+    value: ''
+    value_type: string
+  - description: 昨日日期
+    id: dceccbb1-eccc-4573-b2a7-b0586cfa1df0
+    name: yesterday_date
+    selector:
+    - conversation
+    - yesterday_date
+    value: '2025-11-28'
+    value_type: string
+  - description: 次日日期
+    id: e3752c24-5a73-4d29-ad27-e3534e4805d8
+    name: next_date
+    selector:
+    - conversation
+    - next_date
+    value: '2025-11-30'
+    value_type: string
+  - description: 日期
+    id: f143f081-4c3c-40a5-af05-c40fbe049f3d
+    name: date
+    selector:
+    - conversation
+    - date
+    value: '2025-11-29'
+    value_type: string
+  - description: 用户名称
+    id: a7868b2f-f5e3-4478-9ff3-923ceba87962
+    name: username
+    selector:
+    - conversation
+    - username
+    value: 天王
+    value_type: string
+  environment_variables: []
+  features:
+    file_upload:
+      allowed_file_extensions:
+      - .JPG
+      - .JPEG
+      - .PNG
+      - .GIF
+      - .WEBP
+      - .SVG
+      allowed_file_types:
+      - image
+      allowed_file_upload_methods:
+      - local_file
+      - remote_url
+      enabled: false
+      fileUploadConfig:
+        audio_file_size_limit: 50
+        batch_count_limit: 5
+        file_size_limit: 15
+        image_file_size_limit: 10
+        video_file_size_limit: 100
+        workflow_file_upload_limit: 10
+      image:
+        enabled: false
+        number_limits: 3
+        transfer_methods:
+        - local_file
+        - remote_url
+      number_limits: 3
+    opening_statement: ''
+    retriever_resource:
+      enabled: true
+    sensitive_word_avoidance:
+      enabled: false
+    speech_to_text:
+      enabled: false
+    suggested_questions: []
+    suggested_questions_after_answer:
+      enabled: false
+    text_to_speech:
+      enabled: false
+      language: ''
+      voice: ''
+  graph:
+    edges:
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: knowledge-retrieval
+        targetType: llm
+      id: 1764230480931-source-1764230485450-target
+      selected: false
+      source: '1764230480931'
+      sourceHandle: source
+      target: '1764230485450'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: start
+        targetType: question-classifier
+      id: 1764230326266-source-1764230840378-target
+      selected: false
+      source: '1764230326266'
+      sourceHandle: source
+      target: '1764230840378'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: question-classifier
+        targetType: llm
+      id: 1764230840378-2-1764230996038-target
+      selected: false
+      source: '1764230840378'
+      sourceHandle: '2'
+      target: '1764230996038'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: llm
+        targetType: answer
+      id: 1764230996038-source-1764231013730-target
+      selected: false
+      source: '1764230996038'
+      sourceHandle: source
+      target: '1764231013730'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: question-classifier
+        targetType: knowledge-retrieval
+      id: 1764230840378-1-1764230480931-target
+      selected: false
+      source: '1764230840378'
+      sourceHandle: '1'
+      target: '1764230480931'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: if-else
+        targetType: answer
+      id: 1764324110248-false-1764323116701-target
+      selected: false
+      source: '1764324110248'
+      sourceHandle: 'false'
+      target: '1764323116701'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: question-classifier
+        targetType: http-request
+      id: 1764230840378-1764332388277-1764332410844-target
+      selected: false
+      source: '1764230840378'
+      sourceHandle: '1764332388277'
+      target: '1764332410844'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: llm
+        targetType: parameter-extractor
+      id: 1764230485450-source-1764333696676-target
+      selected: false
+      source: '1764230485450'
+      sourceHandle: source
+      target: '1764333696676'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: parameter-extractor
+        targetType: if-else
+      id: 1764333696676-source-1764324110248-target
+      selected: false
+      source: '1764333696676'
+      sourceHandle: source
+      target: '1764324110248'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: http-request
+        targetType: code
+      id: 1764332410844-source-1764336083661-target
+      source: '1764332410844'
+      sourceHandle: source
+      target: '1764336083661'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: code
+        targetType: if-else
+      id: 1764336083661-source-1764382104535-target
+      source: '1764336083661'
+      sourceHandle: source
+      target: '1764382104535'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: if-else
+        targetType: answer
+      id: 1764324110248-true-1764230629980-target
+      source: '1764324110248'
+      sourceHandle: 'true'
+      target: '1764230629980'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: if-else
+        targetType: answer
+      id: 1764382104535-true-1764332442301-target
+      source: '1764382104535'
+      sourceHandle: 'true'
+      target: '1764332442301'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: if-else
+        targetType: answer
+      id: 1764382104535-false-1764382409254-target
+      source: '1764382104535'
+      sourceHandle: 'false'
+      target: '1764382409254'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: answer
+        targetType: code
+      id: 1764230629980-source-1764383329278-target
+      source: '1764230629980'
+      sourceHandle: source
+      target: '1764383329278'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: code
+        targetType: http-request
+      id: 1764383329278-source-1764325382135-target
+      source: '1764383329278'
+      sourceHandle: source
+      target: '1764325382135'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: question-classifier
+        targetType: assigner
+      id: 1764230840378-1764386573411-1764386592205-target
+      source: '1764230840378'
+      sourceHandle: '1764386573411'
+      target: '1764386592205'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: assigner
+        targetType: parameter-extractor
+      id: 1764386592205-source-1764386641990-target
+      source: '1764386592205'
+      sourceHandle: source
+      target: '1764386641990'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: parameter-extractor
+        targetType: tool
+      id: 1764386641990-source-1764386735026-target
+      source: '1764386641990'
+      sourceHandle: source
+      target: '1764386735026'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: tool
+        targetType: answer
+      id: 1764386735026-source-1764386755312-target
+      source: '1764386735026'
+      sourceHandle: source
+      target: '1764386755312'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: question-classifier
+        targetType: tool
+      id: 1764230840378-1764389305451-1764389401060-target
+      source: '1764230840378'
+      sourceHandle: '1764389305451'
+      target: '1764389401060'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: tool
+        targetType: llm
+      id: 1764389401060-source-1764389503950-target
+      source: '1764389401060'
+      sourceHandle: source
+      target: '1764389503950'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: llm
+        targetType: answer
+      id: 1764389503950-source-1764389591804-target
+      source: '1764389503950'
+      sourceHandle: source
+      target: '1764389591804'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    nodes:
+    - data:
+        selected: false
+        title: 用户输入
+        type: start
+        variables: []
+      height: 73
+      id: '1764230326266'
+      position:
+        x: -438.6878133599939
+        y: 185.6941515011913
+      positionAbsolute:
+        x: -438.6878133599939
+        y: 185.6941515011913
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        dataset_ids:
+        - KEmmguTY0B5mcoSZVik1RO+LTnNZakQ9cvcZjMcqOKyEC6wEtQB9TLNhFNopQUGL
+        multiple_retrieval_config:
+          reranking_enable: true
+          reranking_mode: reranking_model
+          reranking_model:
+            model: gte-rerank
+            provider: langgenius/tongyi/tongyi
+          score_threshold: 0.3
+          top_k: 5
+          weights:
+            keyword_setting:
+              keyword_weight: 0.3
+            vector_setting:
+              embedding_model_name: text-embedding-v3
+              embedding_provider_name: langgenius/tongyi/tongyi
+              vector_weight: 0.7
+            weight_type: customized
+        query_variable_selector:
+        - sys
+        - query
+        retrieval_mode: multiple
+        selected: false
+        title: 知识检索
+        type: knowledge-retrieval
+      height: 90
+      id: '1764230480931'
+      position:
+        x: 508.92306069796985
+        y: -41.52028672500887
+      positionAbsolute:
+        x: 508.92306069796985
+        y: -41.52028672500887
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        context:
+          enabled: true
+          variable_selector:
+          - '1764230480931'
+          - result
+        memory:
+          query_prompt_template: '{{#sys.query#}}
+
+
+            {{#sys.files#}}'
+          role_prefix:
+            assistant: ''
+            user: ''
+          window:
+            enabled: false
+            size: 50
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: deepseek-v3
+          provider: langgenius/tongyi/tongyi
+        prompt_template:
+        - id: 0d6ad1e7-3ead-47cf-8301-3591f8eae9d4
+          role: system
+          text: '【角色定位】你是专注于公司日报信息提取与总结的专属助手，仅处理并回应与“公司日报”相关的检索需求。
+
+            【检索目标】请从提供的{{#context#}}（即附件中的多部门日报数据）中，精准提取“11月24日（星期一）”的所有日报信息，完成信息梳理与输出。
+
+            【检索规则】
+
+            1. 范围限定：信息提取必须完全源于{{#context#}}，禁止添加任何外部数据或主观推测内容。
+
+            2. 匹配优先级：第一步优先匹配“11月24日”“星期一”这类时间关键词完全一致的片段；第二步关联该时间片段内的“姓名”“所属部门”“业务内容”“项目进度”等相关字段，确保信息完整。
+
+            3. 去重规则：若同一日期下出现重复人员或重复任务记录，以内容更详细的条目为准，剔除完全重复的冗余信息。
+
+            【输出要求】
+
+            1. 结构顺序：先呈现核心结论（提炼周一日报的关键信息，如涉及部门、核心工作方向、整体项目进度概况），再补充原文依据。
+
+            2. 原文标注：每条原文依据需明确标注来源——“来自11月24日（星期一）模块”，确保信息可追溯。
+
+            3. 内容梳理：长文本信息需按“部门-姓名”的逻辑分点排列，每个姓名下的业务内容用数字序号罗列，避免信息杂乱。
+
+            4.针对数据可进行适量的总结性文字
+
+            【特殊说明】若{{#context#}}中存在“11月24日（星期一）”的相关数据，严格按上述规则输出；若确实无对应信息，需明确回复“未检索到11月24日（星期一）的相关日报数据”，不得虚构内容。'
+        - id: 359533f5-72cf-435e-9733-d64e988905c7
+          role: user
+          text: ''
+        selected: false
+        structured_output_enabled: false
+        title: LLM 2
+        type: llm
+        vision:
+          enabled: false
+      height: 88
+      id: '1764230485450'
+      position:
+        x: 914.9472732654251
+        y: -41.52028672500887
+      positionAbsolute:
+        x: 914.9472732654251
+        y: -41.52028672500887
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        answer: '{{#1764230485450.text#}}'
+        selected: false
+        title: 直接回复 2
+        type: answer
+        variables: []
+      height: 103
+      id: '1764230629980'
+      position:
+        x: 2333.2599894185073
+        y: -187.47463353602518
+      positionAbsolute:
+        x: 2333.2599894185073
+        y: -187.47463353602518
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        classes:
+        - id: '1'
+          name: 日报相关
+        - id: '1764332388277'
+          name: 预约会议相关
+        - id: '2'
+          name: 非日报相关
+        - id: '1764386573411'
+          name: 统计报表相关
+        - id: '1764389305451'
+          name: 翻译
+        instructions: ''
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: deepseek-v3
+          provider: langgenius/tongyi/tongyi
+        query_variable_selector:
+        - '1764230326266'
+        - sys.query
+        selected: false
+        title: 问题分类器
+        type: question-classifier
+        vision:
+          enabled: false
+      height: 284
+      id: '1764230840378'
+      position:
+        x: 2.349134304707377
+        y: 206.6941515011913
+      positionAbsolute:
+        x: 2.349134304707377
+        y: 206.6941515011913
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: deepseek-v3
+          provider: langgenius/tongyi/tongyi
+        prompt_template:
+        - id: 8c9c7699-1349-44e7-936f-faddb01bb783
+          role: system
+          text: "# 角色定位\n你是一个「贴心高效的工作日报助手」，专注于处理用户与日报相关的所有闲聊、咨询、提醒、反馈场景。核心目标：语气亲切有同理心，回应精准不冗余，兼顾专业性和温度，避免生硬说教或催促。\n\
+            \n# 核心规则\n1. 场景识别：自动判断用户需求场景（提醒类/咨询类/互动反馈类/闲聊提及类），匹配对应回应逻辑；\n2. 变量替换：所有{{变量名}}需替换为实际数据（如Dify上下文变量、系统自动获取的信息），确保回应个性化；\n\
+            3. 语气要求：日常用“哈喽～”“嗨～”开头，结尾带表情或鼓励语（如“有问题随时喊我呀～”“辛苦啦！”），避免官方话术；\n4. 优先级：先共情（如用户抱怨麻烦时先认同情绪），再解决问题，最后补充小提示；\n\
+            5. 工具联动：若需查询具体信息（如部门专属格式、提交状态），可提示“我帮你调取详细信息～”（后续可对接Dify工具调用API）。\n\n\
+            # 具体场景回应逻辑\n## 一、提醒类（触发条件：特定时间/用户未提交）\n1. 晨间提醒（{{date}}上午，提醒今日/昨日日报）：\n\
+            \   开头：嗨～{{username}}，新的一天开始啦！\n   核心：记得今天下班前提交{{report_type}}日报哦～ 简单记录工作进展和待办，方便后续跟进呀～\n\
+            \   结尾：有任何提交问题都可以问我呀！\U0001F60A\n\n2. 临近截止提醒（{{date}}下午，距离截止{{time_remaining}}）：\n\
+            \   开头：哈喽{{username}}～ 温馨提示呀～\n   核心：{{report_type}}日报提交截止时间快到啦（还有{{time_remaining}}），如果还没完成，记得抽空填写一下呀～\n\
+            \   结尾：有不清楚的格式或内容疑问，随时喊我！\U0001F4A8\n\n3. 次日补提提醒（{{next_date}}上午，未提交{{yesterday_date}}日报）：\n\
+            \   开头：嗨{{username}}～ 发现一个小情况呀～\n   核心：你昨天（{{yesterday_date}}）的{{report_type}}日报还没提交哦～\
+            \ 如果是忘记啦，今天可以补提，备注“补昨日日报”即可～\n   结尾：有补提操作疑问的话，我帮你解答！\U0001F609\n\n## 二、咨询类（用户主动问日报相关问题）\n\
+            1. 问格式：\n   开头：{{username}}你好呀～ 咱们{{report_type}}日报的通用格式来啦：\n   核心：1.\
+            \ 今日/昨日进展（量化任务，如“完成XX功能开发”）；2. 遇到的问题/卡点；3. 明日/后续计划；4. 其他补充（可选）。\n   结尾：如果有部门专属格式，我可以帮你调取哦～\
+            \ 还有疑问吗？\n\n2. 问截止时间/提交方式：\n   开头：哈喽{{username}}～ 这就告诉你日报提交规则！\n   核心：✅\
+            \ 截止时间：每天{{deadline_time}}；✅ 提交方式：通过{{submit_channel}}提交；\n   结尾：\U0001F4A1\
+            \ 小提示：特殊情况提前跟负责人说一声呀～ 还有其他问题吗？\n\n3. 问忘记提交怎么办：\n   开头：别担心呀{{username}}～\
+            \ 忘记提交有办法！\n   核心：{{solution}}（如“24小时内可补提，备注‘补XX日期日报’；超期跟领导说明即可”）。\n \
+            \  结尾：后续我也可以每天提醒你，需要设置固定提醒时间吗？\U0001F917\n\n4. 其他咨询（如“日报可以修改吗？”“谁能看我的日报？”）：\n\
+            \   开头：收到你的问题啦～\n   核心：直接回应问题（如“日报提交后24小时内可在{{submit_channel}}修改，超期需联系管理员”“你的日报仅你和直属领导、行政同事可见”）；\n\
+            \   结尾：有其他不清楚的随时问我呀！\n\n## 三、互动反馈类（用户提交日报后）\n1. 常规鼓励：\n   开头：哇～{{username}}太棒啦！\n\
+            \   核心：{{date}}的{{report_type}}日报已收到～ 从日报里看到你完成了{{key_task}}，效率超高呀！\n\
+            \   结尾：继续加油，明天也要顺顺利利呀～\U0001F4AA\n\n2. 用户提问题/卡点：\n   开头：{{username}}，刚看了你的日报，辛苦啦！\n\
+            \   核心：注意到你提到{{problem}}～ 如果需要协调资源或找人帮忙，我可以帮你同步给相关同事；如果是技术/流程问题，我也可以帮你查找解决方案～\n\
+            \   结尾：你需要我做些什么呢？\n\n3. 内容简洁引导补充：\n   开头：{{username}}～ 你的{{date}}日报已收到啦！\n\
+            \   核心：如果方便的话，下次可以补充一下具体核心任务（如“XX需求开发”）和明日计划，后续跟进会更高效哦～ 当然当天简单也没关系！\n\
+            \   结尾：辛苦啦，继续保持～\U0001F60A\n\n## 四、闲聊提及类（用户日常闲聊中提到日报）\n1. 用户说“忙到没写日报”：\n\
+            \   开头：天呐～{{username}}辛苦啦！忙碌的一天真不容易～\n   核心：日报可以碎片化填写呀（午休写几句进展，下班前汇总），如果实在没时间，先写核心内容后续补充也可以～\n\
+            \   结尾：需要我帮你预留10分钟提醒吗？或者简化一个极简模板？\n\n2. 用户吐槽“日报好麻烦”：\n   开头：哈哈，完全懂{{username}}的感受！有时候确实觉得写日报有点繁琐～\n\
+            \   核心：不过日报能帮你梳理工作、避免忘事，后续复盘也有依据～ 我可以帮你简化成“3句话模板”（进展+问题+计划），5分钟就能写完～\n\
+            \   结尾：要不要试试这个极简模板呀？\n\n3. 用户说“日报写完啦，解放了”：\n   开头：太棒啦{{username}}！日报搞定，快乐翻倍～\n\
+            \   核心：辛苦一天，终于可以好好休息/下班啦～\n   结尾：明天的日报我也会准时提醒你，让你不用惦记～ 祝你玩得开心/休息好呀！\U0001F973\
+            \n\n# 特殊情况处理\n1. 用户拒绝提醒：回应“好嘞～ 那我不主动提醒你啦！如果之后需要恢复提醒，随时跟我说呀～”；\n2. 信息不全（如未知部门格式）：回应“{{username}}，目前没有查询到专属信息～\
+            \ 我帮你联系行政同事确认，稍后回复你呀！”；\n3. 用户情绪低落（如抱怨工作累+日报麻烦）：先共情“真的太辛苦了，每天工作已经够累了，还要写日报，确实不容易～”，再提供解决方案（如“我帮你生成自动填充模板，你只需补充关键信息”）。\n\
+            \n# 最终要求\n回应需自然流畅，像真实同事聊天，不堆砌信息；根据用户语气调整回应风格（用户活泼则更俏皮，用户严肃则更专业）；所有变量必须替换为实际数据，不出现{{变量名}}占位符；无需额外添加无关内容，聚焦日报相关需求。"
+        selected: false
+        title: LLM 2
+        type: llm
+        vision:
+          enabled: false
+      height: 88
+      id: '1764230996038'
+      position:
+        x: 518.1126475379461
+        y: 584.4759855316881
+      positionAbsolute:
+        x: 518.1126475379461
+        y: 584.4759855316881
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        answer: '{{#1764230996038.text#}}'
+        selected: false
+        title: 直接回复 2
+        type: answer
+        variables: []
+      height: 103
+      id: '1764231013730'
+      position:
+        x: 920.3838979141774
+        y: 571.777353987631
+      positionAbsolute:
+        x: 920.3838979141774
+        y: 571.777353987631
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        cases:
+        - case_id: 'true'
+          conditions:
+          - comparison_operator: ≤
+            id: f3edc15f-99e3-43ab-86af-71b92047a9e9
+            numberVarType: constant
+            value: '50'
+            varType: number
+            variable_selector:
+            - '1764333696676'
+            - jindu
+          id: 'true'
+          logical_operator: and
+        selected: false
+        title: 条件分支
+        type: if-else
+      height: 124
+      id: '1764324110248'
+      position:
+        x: 1833.7859686586194
+        y: -41.52028672500887
+      positionAbsolute:
+        x: 1833.7859686586194
+        y: -41.52028672500887
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        answer: '{{#1764230485450.text#}}'
+        selected: false
+        title: 直接回复 3
+        type: answer
+        variables: []
+      height: 103
+      id: '1764323116701'
+      position:
+        x: 2317.1524891099134
+        y: 98.51469191171242
+      positionAbsolute:
+        x: 2317.1524891099134
+        y: 98.51469191171242
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        authorization:
+          config: null
+          type: no-auth
+        body:
+          data:
+          - id: key-value-968
+            key: ''
+            type: text
+            value: '{
+
+                  "targetGroupId": "b076fab37c464844b9925a0a06f90698",
+
+                  "targetGroupName": "安卓群聊",
+
+                  "title": "重要提醒",
+
+                  "titleEn": "testtitle",
+
+                  "content":  {{#1764383329278.result#}},
+
+                  "contentEn": "1231",
+
+                  "from":"76ec1e09c89d413f85603b23d5fe39ab"
+
+              }'
+          type: json
+        headers: ''
+        method: post
+        params: ''
+        retry_config:
+          max_retries: 3
+          retry_enabled: true
+          retry_interval: 100
+        selected: false
+        ssl_verify: true
+        timeout:
+          max_connect_timeout: 0
+          max_read_timeout: 0
+          max_write_timeout: 0
+        title: HTTP 请求
+        type: http-request
+        url: http://192.168.109.150:7083/admin/chainmeet/im/sendOfficialMsg/group
+        variables: []
+      height: 154
+      id: '1764325382135'
+      position:
+        x: 3142.9759170850784
+        y: -195.45463102273382
+      positionAbsolute:
+        x: 3142.9759170850784
+        y: -195.45463102273382
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        authorization:
+          config: null
+          type: no-auth
+        body:
+          data: []
+          type: none
+        headers: ''
+        method: post
+        params: userId:b7a19493cabc42e290c3d6c8a6243a7c
+        retry_config:
+          max_retries: 3
+          retry_enabled: true
+          retry_interval: 100
+        selected: false
+        ssl_verify: true
+        timeout:
+          max_connect_timeout: 0
+          max_read_timeout: 0
+          max_write_timeout: 0
+        title: HTTP 请求 2
+        type: http-request
+        url: http://192.168.109.201:7081/im/meeting/saveMeeting/v1ForAi
+        variables: []
+      height: 154
+      id: '1764332410844'
+      position:
+        x: 508.92306069796985
+        y: 306.1891489393163
+      positionAbsolute:
+        x: 508.92306069796985
+        y: 306.1891489393163
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        answer: '【会议主题】项目进度滞后专项沟通会
+
+          【会议背景】因当前项目进度未达预期，为精准定位进度滞后原因、协调资源推进项目落地，特组织本次专项沟通会，诚邀相关成员共同商议解决方案。
+
+          【负责人】<a href="https://legion.tongfudun.com/static/friendQR.html?id=40b9e83034e649489d693a8ff9db1ba7&lang=zh">郑涛</a>
+
+          【预约成功！】会议号：{{#1764336083661.code#}}'
+        selected: false
+        title: 直接回复 5
+        type: answer
+        variables: []
+      height: 263
+      id: '1764332442301'
+      position:
+        x: 2081.613404755247
+        y: 337.7352359387675
+      positionAbsolute:
+        x: 2081.613404755247
+        y: 337.7352359387675
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        instruction: 如果进度值大于50%输出数字1否则输出数字0
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: deepseek-v3
+          provider: langgenius/tongyi/tongyi
+        parameters:
+        - description: 项目进度值
+          name: jindu
+          required: false
+          type: number
+        query:
+        - '1764230485450'
+        - text
+        reasoning_mode: prompt
+        selected: false
+        title: 参数提取器
+        type: parameter-extractor
+        vision:
+          enabled: false
+      height: 88
+      id: '1764333696676'
+      position:
+        x: 1392.5474144724308
+        y: -41.52028672500887
+      positionAbsolute:
+        x: 1392.5474144724308
+        y: -41.52028672500887
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        code: "import json\n\ndef main(body: str) -> dict:\n    # 初始化默认值，防止解析失败\n\
+          \    parsed_data = {}\n    target_code = \"\"\n    \n    try:\n        #\
+          \ 直接解析带转义符的JSON字符串（json.loads会自动处理\\\"转义）\n        parsed_data = json.loads(body)\n\
+          \        # 精准提取data中的code值（多层get避免键缺失报错）\n        target_code = parsed_data.get(\"\
+          data\", {}).get(\"code\", \"\")\n    \n    except json.JSONDecodeError as\
+          \ e:\n        target_code = f\"JSON解析失败：{str(e)}\"\n    except Exception\
+          \ as e:\n        target_code = f\"提取code失败：{str(e)}\"\n\n    # 结构化返回（保留你要求的格式，便于后续调用）\n\
+          \    return {\n        \"code\": target_code,      # 完整解\n    }"
+        code_language: python3
+        outputs:
+          code:
+            children: null
+            type: string
+        selected: false
+        title: 代码执行
+        type: code
+        variables:
+        - value_selector:
+          - '1764332410844'
+          - body
+          value_type: string
+          variable: body
+      height: 52
+      id: '1764336083661'
+      position:
+        x: 920.3838979141774
+        y: 312.4081195669913
+      positionAbsolute:
+        x: 920.3838979141774
+        y: 312.4081195669913
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        cases:
+        - case_id: 'true'
+          conditions:
+          - comparison_operator: not empty
+            id: c7b21cb9-3170-4479-997f-fde69e192cee
+            value: ''
+            varType: string
+            variable_selector:
+            - '1764336083661'
+            - code
+          id: 'true'
+          logical_operator: or
+        selected: false
+        title: 条件分支 2
+        type: if-else
+      height: 124
+      id: '1764382104535'
+      position:
+        x: 1392.5474144724308
+        y: 299.1101180125603
+      positionAbsolute:
+        x: 1392.5474144724308
+        y: 299.1101180125603
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        answer: 系统错误请重试
+        selected: false
+        title: 直接回复 5
+        type: answer
+        variables: []
+      height: 100
+      id: '1764382409254'
+      position:
+        x: 2081.613404755247
+        y: 640.1114152772026
+      positionAbsolute:
+        x: 2081.613404755247
+        y: 640.1114152772026
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        code: "import re  # 关键：必须导入re模块，否则会报NameError\n\ndef main(text: str):\n  \
+          \  \"\"\"\n    过滤特殊符号，仅保留中文、英文、阿拉伯数字\n    :param text: 待过滤的原始文本（Dify中的/text变量）\n\
+          \    :return: 包含过滤后文本的字典，key为result\n    \"\"\"\n    # 正则规则：仅保留中文、英文大小写、阿拉伯数字\n\
+          \    # 如需保留空格/换行，将规则改为 r'[^\\u4e00-\\u9fa5a-zA-Z0-9\\s]'\n    filter_pattern\
+          \ = r'[^\\u4e00-\\u9fa5a-zA-Z0-9，。！？；：\"\"''（）【】《》、·…—①②③④⑤⑥⑦⑧⑨⑩一二三四五六七八九十百千万亿.]'\n\
+          \    \n    # 处理空值：如果text为空，直接返回空字符串\n    if not text:\n        filtered_text\
+          \ = \"\"\n    else:\n        # 执行过滤：替换所有非目标字符为空\n        filtered_text =\
+          \ re.sub(filter_pattern, '', text)\n    \n    # 按指定格式返回结果\n    return {\n\
+          \        \"result\": filtered_text,\n    }\n\n# 【可选测试】Dify中可注释，本地测试用\n#\
+          \ test = main(\"你好！123abc@#￥Dify\")\n# print(test[\"result\"])  # 输出：你好123abcDify"
+        code_language: python3
+        outputs:
+          result:
+            children: null
+            type: string
+        selected: false
+        title: 代码执行 2
+        type: code
+        variables:
+        - value_selector:
+          - '1764230485450'
+          - text
+          value_type: string
+          variable: text
+      height: 52
+      id: '1764383329278'
+      position:
+        x: 2741.950101901641
+        y: -195.45463102273382
+      positionAbsolute:
+        x: 2741.950101901641
+        y: -195.45463102273382
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        items:
+        - input_type: constant
+          operation: set
+          value: "{\n    \"series\": [\n        {\n            \"data\": [\n     \
+            \           85,\n                82,\n                68,\n          \
+            \      72\n            ],\n            \"itemStyle\": {\n            \
+            \    \"color\": \"#4CAF50\"\n            },\n            \"name\": \"\
+            项目进度峰值\",\n            \"type\": \"bar\"\n        }\n    ],\n    \"title\"\
+            : {\n        \"text\": \"项目周累计进度\"\n    },\n    \"toolbox\": {\n     \
+            \   \"feature\": {\n            \"saveAsImage\": {\n                \"\
+            title\": \"下载图片\"\n            }\n        },\n        \"show\": true\n\
+            \    },\n    \"tooltip\": {\n        \"axisPointer\": {\n            \"\
+            type\": \"shadow\"\n        },\n        \"trigger\": \"axis\"\n    },\n\
+            \    \"xAxis\": {\n        \"data\": [\n            \"研发一部\",\n      \
+            \      \"研发二部\",\n            \"市场部 - 分布式数字身份应用项目\",\n            \"市场部\
+            \ - 国网山西电力维保项目\",\n        ],\n        \"type\": \"category\"\n    },\n\
+            \    \"yAxis\": {\n        \"name\": \"项目进度\",\n        \"type\": \"value\"\
+            \n    }\n}"
+          variable_selector:
+          - conversation
+          - data
+          write_mode: over-write
+        selected: false
+        title: 变量赋值
+        type: assigner
+        version: '2'
+      height: 84
+      id: '1764386592205'
+      position:
+        x: 518.1126475379461
+        y: 865.7688629398704
+      positionAbsolute:
+        x: 518.1126475379461
+        y: 865.7688629398704
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        instruction: "你是一名数据可视化分析专家，请根据用户提供的输入内容，提取出绘制**饼图**所需的三个核心参数，用于展示不同类别在整体中的占比情况。\n\
+          \n请输出以下三个字段，并确保格式清晰、适配后续可视化使用：\n\n1. 标题（title）：图表的主题名称，应概括数据的含义，中文。  \n\
+          2. 类别标签（categories）：每个数值对应的分类标签，优先按照用户指定的划分标准，如果没有指定，就自行划分，选出最有代表性、能体现异质性的分类标准，也用分号\
+          \ `;` 分隔，\n3. 数值数据（data）：根据每个类别标签，统计对应的数值，即该类别出现的次数，结果用分号 `;` 分隔，，\n\n"
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: deepseek-chat
+          provider: langgenius/deepseek/deepseek
+        parameters:
+        - description: 饼图标题
+          name: title
+          required: false
+          type: string
+        - description: 饼图中每一个类别对应的数据
+          name: data
+          required: false
+          type: string
+        - description: 饼图中的类别
+          name: categories
+          required: false
+          type: string
+        query:
+        - conversation
+        - data
+        reasoning_mode: prompt
+        selected: false
+        title: 参数提取器 2
+        type: parameter-extractor
+        vision:
+          enabled: false
+      height: 88
+      id: '1764386641990'
+      position:
+        x: 920.3838979141774
+        y: 857.8518154752328
+      positionAbsolute:
+        x: 920.3838979141774
+        y: 857.8518154752328
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        is_team_authorization: true
+        paramSchemas:
+        - auto_generate: null
+          default: null
+          form: llm
+          human_description:
+            en_US: chart title
+            ja_JP: chart title
+            pt_BR: chart title
+            zh_Hans: 图表的标题
+          label:
+            en_US: title
+            ja_JP: title
+            pt_BR: title
+            zh_Hans: 标题
+          llm_description: chart title
+          max: null
+          min: null
+          name: title
+          options: []
+          placeholder: null
+          precision: null
+          required: true
+          scope: null
+          template: null
+          type: string
+        - auto_generate: null
+          default: null
+          form: llm
+          human_description:
+            en_US: data for generating chart, each number should be separated by ";"
+            ja_JP: data for generating chart, each number should be separated by ";"
+            pt_BR: data for generating chart, each number should be separated by ";"
+            zh_Hans: 用于生成饼图的数据，每个数字之间用 ";" 分隔
+          label:
+            en_US: data
+            ja_JP: data
+            pt_BR: data
+            zh_Hans: 数据
+          llm_description: data for generating pie chart, data should be a string
+            contains a list of numbers like "1;2;3;4;5"
+          max: null
+          min: null
+          name: data
+          options: []
+          placeholder: null
+          precision: null
+          required: true
+          scope: null
+          template: null
+          type: string
+        - auto_generate: null
+          default: null
+          form: llm
+          human_description:
+            en_US: Categories for chart, each category should be separated by ";"
+            ja_JP: Categories for chart, each category should be separated by ";"
+            pt_BR: Categories for chart, each category should be separated by ";"
+            zh_Hans: 饼图的分类，每个分类之间用 ";" 分隔
+          label:
+            en_US: Categories
+            ja_JP: Categories
+            pt_BR: Categories
+            zh_Hans: 分类
+          llm_description: categories for pie chart, categories should be a string
+            contains a list of texts like "a;b;c;1;2" in order to match the data,
+            each category should be split by ";"
+          max: null
+          min: null
+          name: categories
+          options: []
+          placeholder: null
+          precision: null
+          required: true
+          scope: null
+          template: null
+          type: string
+        params:
+          categories: ''
+          data: ''
+          title: ''
+        plugin_id: langgenius/echarts
+        plugin_unique_identifier: langgenius/echarts:0.0.1@e390de4320a5ab32ef24899983f84c31aa39e4690c7b294be11f2c10268c3a68
+        provider_icon: /console/api/workspaces/current/plugin/icon?tenant_id=30cb048a-c1e8-4d33-8a39-9c0435ba57ed&filename=6502fc86791e68061d3ecf90357e15ab15189436fd63ff1bc2e08966dddbe4f3.svg
+        provider_id: langgenius/echarts/echarts
+        provider_name: langgenius/echarts/echarts
+        provider_type: builtin
+        selected: false
+        title: 饼图
+        tool_configurations: {}
+        tool_description: 饼图
+        tool_label: 饼图
+        tool_name: pie_chart
+        tool_node_version: '2'
+        tool_parameters:
+          categories:
+            type: mixed
+            value: '{{#1764386641990.categories#}}'
+          data:
+            type: mixed
+            value: '{{#1764386641990.data#}}'
+          title:
+            type: mixed
+            value: '{{#1764386641990.title#}}'
+        type: tool
+      height: 52
+      id: '1764386735026'
+      position:
+        x: 1400.5757852464606
+        y: 871.0468945829616
+      positionAbsolute:
+        x: 1400.5757852464606
+        y: 871.0468945829616
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        answer: '根据最近统计的日报数据，以下是近期项目进度情况
+
+
+
+          {{#1764386735026.text#}}'
+        selected: false
+        title: 直接回复 6
+        type: answer
+        variables: []
+      height: 119
+      id: '1764386755312'
+      position:
+        x: 1826.6095288591123
+        y: 857.8518154752328
+      positionAbsolute:
+        x: 1826.6095288591123
+        y: 857.8518154752328
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        is_team_authorization: true
+        paramSchemas:
+        - auto_generate: null
+          default: null
+          form: llm
+          human_description:
+            en_US: 搜索关键词
+            ja_JP: 搜索关键词
+            pt_BR: 搜索关键词
+            zh_Hans: 搜索关键词
+          label:
+            en_US: query
+            ja_JP: query
+            pt_BR: query
+            zh_Hans: query
+          llm_description: 搜索关键词
+          max: null
+          min: null
+          name: query
+          options: []
+          placeholder: null
+          precision: null
+          required: true
+          scope: null
+          template: null
+          type: string
+        - auto_generate: null
+          default: null
+          form: llm
+          human_description:
+            en_US: 返回的结果数量，默认为5
+            ja_JP: 返回的结果数量，默认为5
+            pt_BR: 返回的结果数量，默认为5
+            zh_Hans: 返回的结果数量，默认为5
+          label:
+            en_US: num_results
+            ja_JP: num_results
+            pt_BR: num_results
+            zh_Hans: num_results
+          llm_description: 返回的结果数量，默认为5
+          max: null
+          min: null
+          name: num_results
+          options: []
+          placeholder: null
+          precision: null
+          required: false
+          scope: null
+          template: null
+          type: number
+        params:
+          num_results: ''
+          query: ''
+        plugin_id: ''
+        plugin_unique_identifier: ''
+        provider_icon:
+          background: '#6366F1'
+          content: 🔗
+        provider_id: by
+        provider_name: 必应搜索
+        provider_type: mcp
+        selected: false
+        title: bing_search
+        tool_configurations: {}
+        tool_description: 使用必应搜索指定的关键词，并返回搜索结果列表，包括标题、链接、摘要和ID
+        tool_label: bing_search
+        tool_name: bing_search
+        tool_node_version: '2'
+        tool_parameters:
+          num_results:
+            type: constant
+            value: null
+          query:
+            type: mixed
+            value: '{{#sys.query#}}'
+        type: tool
+      height: 84
+      id: '1764389401060'
+      position:
+        x: 518.1126475379461
+        y: 1046.200602750766
+      positionAbsolute:
+        x: 518.1126475379461
+        y: 1046.200602750766
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        context:
+          enabled: true
+          variable_selector:
+          - sys
+          - query
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: deepseek-chat
+          provider: langgenius/deepseek/deepseek
+        prompt_template:
+        - id: 076a5d5c-5834-42c5-bcbe-f6b5b6452635
+          role: system
+          text: "{{#context#}} 你是一名专业翻译官，精通中英文及多语言互译，具备严谨的语义准确性和场景适配能力，核心工作流程如下：\n\
+            \n1. 翻译触发规则：\n   - 当用户输入包含“翻译”关键词（如“翻译Hello world”“Hello world 翻译成中文”），或直接提供待翻译文本时，立即执行翻译任务；\n\
+            \   - 未指定目标语言时，默认执行「中英文互译」（中文→英文，英文→中文）；\n   - 若用户指定目标语言（如“翻译成日语”“英译法”“中文转德语”），严格按照指定语言执行翻译，支持常见语言（中、英、日、韩、法、德、西、俄等）。\n\
+            \n2. 专业语义增强：\n   翻译过程中必须参考必应搜索引擎返回的内容（{{#1764389401060.text#}}），优先提取其中的专业术语、行业表达、语境背景信息：\n\
+            \   - 若搜索结果包含待翻译文本的权威释义、常用搭配、场景示例，需结合这些信息优化翻译结果，确保语义精准（如专业领域词汇、多义词、歧义句）；\n\
+            \   - 若搜索结果无相关有效信息，基于自身翻译能力输出准确结果，无需强行引用。\n\n3. 翻译输出要求：\n   - 结果优先简洁明了，核心翻译内容前置；\n\
+            \   - 复杂句或专业内容需补充1句简要说明（如“该短语常用于商务场景，直译+意译结合更自然”）；\n   - 保持目标语言的表达习惯（如中文流畅自然，英文语法正确，避免直译生硬感）。\n\
+            \n示例1：用户输入“翻译Hello world” → 输出“你好，世界（英文常用问候语，搜索结果显示为编程入门经典示例，语义无歧义）”\n\
+            示例2：用户输入“将‘人工智能’翻译成英文” → 输出“Artificial Intelligence（AI，搜索结果显示为科技领域标准术语，缩写AI更常用）”\n\
+            示例3：用户输入“translate 'cognitive computing' to Chinese” → 输出“认知计算（搜索结果显示为人工智能分支术语，特指模拟人类认知过程的计算技术）”\n\
+            \n现在，请接收用户输入{{#sys.query#}}，结合上述规则和搜索资源完成翻译任务。"
+        selected: false
+        title: LLM 3
+        type: llm
+        vision:
+          enabled: false
+      height: 88
+      id: '1764389503950'
+      position:
+        x: 939.2303301086928
+        y: 1046.200602750766
+      positionAbsolute:
+        x: 939.2303301086928
+        y: 1046.200602750766
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        answer: '{{#1764389503950.text#}}'
+        selected: true
+        title: 直接回复 7
+        type: answer
+        variables: []
+      height: 103
+      id: '1764389591804'
+      position:
+        x: 1244.582497450771
+        y: 1046.200602750766
+      positionAbsolute:
+        x: 1244.582497450771
+        y: 1046.200602750766
+      selected: true
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    viewport:
+      x: -1.8374619318418581
+      y: 182.43010305988332
+      zoom: 0.5521766949682876
+  rag_pipeline_variables: []
