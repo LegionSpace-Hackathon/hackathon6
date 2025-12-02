@@ -1,0 +1,156 @@
+<svg width="256" height="256" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title>影子身份管理系统图标</title>
+  <desc>主体身份核心向外裂变出多重数字分身并被数据流包裹的科技感图标</desc>
+  <defs>
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#07071B" />
+      <stop offset="45%" stop-color="#121B3C" />
+      <stop offset="100%" stop-color="#1D1E4F" />
+    </linearGradient>
+    <radialGradient id="corePulse" cx="50%" cy="42%" r="55%">
+      <stop offset="0%" stop-color="#F4F8FF" stop-opacity="1" />
+      <stop offset="45%" stop-color="#A5B4FC" stop-opacity="0.45" />
+      <stop offset="100%" stop-color="#050517" stop-opacity="0" />
+    </radialGradient>
+    <radialGradient id="irisGlow" cx="50%" cy="50%" r="70%">
+      <stop offset="0%" stop-color="#312E81" stop-opacity="0.2" />
+      <stop offset="65%" stop-color="#312E81" stop-opacity="0.65" />
+      <stop offset="100%" stop-color="#0F172A" stop-opacity="0" />
+    </radialGradient>
+    <linearGradient id="gridStroke" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#38BDF8" stop-opacity="0.25" />
+      <stop offset="100%" stop-color="#C084FC" stop-opacity="0.25" />
+    </linearGradient>
+    <pattern id="gridPattern" width="20" height="20" patternUnits="userSpaceOnUse">
+      <path d="M0 0h20v20H0z" fill="none" />
+      <path d="M0 0H20M0 10H20M0 20H20" stroke="url(#gridStroke)" stroke-width="0.4" />
+      <path d="M0 0V20M10 0V20M20 0V20" stroke="url(#gridStroke)" stroke-width="0.4" />
+    </pattern>
+    <linearGradient id="streamGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#22D3EE" />
+      <stop offset="50%" stop-color="#38BDF8" />
+      <stop offset="100%" stop-color="#C084FC" />
+    </linearGradient>
+    <linearGradient id="streamGradientSoft" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#4ADE80" stop-opacity="0.8" />
+      <stop offset="100%" stop-color="#22D3EE" stop-opacity="0.2" />
+    </linearGradient>
+    <linearGradient id="mainSilhouette" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#EEF2FF" />
+      <stop offset="100%" stop-color="#A5B4FC" />
+    </linearGradient>
+    <linearGradient id="cloneSilhouette" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#94A3B8" stop-opacity="0.45" />
+      <stop offset="100%" stop-color="#6366F1" stop-opacity="0.08" />
+    </linearGradient>
+    <linearGradient id="expansionBeamLeft" gradientUnits="userSpaceOnUse" x1="128" y1="128" x2="18" y2="90">
+      <stop offset="0%" stop-color="#F8FAFF" stop-opacity="0.5" />
+      <stop offset="45%" stop-color="#38BDF8" stop-opacity="0.35" />
+      <stop offset="100%" stop-color="#0F172A" stop-opacity="0" />
+    </linearGradient>
+    <linearGradient id="expansionBeamRight" gradientUnits="userSpaceOnUse" x1="128" y1="128" x2="238" y2="90">
+      <stop offset="0%" stop-color="#F8FAFF" stop-opacity="0.5" />
+      <stop offset="45%" stop-color="#C084FC" stop-opacity="0.35" />
+      <stop offset="100%" stop-color="#0F172A" stop-opacity="0" />
+    </linearGradient>
+    <linearGradient id="trailFade" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#C084FC" stop-opacity="0.05" />
+      <stop offset="40%" stop-color="#38BDF8" stop-opacity="0.35" />
+      <stop offset="100%" stop-color="#22D3EE" stop-opacity="0.9" />
+    </linearGradient>
+    <marker id="arrowShard" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+      <path d="M0 0L8 4L0 8z" fill="#22D3EE" />
+    </marker>
+    <filter id="motionBlur" x="-20%" y="-40%" width="160%" height="220%">
+      <feGaussianBlur stdDeviation="4 1.4" />
+    </filter>
+    <filter id="softGlow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="8" result="blur" />
+      <feBlend in="SourceGraphic" in2="blur" mode="screen" />
+    </filter>
+    <g id="bustShape">
+      <circle cx="0" cy="-26" r="18" />
+      <path d="M-32 0h64c14 0 24 10 24 24v18c0 24-18 46-36 52l-20 8-20-8c-18-6-36-28-36-52V24C-56 10-46 0-32 0z" />
+    </g>
+  </defs>
+  <rect x="20" y="20" width="216" height="216" rx="44" fill="url(#bgGradient)" />
+  <rect x="26" y="26" width="204" height="204" rx="38" fill="url(#gridPattern)" opacity="0.35" />
+  <circle cx="128" cy="122" r="88" fill="url(#irisGlow)" />
+  <circle cx="128" cy="116" r="72" fill="url(#corePulse)" />
+  <g opacity="0.6">
+    <path d="M128 126 90 108 38 84 54 154 112 150Z" fill="url(#expansionBeamLeft)" />
+    <path d="M128 126 166 108 218 84 202 154 144 150Z" fill="url(#expansionBeamRight)" />
+  </g>
+  <g filter="url(#softGlow)">
+    <path d="M48 118c28-30 64-46 80-46s52 16 80 46" fill="none" stroke="url(#streamGradientSoft)" stroke-width="4" stroke-linecap="round" />
+    <path d="M34 156c34 36 72 52 94 52s60-16 94-52" fill="none" stroke="url(#streamGradientSoft)" stroke-width="4" stroke-linecap="round" opacity="0.7" />
+  </g>
+  <g stroke="url(#streamGradient)" stroke-width="4" stroke-linecap="round" fill="none">
+    <path d="M40 140c20 0 36-22 44-40" stroke-dasharray="6 10" opacity="0.55" />
+    <path d="M216 128c-22 4-38 26-46 46" stroke-dasharray="8 12" opacity="0.5" />
+    <path d="M86 74c10-10 28-18 42-18s32 8 42 18" opacity="0.6" />
+  </g>
+  <g fill="#38BDF8" opacity="0.85">
+    <circle cx="84" cy="74" r="3" />
+    <circle cx="210" cy="132" r="4" />
+    <circle cx="44" cy="146" r="3" />
+    <circle cx="174" cy="72" r="2.8" />
+    <circle cx="212" cy="184" r="3.2" />
+    <circle cx="50" cy="190" r="2.6" />
+  </g>
+  <g opacity="0.55" fill="url(#cloneSilhouette)" stroke="url(#streamGradient)" stroke-width="1.2" stroke-opacity="0.25" filter="url(#motionBlur)">
+    <use href="#bustShape" transform="translate(98 124) scale(0.78) rotate(12)" />
+    <use href="#bustShape" transform="translate(84 154) scale(0.64) rotate(18)" />
+    <use href="#bustShape" transform="translate(158 124) scale(0.78) rotate(-12)" />
+    <use href="#bustShape" transform="translate(172 154) scale(0.64) rotate(-18)" />
+  </g>
+  <g opacity="0.9" fill="url(#cloneSilhouette)" stroke="url(#streamGradient)" stroke-width="1.6" stroke-opacity="0.35">
+    <use href="#bustShape" transform="translate(24 114) scale(0.62) rotate(28)" />
+    <use href="#bustShape" transform="translate(-4 166) scale(0.48) rotate(32)" />
+    <use href="#bustShape" transform="translate(232 114) scale(0.62) rotate(-28)" />
+    <use href="#bustShape" transform="translate(260 166) scale(0.48) rotate(-32)" />
+  </g>
+  <g stroke="url(#trailFade)" stroke-width="3" stroke-linecap="round" fill="none" marker-end="url(#arrowShard)" opacity="0.9">
+    <path d="M126 132C94 122 60 114 16 120" />
+    <path d="M124 142C82 146 32 166 -12 198" stroke-opacity="0.6" />
+    <path d="M130 132c32-10 66-18 110-12" />
+    <path d="M132 142c42 4 92 24 136 56" stroke-opacity="0.6" />
+  </g>
+  <g fill="#22D3EE" opacity="0.75">
+    <circle cx="118" cy="132" r="1.8" />
+    <circle cx="102" cy="128" r="2.2" />
+    <circle cx="82" cy="122" r="2.6" />
+    <circle cx="150" cy="132" r="1.8" />
+    <circle cx="168" cy="126" r="2.2" />
+    <circle cx="190" cy="120" r="2.6" />
+  </g>
+  <g opacity="0.65" stroke="url(#streamGradient)" stroke-width="3" stroke-linecap="round" fill="none">
+    <path d="M128 128c28-8 60-6 92 10" />
+    <path d="M128 134c34 4 70 18 104 40" stroke-opacity="0.7" />
+    <path d="M128 128c-28-8-60-6-92 10" />
+    <path d="M128 134c-34 4-70 18-104 40" stroke-opacity="0.7" />
+  </g>
+  <g transform="translate(128 128)">
+    <path d="M0-12c-12 0-30 8-30 24v28c0 28 18 50 30 54 12-4 30-26 30-54v-28c0-16-18-24-30-24z" fill="#0F172A" opacity="0.35" />
+  </g>
+  <circle cx="128" cy="82" r="24" fill="url(#mainSilhouette)" stroke="#E0E7FF" stroke-width="3" />
+  <path d="M104 110h48c18 0 34 16 34 34v30c0 30-22 58-40 66l-18 8-18-8c-18-8-40-36-40-66v-30c0-18 16-34 34-34z" fill="url(#mainSilhouette)" stroke="#E0E7FF" stroke-width="3" />
+  <path d="M128 118c-24 0-40 10-40 10s14 14 40 14 40-14 40-14-16-10-40-10z" fill="url(#streamGradient)" opacity="0.35" />
+  <path d="M96 148h64" stroke="url(#streamGradient)" stroke-width="5" stroke-linecap="round" opacity="0.85" />
+  <path d="M90 140c-20 14-34 34-42 48m160-48c20 14 34 34 42 48" stroke="url(#streamGradient)" stroke-width="3" stroke-opacity="0.7" stroke-linecap="round" fill="none" />
+  <path d="M104 214c14 12 30 18 48 18s34-6 48-18" stroke="url(#streamGradient)" stroke-width="6" stroke-linecap="round" fill="none" />
+  <g fill="#C084FC" opacity="0.9">
+    <circle cx="128" cy="220" r="3.4" />
+    <circle cx="110" cy="214" r="2.6" />
+    <circle cx="146" cy="214" r="2.6" />
+  </g>
+  <g stroke="url(#streamGradient)" stroke-width="3" stroke-linecap="round" fill="none">
+    <path d="M128 80c0-18 8-26 18-30" opacity="0.5" />
+    <path d="M128 80c0-18-8-26-18-30" opacity="0.5" />
+  </g>
+  <g fill="url(#streamGradient)" opacity="0.35">
+    <path d="M128 36c-10 18-10 36 0 48 10-12 10-30 0-48z" />
+    <path d="M128 36c10 18 10 36 0 48-10-12-10-30 0-48z" />
+  </g>
+</svg>
+

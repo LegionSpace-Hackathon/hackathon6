@@ -1,0 +1,62 @@
+{
+  "type": "app.chatflow",
+  "dsl_version": "1.0",
+  "metadata": {
+    "name": "抖音AI分身_最小可导入版",
+    "description": "核心聊天流程：长期记忆 + 最终回复生成。可后续扩展工具和知识库节点。"
+  },
+  "graph": {
+    "nodes": [
+      {
+        "id": "start",
+        "type": "start",
+        "name": "开始",
+        "outputs": ["out"]
+      },
+      {
+        "id": "memory",
+        "type": "memory",
+        "name": "长期记忆",
+        "config": {
+          "memory_type": "conversation",
+          "window": 50
+        },
+        "inputs": ["in"],
+        "outputs": ["out"]
+      },
+      {
+        "id": "final_llm",
+        "type": "llm",
+        "name": "最终回复生成",
+        "provider": "openai",
+        "model": "gpt-4",
+        "mode": "chat",
+        "prompt_system": "你是AI分身，始终以 user_profile 和 persona_tags 输出自然对话。融合 memory 中的内容，自然回答，不输出 JSON。",
+        "inputs": ["user_input", "persona_tags", "user_profile"],
+        "outputs": ["final_text"]
+      },
+      {
+        "id": "answer",
+        "type": "answer",
+        "name": "输出给用户",
+        "config": {
+          "text": "{{final_text}}"
+        },
+        "inputs": ["final_text"]
+      }
+    ],
+    "edges": [
+      { "source": "start", "target": "memory" },
+      { "source": "memory", "target": "final_llm" },
+      { "source": "final_llm", "target": "answer" }
+    ]
+  },
+  "variables": {
+    "inputs": [
+      { "key": "user_id", "type": "string", "label": "用户ID", "required": true },
+      { "key": "user_profile", "type": "text", "label": "分身人设信息", "required": true },
+      { "key": "persona_tags", "type": "array", "label": "人物标签", "required": false },
+      { "key": "user_input", "type": "text", "label": "用户输入", "required": true }
+    ]
+  }
+}
