@@ -1,0 +1,56 @@
+server:
+  port: 8080
+
+app:
+  dify:
+    base-url: "https://hackathon-team3.tongfudun.com"
+    upload-path: "/v1/files/upload"
+    chat-path: "/v1/chat-messages"
+    conversations: "/v1/conversations"
+    auth-token: "app-RgsCzDtrs3sCibWIcJMHYohz"
+
+spring:
+  main:
+    banner-mode: "console"
+  webflux:
+    # 配置WebFlux超时设置
+    base-path: ""
+    # WebFlux multipart配置
+    multipart:
+      # 启用multipart支持
+      enabled: true
+      # 最大文件大小 (50MB)
+      max-file-size: 50MB
+      # 最大请求大小 (50MB)
+      max-request-size: 50MB
+      # 文件写入磁盘的阈值 (1MB)
+      file-size-threshold: 1MB
+      # 临时文件位置
+      location: ${java.io.tmpdir}
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    display-request-duration: true
+  api-docs:
+    path: /v3/api-docs
+
+# 日志配置
+logging:
+  level:
+    com.example.difyproxy: INFO
+    reactor.netty: WARN
+    org.springframework.web.reactive: DEBUG
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "health,info"
+  endpoint:
+    health:
+      show-details: always
+
+

@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.payegis.cloud.vigil.mapper.VigilFileMapper">
+  <resultMap id="BaseResultMap" type="com.payegis.cloud.vigil.entity.VigilFile">
+    <id column="file_id" jdbcType="VARCHAR" property="fileId" />
+    <result column="file_name" jdbcType="VARCHAR" property="fileName" />
+     <result column="file_path" jdbcType="VARCHAR" property="filePath" />
+    <result column="file_type" jdbcType="VARCHAR" property="fileType" />
+    <result column="file_size" jdbcType="BIGINT" property="fileSize" />
+    <result column="match_count" jdbcType="INTEGER" property="matchCount" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="upload_time" jdbcType="TIMESTAMP" property="uploadTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="user_id" jdbcType="VARCHAR" property="userId" />
+    <result column="org_id" jdbcType="VARCHAR" property="orgId" />
+    <result column="knowledge_type" jdbcType="CHAR" property="knowledgeType" />
+    <result column="chain_file_id" jdbcType="VARCHAR" property="chainFileId" />
+  </resultMap>
+  <insert id="insert" parameterType="com.payegis.cloud.vigil.entity.VigilFile">
+    insert into v_vigil_file (file_id,  file_name, file_path, file_type, file_size,match_count,status,
+    upload_time, update_time, user_id,org_id,knowledge_type,chain_file_id)
+    values (#{fileId,jdbcType=VARCHAR},  #{fileName,jdbcType=VARCHAR}, #{filePath,jdbcType=VARCHAR}, #{fileType,jdbcType=VARCHAR},
+      #{fileSize,jdbcType=BIGINT}, #{matchCount,jdbcType=INTEGER}, #{status,jdbcType=TINYINT}, #{uploadTime,jdbcType=TIMESTAMP},
+      #{updateTime,jdbcType=TIMESTAMP}, #{userId,jdbcType=VARCHAR}, #{orgId,jdbcType=VARCHAR}, #{knowledgeType,jdbcType=CHAR},#{chainFileId,jdbcType=VARCHAR})
+  </insert>
+
+  <update id="updateStatus">
+    update v_vigil_file set status = #{status} where user_id = #{userId} and file_id=#{fileId}
+  </update>
+
+  <delete id="deleteByPrimaryKey">
+    delete from v_vigil_file where user_id = #{userId} and file_id=#{fileId}
+  </delete>
+
+  <select id="search" parameterType="com.payegis.cloud.vigil.vo.VigilFileVo" resultType="com.payegis.cloud.vigil.vo.VigilFileVo">
+    select file_id,  file_name, file_path, file_type, file_size,match_count,status,
+    upload_time, update_time, user_id,org_id,chain_file_id
+    from v_vigil_file
+    where 1=1
+    <if test='fileName != null and fileName != ""' >
+        and file_name like CONCAT('%',#{fileName},'%')
+    </if>
+    <if test='orgId != null and orgId != ""' >
+        and org_id = #{orgId}
+    </if>
+    <if test='userId != null and userId != ""' >
+        and (user_id = #{userId} or user_id is null)
+    </if>
+    <if test='knowledgeType != null and knowledgeType != ""' >
+        and knowledge_type = #{knowledgeType}
+    </if>
+    order by upload_time desc
+  </select>
+
+  <select id="countByKnowledge" resultType="java.util.Map">
+    select knowledge_type knowledgeType,count(*) count from v_vigil_file
+    where 1=1
+        and (user_id = #{userId} or user_id is null)
+    group by knowledge_type
+  </select>
+
+  <insert id="insertChainFile">
+    insert into v_chain_file(local_file_name,chain_file_Id,chain_file_name,user_id)
+    values(#{localFileName},#{chainFileId},#{chainFileName},#{userId})
+  </insert>
+  <select id="selectChainFile" resultType="java.util.Map" fetchSize="1">
+    select chain_file_Id chainFileId,chain_file_name chainFileName
+    from v_chain_file
+    where local_file_name=#{localFileName} and user_id=#{userId}
+    limit 1
+  </select>
+
+  <insert id="insertModule" parameterType="com.payegis.cloud.vigil.entity.VigilFileModule" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+    insert into v_vigil_file_module(module_name,create_time,update_time,user_id)
+    values(#{moduleName},now(),now(),#{userId})
+  </insert>
+
+  <select id="getModules" resultType="com.payegis.cloud.vigil.entity.VigilFileModule">
+    select module_name,create_time,update_time
+    from v_vigil_file_module
+    where user_id=#{userId}
+  </select>
+
+  <insert id="insertContract">
+    insert into v_contract(file_id,user_id,contract_name,contract_number,sign_date,create_time,update_time)
+    values(#{fileId},#{userId},#{contractName},#{contractNumber},#{signDate},now(),now())
+  </insert>
+
+  <insert id="insertContractLine">
+    insert into v_contract_timeline(file_id,line_desc,line_relation,line_date)
+    values(#{fileId},#{lineDesc},#{lineRelation},#{lineDate})
+  </insert>
+
+  <select id="selectContractCount" resultType="int">
+    select count(*) from v_contract
+    where file_id=#{fileId}
+  </select>
+
+  <select id="selectContract" resultType="map">
+    select file_id,contract_name,contract_number,sign_date,create_time,update_time
+      from  v_contract
+    where user_id=#{userId}
+    <if test="contractNumber != null and contractNumber != ''">
+      and contract_number = #{contractNumber}
+    </if>
+    order by create_time desc
+  </select>
+  <select id="selectContractLine" resultType="map">
+    select line_desc,line_relation,line_date,alert_status,confirm_status
+    from v_contract_timeline
+    where file_id=#{fileId}
+  </select>
+
+  <select id="selectCloseDateline4Alert" resultType="map">
+    select t.id,t.line_desc,t.line_relation,t.line_date,c.contract_name,c.contract_number,c.sign_date,u.mobile
+    from v_contract_timeline t
+    join v_contract c on t.file_id=c.file_id
+    left join v_user u on u.user_id=c.user_id
+    where DATE(line_date) = DATE_ADD(CURDATE(), INTERVAL #{day} DAY)
+    and alert_status = 0
+    order by t.line_date asc
+  </select>
+
+  <select id="selectCloseDateline4AlertByMobile" resultType="map" fetchSize="1">
+    select t.id,t.line_desc,t.line_relation,t.line_date,c.contract_name,c.contract_number,c.sign_date,u.mobile
+    from v_contract_timeline t
+    join v_contract c on t.file_id=c.file_id
+    left join v_user u on u.user_id=c.user_id
+    where alert_status = 0
+      <if test="mobile != null">
+        and u.mobile=#{mobile}
+      </if>
+      <if test="id != null">
+        and t.id=#{id}
+      </if>
+    order by t.line_date asc
+    limit 1
+  </select>
+
+  <select id="selectCloseDateline4Confirm" resultType="map">
+    select t.id,t.line_desc,t.line_relation,t.line_date,c.contract_name,c.contract_number,c.sign_date,u.mobile
+    from v_contract_timeline t
+    join v_contract c on t.file_id=c.file_id
+    left join v_user u on u.user_id=c.user_id
+    where alert_status = 1 and confirm_status = 0
+    order by t.line_date asc
+  </select>
+
+  <select id="selectCloseDateline4ConfirmById" resultType="map" fetchSize="1">
+    select t.id,t.line_desc,t.line_relation,t.line_date,c.contract_name,c.contract_number,c.sign_date,u.mobile
+    from v_contract_timeline t
+    join v_contract c on t.file_id=c.file_id
+    left join v_user u on u.user_id=c.user_id
+    where confirm_status = 0
+    <if test="id != null">
+      and t.id=#{id}
+    </if>
+    limit 1
+  </select>
+
+  <select id="getConfirmStatus" resultType="int">
+    select t.confirm_status
+    from v_contract_timeline t
+    where t.id=#{id}
+  </select>
+
+  <update id="updateContractLineAlertStatus">
+    update v_contract_timeline
+    set alert_status = 1
+    where id=#{id}
+  </update>
+
+  <update id="updateContractLineConfirmStatus">
+    update v_contract_timeline
+    set confirm_status = 1
+    where id=#{id}
+  </update>
+</mapper>

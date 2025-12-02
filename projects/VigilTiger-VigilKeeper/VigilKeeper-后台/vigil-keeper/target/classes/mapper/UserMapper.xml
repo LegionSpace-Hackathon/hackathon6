@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.payegis.cloud.vigil.mapper.UserMapper">
+  <resultMap id="BaseResultMap" type="com.payegis.cloud.vigil.entity.User">
+    <id column="user_id" jdbcType="VARCHAR" property="userId" />
+      <result column="mobile" jdbcType="VARCHAR" property="mobile" />
+      <result column="email" jdbcType="VARCHAR" property="email" />
+    <result column="pwd" jdbcType="VARCHAR" property="pwd" />
+      <result column="nick_name" jdbcType="VARCHAR" property="nickName" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="create_time" jdbcType="VARCHAR" property="createTime" />
+    <result column="update_time" jdbcType="VARCHAR" property="updateTime" />
+    <result column="source" jdbcType="VARCHAR" property="source" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from v_user
+    where user_id = #{userId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.payegis.cloud.vigil.entity.User">
+    insert into v_user (user_id,  email,
+      mobile, pwd, status, create_time,
+      update_time, nick_name)
+    values (#{userId,jdbcType=VARCHAR},  #{email,jdbcType=VARCHAR},
+      #{mobile,jdbcType=VARCHAR}, #{pwd,jdbcType=VARCHAR}, #{status,jdbcType=TINYINT}, #{createTime,jdbcType=VARCHAR},
+      #{updateTime,jdbcType=VARCHAR}, #{nickName,jdbcType=VARCHAR})
+  </insert>
+
+  <insert id="insertSelective" parameterType="com.payegis.cloud.vigil.entity.User">
+  insert into v_user
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="email != null">
+        email,
+      </if>
+      <if test="mobile != null">
+        mobile,
+      </if>
+      <if test="pwd != null">
+        pwd,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="nickName != null">
+        nick_name,
+      </if>
+      <if test="source != null">
+        source,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="userId != null">
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null">
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null">
+        #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="pwd != null">
+        #{pwd,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=VARCHAR},
+      </if>
+      <if test="nickName != null">
+        #{nickName,jdbcType=VARCHAR},
+      </if>
+      <if test="source != null">
+        #{source,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.payegis.cloud.vigil.entity.User">
+    update v_user
+    set
+      email = #{email,jdbcType=VARCHAR},
+      mobile = #{mobile,jdbcType=VARCHAR},
+      pwd = #{pwd,jdbcType=VARCHAR},
+      status = #{status,jdbcType=TINYINT},
+      create_time = #{createTime,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=VARCHAR},
+    where user_id = #{userId,jdbcType=VARCHAR}
+  </update>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.payegis.cloud.vigil.entity.User">
+    update v_user
+    <set>
+      <if test="pwd != null and pwd!=''">
+        pwd = #{pwd,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where user_id = #{userId,jdbcType=VARCHAR}
+  </update>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select user_id,  email, mobile, pwd, status, create_time, update_time,nick_name
+    from v_user
+    where user_id = #{userId,jdbcType=VARCHAR}
+  </select>
+
+  <select id="queryMobileBySecretId" parameterType="java.lang.String" resultType="string">
+    select mobile
+    from v_user
+    where user_id = #{userId,jdbcType=VARCHAR}
+  </select>
+
+  <select id="selectByUsername" parameterType="java.lang.String" resultMap="BaseResultMap" fetchSize="1">
+    select user_id,pwd,mobile,nick_name,cloud_user_id
+    from v_user
+    where email = #{username,jdbcType=VARCHAR} or  mobile = #{username,jdbcType=VARCHAR}
+    limit 1
+  </select>
+
+  <select id="selectByEmail" parameterType="java.lang.String" resultMap="BaseResultMap" fetchSize="1">
+    select user_id,pwd,email,mobile, nick_name
+     from v_user where email = #{email,jdbcType=VARCHAR}
+    limit 1
+  </select>
+
+  <select id="selectByMobile" parameterType="java.lang.String" resultMap="BaseResultMap" fetchSize="1">
+    select user_id,pwd,email,mobile, nick_name
+     from v_user where mobile = #{mobile,jdbcType=VARCHAR}
+    limit 1
+  </select>
+
+  <select id="selectCurrentDayCreateCounts" resultType="java.lang.Integer">
+    SELECT count(1)+1 FROM  v_user where DATE_FORMAT(create_time,'%Y%m%d')=DATE_FORMAT(now(),'%Y%m%d')
+  </select>
+
+  <select id="selectNickCounts" parameterType="java.lang.String" resultType="java.lang.Integer">
+    SELECT count(1) FROM  v_user where nick_name=#{nick,jdbcType=VARCHAR}
+  </select>
+
+  <update id="updateNickByPrimaryKey" parameterType="com.payegis.cloud.vigil.entity.User">
+    update v_user
+    <set>
+      <if test="nickName != null">
+        nick_name = #{nickName,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where user_id = #{userId,jdbcType=VARCHAR}
+  </update>
+
+  <select id="selectHeadImg" parameterType="java.lang.String" resultType="java.util.Map">
+    select head_pic headPic,user_id userId from v_user_head where user_id=#{userId,jdbcType=VARCHAR}
+  </select>
+
+  <update id="updateHeadImg" parameterType="java.util.Map">
+    update v_user_head set head_pic = #{headImg,jdbcType=LONGVARBINARY} where user_id = #{userId,jdbcType=VARCHAR}
+  </update>
+
+  <insert id="insertHeadImg"  parameterType="java.util.Map">
+    insert into v_user_head (user_id,head_pic)values (#{userId,jdbcType=VARCHAR},#{headImg,jdbcType=LONGVARBINARY})
+  </insert>
+
+  <select id="queryIdsByMobiles" resultType="string">
+    select user_id from v_user
+    where
+    <if test="mobiles!= null and mobiles.size()>0" >
+    mobile in
+    <foreach collection="mobiles" item="mobile" open="(" separator="," close=")">
+      #{mobile}
+    </foreach>
+    </if>
+    <if test="emails!= null and emails.size()>0" >
+    <if test="mobiles!= null and mobiles.size()>0" >
+    or
+    </if>
+    email in
+    <foreach collection="emails" item="email" open="(" separator="," close=")">
+      #{email}
+    </foreach>
+    </if>
+  </select>
+
+  <select id="queryByIds" resultType="java.util.Map">
+    select user_id userId,nick_name nickName,mobile,email
+    from v_user
+    where user_id in
+    <foreach collection="ids" item="id" open="(" separator="," close=")">
+      #{id}
+    </foreach>
+  </select>
+
+  <update id="updateByMobile"  parameterType="com.payegis.cloud.vigil.entity.User">
+    update v_user
+    set
+      cloud_user_id = #{cloudSecretId},
+      email = #{email,jdbcType=VARCHAR},
+      connector = #{connector,jdbcType=VARCHAR},
+      company_name = #{companyName,jdbcType=VARCHAR},
+      company_auth = #{companyAuth,jdbcType=BIT},
+      random = #{random,jdbcType=BIT},
+      update_time = #{updateTime,jdbcType=VARCHAR}
+    where mobile = #{mobile,jdbcType=VARCHAR}
+  </update>
+
+  <insert id="saveLoginLog">
+    insert into v_user_login_record(user_id,login_time) values(#{userId},now())
+  </insert>
+
+  <select id="getNewUser" resultType="java.util.Map">
+    select email,mobile,nick_name nickname,create_time registerTime,user_id
+    from v_user
+    where  DATE(create_time) = DATE_SUB(CURDATE(), INTERVAL 1 DAY)
+  </select>
+
+  <select id="getActiveUser" resultType="java.util.Map">
+    select d.email,d.mobile,d.nick_name nickname,r.login_time loginTime,d.user_id
+    from v_user_login_record r join v_user d on r.user_id=d.user_id
+    where DATE(r.login_time) = DATE_SUB(CURDATE(), INTERVAL 1 DAY)
+  </select>
+
+  <select id="getLoginLogCount" resultType="int">
+     select count(*)
+    from v_user_login_record
+    where DATE(login_time) = CURDATE()
+    and user_id = #{userId}
+  </select>
+</mapper>
